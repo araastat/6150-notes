@@ -3,7 +3,7 @@ project:
   output-dir: _book
 
 book:
-  title: "Biological and Biomedical Data Science (DSAN 6150)"
+  title: "Biological and Biomedical Data Science ([DSAN 6150](https://gu-dsan.github.io/6150-fall-2024/){target=_blank})"
   author: "Abhijit Dasgupta, PhD"
   page-footer:
     left: |
@@ -13,6 +13,10 @@ book:
   license: "CC BY"
   date: last-modified
   date-format: long
+  site-url: https://www.araastat.com/6150-notes
+  repo-url: https://github.com/araastat/6150-notes/
+  repo-branch: main
+  repo-actions: [edit,issue]
   chapters:
     - index.qmd
     - summary.qmd
