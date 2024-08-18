@@ -1,0 +1,31 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "Biological and Biomedical Data Science (DSAN 6150)"
+  author: "Abhijit Dasgupta, PhD"
+  page-footer:
+    left: |
+      Copyright Abhijit Dasgupta (2024). All rights reserved
+    right: |
+      This book was built with <a href="https://quarto.org">Quarto</a>
+  license: "CC BY"
+  date: last-modified
+  date-format: long
+  chapters:
+    - index.qmd
+    - 01-technical-background.qmd
+    - summary.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    code-link: true
+    callout-appearance: simple
+
+
+

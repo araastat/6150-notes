@@ -1,0 +1,58 @@
+---
+filters: 
+  - webr
+---
+
+# Technical background
+
+This course requires fairly involved knowledge of statistics and probability. We'll be introducing several new concepts through the semester, but we will provide refreshers of some basic concepts as a starting point for this course.
+
+## Software
+
+In this class, we will use {{< fa brands r-project >}} as our primary software. We expect you to be familiar with the `tidyverse` packages, and `ggplot2` for visualization.
+
+In this class, we will make extensive use of the `survival` package, as well as various specialized packages
+
+## Probability distributions
+
+You are probably familiar with the normal (Gaussian) distribution and the binomial distribution. We'll introduce some new distributions that will be used in the class
+
+### Exponential distribution
+
+The exponential distribution has one parameter, usually denoted by $\lambda > 0$ , which is also the mean of the distribution. If $X\sim Exp(\lambda)$, then
+
+$$
+P(X > x) = e^{-\lambda x}\quad \text{for } x > 0
+$$
+
+```{webr-r}
+lambda = 1
+x <- seq(0, 10, by = 0.1)
+y <- dexp(x, rate = lambda)
+plot(x, y, type ='l')
+```
+
+### Weibull distribution
+
+The Weibull distribution is a generalization of the Exponential distribution. It is a two-parameter distribution, with the parameters called shape ($\alpha$) and scale ( $\beta$ ). For this distribution,
+
+$$
+P(X > x ) = e^{-(x/\beta)^\alpha}
+$$
+
+Notice that the Exponential distribution is a special case with $\alpha = 1$ and $\beta$ = $1/\lambda$
+
+```{webr-r}
+alpha = 1
+beta = 1
+y = dweibull(x, shape = alpha, scale = beta)
+plot(x, y, type = 'l')
+```
+
+### Gamma distribution
+
+### Poisson distribution
+
+## Statistical methods
+
+### Hypthesis testing and errors

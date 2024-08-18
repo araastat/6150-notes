@@ -1,0 +1,55 @@
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+# Introduction {.unnumbered}
+
+Welcome to *Biological and Biomedical Data Science*, a second-year
+course in the [Georgetown University](https://www.georgetown.edu)
+[Masters in Data Analytics](https://analytics.georgetown.edu) program.
+
+Biological and biomedical data are at the heart of many industries,
+including the life sciences, healthcare, pharmaceuticals and
+biotechnology, to name a few. Research and development in these
+industries aim to create new knowledge about biology (human, animal or
+agricultural) and use that knowledge to create products (medicines,
+vaccines, seeds, pesticides) that can help their target audiences. Data
+is central to these purposes, but unfortunately, like most things, it's
+not quite so simple.
+
+In data science, we have become used to situations where you have
+massive amounts of data that are available to you for mining and
+exploring, typically from tech giants, cloud providers and fintech. Data
+in the life sciences is much more limited; a drug can be approved with
+as few as 1000 patients in a clinical trial. Data is both harder and
+more expensive to collect, and so we are often much more careful about
+how we collect and utilize data.
+
+The purpose to which we use the data is also quite different. Most data
+science applications you may encounter revolve around *predictive
+modeling*, where the intent is to create robust predictions even if the
+model is a *black box*; we don't really care how the predictions are
+generated but rather whether the predictions are accurate or robust. In
+the life sciences, we're often more interested in what factors influence
+the prediction, why we see the patterns we see, and can the patterns be
+attributable to a set of factors either observable or imposed. So the
+currency we deal with involves *correlations*, *associations* and
+***causality***. We're interested to get an understanding of how Nature
+**works**.
+
+::: callout-note
+## The two cultures
+
+Leo Breiman, in 2001, wrote a seminal and influential paper,
+"Statistical Modeling: The Two Cultures", where he distinguished between
+data models (classical statistical models) and algorithmic models (what
+we now call 'black box' predictive models). This is an important
+distinction to understand, since they require different mental models to
+work with, and different arrangements of the data, and are also
+interpreted and evaluated differently.
+
+Perhaps you saw this distinction in the materials for DSAN 5000 and DSAN
+5100.
+:::
