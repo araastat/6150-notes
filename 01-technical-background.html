@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./references.html" rel="prev">
+<link href="./chapters/week-13.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -359,7 +359,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"id":1,"options":{"autorun":"false","context":"interactive","fig-cap":"","results":"markup","output":"true","editor-word-wrap":"true","editor-quick-suggestions":"false","editor-max-height":"","fig-height":5,"warning":"true","fig-width":7,"read-only":"false","out-height":"","label":"unnamed-chunk-1","dpi":72,"comment":"","classes":"","editor-font-scale":"1","out-width":"700px","message":"true"},"code":"lambda = 1\nx <- seq(0, 10, by = 0.1)\ny <- dexp(x, rate = lambda)\nplot(x, y, type ='l')"},{"id":2,"options":{"autorun":"false","context":"interactive","fig-cap":"","results":"markup","output":"true","editor-word-wrap":"true","editor-quick-suggestions":"false","editor-max-height":"","fig-height":5,"warning":"true","fig-width":7,"read-only":"false","out-height":"","label":"unnamed-chunk-2","dpi":72,"comment":"","classes":"","editor-font-scale":"1","out-width":"700px","message":"true"},"code":"alpha = 1\nbeta = 1\ny = dweibull(x, shape = alpha, scale = beta)\nplot(x, y, type = 'l')"}];
+globalThis.qwebrCellDetails = [{"code":"lambda = 1\nx <- seq(0, 10, by = 0.1)\ny <- dexp(x, rate = lambda)\nplot(x, y, type ='l')","options":{"warning":"true","autorun":"false","editor-font-scale":"1","editor-word-wrap":"true","label":"unnamed-chunk-1","output":"true","out-width":"700px","context":"interactive","fig-height":5,"dpi":72,"editor-max-height":"","read-only":"false","editor-quick-suggestions":"false","out-height":"","comment":"","classes":"","message":"true","fig-cap":"","fig-width":7,"results":"markup"},"id":1},{"code":"alpha = 1\nbeta = 1\ny = dweibull(x, shape = alpha, scale = beta)\nplot(x, y, type = 'l')","options":{"warning":"true","autorun":"false","editor-font-scale":"1","editor-word-wrap":"true","label":"unnamed-chunk-2","output":"true","out-width":"700px","context":"interactive","fig-height":5,"dpi":72,"editor-max-height":"","read-only":"false","editor-quick-suggestions":"false","out-height":"","comment":"","classes":"","message":"true","fig-cap":"","fig-width":7,"results":"markup"},"id":2}];
 
 </script>
 <script type="module">
@@ -1634,14 +1634,80 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  <a href="./chapters/week-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to to biological and biomedical questions</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+  <a href="./chapters/week-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Experimental design and confounding</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/week-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Causal inference</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/week-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Non-randomized studies</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/week-05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">High-dimensional data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/week-06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Biomarker discovery</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/week-07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Survival analysis I</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/week-08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Survival analysis II</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/week-09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Applied Bayesian methods</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/week-10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Planning studies and clinical trials</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/week-11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Applied machine learning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/week-12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Machine learning explainability</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/week-13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Decision making</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -2459,8 +2525,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./references.html" class="pagination-link" aria-label="References">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">References</span>
+      <a href="./chapters/week-13.html" class="pagination-link" aria-label="Decision making">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Decision making</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
