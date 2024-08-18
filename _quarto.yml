@@ -19,8 +19,19 @@ book:
   repo-actions: [edit,issue]
   chapters:
     - index.qmd
-    - summary.qmd
-    - references.qmd
+    - chapters/week-01.qmd
+    - chapters/week-02.qmd
+    - chapters/week-03.qmd
+    - chapters/week-04.qmd
+    - chapters/week-05.qmd
+    - chapters/week-06.qmd
+    - chapters/week-07.qmd
+    - chapters/week-08.qmd
+    - chapters/week-09.qmd
+    - chapters/week-10.qmd
+    - chapters/week-11.qmd
+    - chapters/week-12.qmd
+    - chapters/week-13.qmd
   appendices:
     - 01-technical-background.qmd
 bibliography: references.bib
