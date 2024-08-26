@@ -1,2 +1,2 @@
-# Applied Bayesian methods
+# Applied Bayesian methods {#sec-week9}
 

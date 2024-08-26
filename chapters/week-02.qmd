@@ -1,2 +1,2 @@
-# Experimental design and confounding
+# Experimental design and confounding {#sec-week2}
 

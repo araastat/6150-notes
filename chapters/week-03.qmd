@@ -1,2 +1,2 @@
-# Causal inference
+# Causal inference {#sec-week3}
 
