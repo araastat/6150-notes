@@ -73,7 +73,7 @@ Today, our understanding of disease risk, disease etiology and the development o
 This period was the beginning of the areas of _bioinformatics_ and _computational biology_, and germinated the growth of software, primarily in {{< fa brands r-project >}}, to address such problems in a collective known as the [Bioconductor project](https://www.bioconductor.org). This suite of software has become the industry standard for bioinformatic analysis and has made {{< fa brands r-project >}} the main analytic software used in this field. 
 
 #### Looking forward
-We will learn more about bioinformatics and making inferences and identifying biomarkers in @sec-week5 and @sec-week6
+We will learn more about bioinformatics and making inferences and identifying biomarkers in @sec-week7 and @sec-week8
 
 ## Understanding human disease
 
@@ -111,7 +111,7 @@ The central question in survival analysis is how do we handle incomplete informa
 :::
 
 #### Looking foward
-We will explore survival analysis and how it is used for assessing treatments in @sec-week7 and @sec-week8.
+We will explore survival analysis and how it is used for assessing treatments in @sec-week5 and @sec-week6.
 
 ### Imaging as a source of biomarkers and evidence
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/MRI_of_Human_Brain.jpg/1119px-MRI_of_Human_Brain.jpg?20220615205518)

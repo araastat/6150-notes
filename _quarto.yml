@@ -2,6 +2,7 @@ project:
   type: book
   output-dir: _book
 
+
 book:
   title: "Biological and Biomedical Data Science ([DSAN 6150](https://gu-dsan.github.io/6150-fall-2024/){target=_blank})"
   author: "Abhijit Dasgupta, PhD"

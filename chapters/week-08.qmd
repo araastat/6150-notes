@@ -1,1 +1,1 @@
-# Survival analysis II {#sec-week8}
+# Biomarker discovery {#sec-week8}

@@ -1,2 +1,1 @@
-# High-dimensional data {#sec-week5}
-
+# Survival analysis I {#sec-week5}

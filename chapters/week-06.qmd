@@ -1,1 +1,1 @@
-# Biomarker discovery {#sec-week6}
+# Survival analysis II {#sec-week6}
