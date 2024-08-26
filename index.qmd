@@ -25,7 +25,7 @@ exploring, typically from tech giants, cloud providers and fintech. Data
 in the life sciences is much more limited; a drug can be approved with
 as few as 1000 patients in a clinical trial. Data is both harder and
 more expensive to collect, and so we are often much more careful about
-how we collect and utilize data.
+how we collect and utilize data. For context, a laboratory experiment may consist of 10 mice, and initial clinical studies might include 15 subjects. Experiments are costly, and so are often limited. 
 
 The purpose to which we use the data is also quite different. Most data
 science applications you may encounter revolve around *predictive
@@ -53,3 +53,38 @@ interpreted and evaluated differently.
 Perhaps you saw this distinction in the materials for DSAN 5000 and DSAN
 5100.
 :::
+
+# Roadmap for this course
+
+This course is inspired by the widespread reporting of health and medical results and the need for objective assessment of these results to understand their implications and generalizability.  There are several questions that are of interest here:
+
+1. How can we judge all the reporting around health risks, new cures and treatments, and lifestyle choices
+    - What are the challenges in making robust and valid claims
+1. How can we advance science through experiments and data in a way that ensures reproducibility and generalizability?
+2. How industry approaches creating a treatment or drug
+3. How can we find factors that affect our health (that are not from Facebook) and are reliable
+4. How personalized is our knowledge, or how applicable is the available knowledge to our personal situations?
+
+::: callout-important
+The **over-riding** question that we will re-visit throughout the course is, how do we make decisions from data, how do we balance risks, and how do we try to ensure 
+reproducibility and generalizability of our results and decisions
+:::
+
+## Data science topics
+
+Biological and biomedical data poses several unique features that need to be addressed in data science, sometimes by specialized methods. Some of the topics that we will cover in this course include 
+
+- Collecting data, and levels of evidence from how the data is collected
+  - Observational studies, epidemioligical studies, randomized studies
+  - Confounding and causality, direct and indirect effects
+  - Accommodating imperfect study design to make better inferences and decisions
+  - The role of randomization and stratification in making better inference
+- Missing data, particularly censoring and truncation, and how to accommodate them to make valid estimation and inference
+- High-dimensional data (collecting lots of information on relatively few units of observation)
+  - Information content
+  - ML methods help (penalized models, gradient boosting, trees)
+  - Reproducibility can suffer due to non-specificity of particular effects
+- Type I and II error, and how multiple testing affects it
+- p-values as a necessary but poor decision tool, and how we can do better
+- Bayesian approaches to estimation, inference and decision-making
+- And the list can go on ... 
