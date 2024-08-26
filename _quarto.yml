@@ -36,7 +36,7 @@ book:
     - chapters/week-13.qmd
   appendices:
     - 01-technical-background.qmd
-bibliography: references.bib
+bibliography: reference.json
 
 format:
   html:
@@ -44,6 +44,7 @@ format:
     code-link: true
     callout-appearance: simple
     number-depth: 1
+
 
 
 
