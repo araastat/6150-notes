@@ -15,6 +15,8 @@ book:
   date-format: long
   site-url: https://www.araastat.com/6150-notes
   repo-url: https://github.com/araastat/6150-notes/
+  navbar:
+    search: true
   repo-branch: main
   repo-actions: [edit,issue]
   chapters:
@@ -41,6 +43,7 @@ format:
     theme: cosmo
     code-link: true
     callout-appearance: simple
+    number-depth: 1
 
 
 
