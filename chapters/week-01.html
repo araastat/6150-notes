@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>1&nbsp; Introduction to to biological and biomedical questions – Biological and Biomedical Data Science ([DSAN 6150](https://gu-dsan.github.io/6150-fall-2024/){target=_blank})</title>
+<title>1&nbsp; Introduction to biological and biomedical data – Biological and Biomedical Data Science ([DSAN 6150](https://gu-dsan.github.io/6150-fall-2024/){target=_blank})</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -41,12 +61,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -69,44 +91,70 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Biological and Biomedical Data Science (</span></a><a href="https://gu-dsan.github.io/6150-fall-2024/" target="_blank">DSAN 6150</a>)
+    
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+    <a href="https://github.com/araastat/6150-notes/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/week-01.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to to biological and biomedical questions</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/week-01.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to biological and biomedical data</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
     </div>
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="../">Biological and Biomedical Data Science (</a><a href="https://gu-dsan.github.io/6150-fall-2024/" target="_blank">DSAN 6150</a>) 
-        <div class="sidebar-tools-main">
-    <a href="https://github.com/araastat/6150-notes/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-</div>
-    </div>
-      </div>
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -118,7 +166,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/week-01.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to to biological and biomedical questions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to biological and biomedical data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -215,15 +263,41 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#history" id="toc-history" class="nav-link active" data-scroll-target="#history">History</a></li>
+  <li><a href="#biology" id="toc-biology" class="nav-link" data-scroll-target="#biology">Biology</a></li>
+  <li><a href="#genetics" id="toc-genetics" class="nav-link" data-scroll-target="#genetics">Genetics</a>
+  <ul class="collapse">
+  <li><a href="#classical-genetics" id="toc-classical-genetics" class="nav-link" data-scroll-target="#classical-genetics">Classical genetics</a></li>
+  <li><a href="#genomics" id="toc-genomics" class="nav-link" data-scroll-target="#genomics">Genomics</a></li>
+  <li><a href="#other--omics" id="toc-other--omics" class="nav-link" data-scroll-target="#other--omics">Other “-omics”</a></li>
+  <li><a href="#software" id="toc-software" class="nav-link" data-scroll-target="#software">Software</a></li>
+  </ul></li>
+  <li><a href="#understanding-human-disease" id="toc-understanding-human-disease" class="nav-link" data-scroll-target="#understanding-human-disease">Understanding human disease</a>
+  <ul class="collapse">
+  <li><a href="#collecting-data" id="toc-collecting-data" class="nav-link" data-scroll-target="#collecting-data">Collecting data</a></li>
+  <li><a href="#how-long-do-we-live" id="toc-how-long-do-we-live" class="nav-link" data-scroll-target="#how-long-do-we-live">How long do we live?</a></li>
+  <li><a href="#imaging-as-a-source-of-biomarkers-and-evidence" id="toc-imaging-as-a-source-of-biomarkers-and-evidence" class="nav-link" data-scroll-target="#imaging-as-a-source-of-biomarkers-and-evidence">Imaging as a source of biomarkers and evidence</a></li>
+  <li><a href="#electronic-health-records-as-a-source-of-data" id="toc-electronic-health-records-as-a-source-of-data" class="nav-link" data-scroll-target="#electronic-health-records-as-a-source-of-data">Electronic health records as a source of data</a></li>
+  </ul></li>
+  <li><a href="#the-rest-of-the-course" id="toc-the-rest-of-the-course" class="nav-link" data-scroll-target="#the-rest-of-the-course">The rest of the course</a>
+  <ul class="collapse">
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-01.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to to biological and biomedical questions</span></h1>
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to biological and biomedical data</span></h1>
 <p class="subtitle lead">Week 1</p>
 </div>
 
@@ -241,8 +315,201 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="history" class="level2">
+<h2 class="anchored" data-anchor-id="history">History</h2>
+<p>Biological data, in particular agricutural data, lay at the root of much of statistics and probability development in the 1800s and 1900s. In fact, biological understanding and statistical methodology have had a symbiotic relationship through the ages. Our understanding of genetic inheritance is basically statistical, and the field of design of experiments evolved to help make sense of whether particular seeds were better than other seeds. In more modern times, as biological methods and understanding have progressed, so have statistical methods to help understand the biology. Modern medicine also has benefitted from statistical advances, primarily in evaluating the safety and efficacy of drugs, devices and treatments addressing common and uncommon diseases, led by the efforts at the US Food and Drug Administration in the 1950s. The last century also saw massive statistical advances in understanding factors that affect the risk of disease and how to use high-throughput technologies to quickly evaluate huge numbers of molecular-level factors robustly, and identify anomalies in imaging modalities. The last 50 years especially have been a period of rapid change and improvement, but also a re-evaluation of how to best understand the biology from the data, and how to make decisions based on such data.</p>
+</section>
+<section id="biology" class="level2">
+<h2 class="anchored" data-anchor-id="biology">Biology</h2>
+<p>Statistics has long had an influence in our understanding of biology. It has been central to the development of pest-resistant strains of grains, breeding of elite thoroughbred horses and productive livestock. As we’ll see in the next section, much of this is based on our understanding of genetic inheritance. It also benefitted from the development of more efficient experimental designs so that we could efficiently identify whether some characteristics improved or not. The field of <em>design of experiments</em> developed with agricultural experiments (famously, R.A. Fisher’s work at the <a href="https://www.adelaide.edu.au/library/special/exhibitions/significant-life-fisher/rothamsted/">Rothamsted Experimental Station</a> in England, and P. Mahalonobis’ work with jute production in India). These developments then gave rise to study designs to efficiently investigate human disease (including work by Jerry Cornfield at the NIH), and the use of the <em>randomized controlled trial (RCT)</em> as the study design providing rigorous evidence of causality and effectiveness of drugs and the basis for almost all drug approvals worldwide.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Much of the work in agriculture, biology and epidemiology translated into engineering and business quite quickly.</p>
+<ul>
+<li>The ideas of experimental design and statistical quality control were used by Deming to improve industrial quality, mainly in Japan after his ideas were rejected by the American auto industry. This line of thought has extended and developed today into the Six Sigma principles and methods of quality assurance</li>
+<li>Experimental design is central to engineering progress and standardization</li>
+<li>The ideas of <em>A/B testing</em> in business are basically <em>in silico</em> versions of RCTs. Over the last 20 years, RCTs have become an accepted and central methodology in economics research</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="genetics" class="level2">
+<h2 class="anchored" data-anchor-id="genetics">Genetics</h2>
+<section id="classical-genetics" class="level3">
+<h3 class="anchored" data-anchor-id="classical-genetics">Classical genetics</h3>
+<p>Our understanding of genetic inheritance is based in the foundational experiments of Gregor Mendel, who showed in small agricultural experiments how particular traits in pea plants are transmitted from generation to generation. The basic ideas of <a href="https://www.cancer.gov/publications/dictionaries/genetics-dictionary/def/autosomal-dominant-inheritance#">autosomal inheritance</a> and how many of each trait to <em>expect</em> in each generation were established by statistical analyses, even though Mendel’s experiments and theory pertained to a simplistic view of biology. This work was further extended and applied to many other fields by greats like <a href="https://en.wikipedia.org/wiki/Ronald_Fisher">R.A. Fisher</a> and <a href="https://en.wikipedia.org/wiki/J._B._S._Haldane">J.B.S. Haldane</a>.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Did Mendel fabricate his data?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There has been controversy that Mendel’s data was <em>too good</em>, and may have had an element of fabrication. <a href="https://en.wikipedia.org/wiki/Karl_Pearson">Karl Pearson</a> and R. A. Fisher both contributed statistical analyses to promote this, one of the first instances of <strong>statistical forensics</strong>. We’ll see another more modern example later. More information about the controversy around Mendel’s data can be learned <a href="https://www.discovermagazine.com/the-sciences/did-gregor-mendel-fabricate-his-gene-data#">here</a>.</p>
+</div>
+</div>
+<p>The basic ideas started by Mendel was extended over time as our understanding of the complexities of genetic inheritance improved. We started understanding how inheritance worked biologically through mitosis and meiosis, and the role that <em>distance between genes</em> plays in inheritance (<a href="https://en.wikipedia.org/wiki/Genetic_linkage">genetic linkage</a>). This understanding led to understanding that Mendel’s laws of <em>independent assortment</em> have major exceptions, in that genes that are close together in the genome don’t get inherited independently. This understanding also led to the design of <a href="https://pubmed.ncbi.nlm.nih.gov/16168786/">linkage studies</a> and <a href="https://jamanetwork.com/journals/jamaneurology/fullarticle/775035#:~:text=Genetic%20linkage%20analysis%20is%20a,chromosome%20remain%20linked%20during%20meiosis.">linkage analysis</a> to understand inheritable diseases like some cancers, diabetes and heart disease. This also led to a focus on studying families, siblings, and family trees to understand genetic factors of disease, and novel experimental designs for genetic association studies.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Perhaps the most famous example of linkage analysis is in the prevalence of <a href="https://www.mayoclinic.org/diseases-conditions/hemophilia/symptoms-causes/syc-20373327#:~:text=Overview,if%20your%20blood%20clotted%20properly.">hemophilia</a> among the royal families of Europe in the 1800s and 1900s; famously the hemophilia of the Russian Tsarevich Alexei and the rise of Rasputin entered Western culture through novels and movies.</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Erbgang_Bluterkrankheit.svg/440px-Erbgang_Bluterkrankheit.svg.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Intertwining statistics, genetics and eugenics in the early 1900s
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We’ve already mentioned two stalwarts formative to the modern methodology and practice of statistics, R. A. Fisher and Karl Pearson, who were academic and professional rivals. Today, there is an strong realization that despite their seminal methodological contributions, their intentions were not ethical by today’s standards. In particular, both were proponents of eugenics (see <a href="https://www.genome.gov/about-genomics/fact-sheets/Eugenics-and-Scientific-Racism#:~:text=Eugenicists%20worldwide%20believed%20that%20they,by%20them%20to%20be%20unfit.">Eugenics and Scientific Racism</a> for an introduction), which was not uncommon in the early 1900s. Pearson, who developed the formalization of the correlation coefficient and the <span class="math inline">\(\chi^2\)</span> test, and his mentor Francis Galton (who promoted the idea of “regression to the mean”) were avowed eugenicists; Pearson founded the journals <em>Biometrika</em> (which is still a prestigious journal) and the <em>Annals of Eugenics</em>, which transformed later to the <em>Annals of Human Genetics</em>, and was appointed the first <em>Galton Chair of Eugenics</em> at the University of London.</p>
+<p>Fisher was also interested in eugenics as it related to Mendelian inheritance (see <a href="https://www.nature.com/articles/s41437-020-00394-6#Sec5">here</a>), and did progress from those ideas to develop the statistical basis for genetic inheritance. However, he did both talk and publish pro-eugenics views, and has led many instructors to stop using Fisher’s iris data as a basic dataset for teaching statistics; it led to the rise of the <a href="https://allisonhorst.github.io/palmerpenguins/">penguins</a>.</p>
+</div>
+</div>
+</section>
+<section id="genomics" class="level3">
+<h3 class="anchored" data-anchor-id="genomics">Genomics</h3>
+<p>A fundamental shift in biological technology arose in the 1990s with various high-throughput methods, with accompanying statistical methods. Foremost was the idea of a <em>microarray</em>, where we could interrogate multiple genes together across multiple samples. These were pioneered by <a href="https://profiles.stanford.edu/patrick-brown">Patrick Brown</a> (<span class="citation" data-cites="brown:1999">Brown and Botstein (<a href="#ref-brown:1999" role="doc-biblioref">1999</a>)</span>) at Stanford University, and led to multiple advances in statistical methodology in the early 2000s at Stanford (Rob Tibshirani, Michael Eisen, David Botstein and others) and later at Johns Hopkins (Rafael Irizarry, among others). In particular, two seminal papers (<span class="citation" data-cites="eisen:1998">Eisen et al. (<a href="#ref-eisen:1998" role="doc-biblioref">1998</a>)</span> and <span class="citation" data-cites="tusher:2001">Tusher, Tibshirani, and Chu (<a href="#ref-tusher:2001" role="doc-biblioref">2001</a>)</span>) demonstrated the new statistical methodology needed to address the (then) new technology of cDNA microarrays and introduced unsupervised learning as a major data science methodology in biology. Later, we saw more detailed statistical analyses around quality assurance, normalization and proper statistical analyses of microarrays (<span class="citation" data-cites="irizarry:2003">Irizarry et al. (<a href="#ref-irizarry:2003" role="doc-biblioref">2003</a>)</span>).</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Microarrays and breast cancer
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>One of the early successes of microarray technology was in the subtyping of breast cancer (<span class="citation" data-cites="sorlie:2001">Sørlie et al. (<a href="#ref-sorlie:2001" role="doc-biblioref">2001</a>)</span>), which showed that breast cancer was not a homogeneous disease but had several distinct subtypes. This led, over the years, to a standard genetic panel that all breast cancer biopsies are subject to, looking at mutations in the estrogen receptor (ER), progesterone receptor (PR) and the <em>HER2</em> gene. These now lead to 4 broad classes of breast cancer, each of which requires different treatment regimes. In particular the success of tamoxifen for ER+ cancer and heceptin for HER2+ cancer have made a majority of breast cancer treatable.</p>
+<p>More information: <a href="https://www.mayoclinic.org/diseases-conditions/breast-cancer/in-depth/breast-cancer/art-20045654">Breast cancer types: What your type means</a></p>
+</div>
+</div>
+</section>
+<section id="other--omics" class="level3">
+<h3 class="anchored" data-anchor-id="other--omics">Other “-omics”</h3>
+<p>In the last 30 years, we have seen the growth of other high-throughput methods to look at a number of molecular properties, most prominently being <em>proteomics</em>, <em>metabolomics</em>, and <em>transcriptomics</em>. Sequencing of genes, i.e.&nbsp;learning the exact alphabet of the genome, become cheaper and more accurate due in part to efforts of scientists in the <a href="https://www.genome.gov/human-genome-project">Human Genome Project</a>, and today, next-generation sequencing (NGS) is widespread.</p>
+<p>Statistically, this lead to the development of <em>genome-wide association studies (<a href="https://www.genome.gov/genetics-glossary/Genome-Wide-Association-Studies">GWAS</a>)</em>, which incorporated high-throughput genetic seqencing and <a href="https://www.genome.gov/genetics-glossary/Single-Nucleotide-Polymorphisms">SNP</a> analysis to try and understand the genetic basis of disease. <a href="https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-risk-scores">Polygenic risk scores</a> arising from high-throughput technologies have helped us understand how multiple genes can act together to increase the risk of disease. This led to several advances in understanding disease and potential treatment strategies.</p>
+<p>Today, our understanding of disease risk, disease etiology and the development of drug targets leverage high-throughput technologies, machine learning and artificial intelligence to develop new drugs, especially in oncology.</p>
+</section>
+<section id="software" class="level3">
+<h3 class="anchored" data-anchor-id="software">Software</h3>
+<p>This period was the beginning of the areas of <em>bioinformatics</em> and <em>computational biology</em>, and germinated the growth of software, primarily in <i class="fa-brands fa-r-project" aria-label="r-project"></i>, to address such problems in a collective known as the <a href="https://www.bioconductor.org">Bioconductor project</a>. This suite of software has become the industry standard for bioinformatic analysis and has made <i class="fa-brands fa-r-project" aria-label="r-project"></i> the main analytic software used in this field.</p>
+<section id="looking-forward" class="level4">
+<h4 class="anchored" data-anchor-id="looking-forward">Looking forward</h4>
+<p>We will learn more about bioinformatics and making inferences and identifying biomarkers in <a href="week-05.html" class="quarto-xref"><span>Chapter 5</span></a> and <a href="week-06.html" class="quarto-xref"><span>Chapter 6</span></a></p>
+</section>
+</section>
+</section>
+<section id="understanding-human-disease" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-human-disease">Understanding human disease</h2>
+<section id="collecting-data" class="level3">
+<h3 class="anchored" data-anchor-id="collecting-data">Collecting data</h3>
+<p>The earliest form of data-driven inference for human disease was based on observational data, i.e.&nbsp;data that was collected as it appeared and not as part of any organized structure or design. Observational data can be powerful in first showing <strong>associations</strong> between disease and causes and are often the first indications that something is going wrong. We have seen in DSAN 5300 the work of John Snow in identifying water wells that might have been responsible for a cholera outbreak in London in 1854.</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Snow-cholera-map-1.jpg/600px-Snow-cholera-map-1.jpg" class="img-fluid"></p>
+<p>Epidemiologists and biostatisticians like <a href="https://en.wikipedia.org/wiki/Jerome_Cornfield">Jerome Cornfield</a> started looking more carefully at study design, mainly in the context of smoking and lung cancer. The case-control design developed as a faster way of evaluating associations between disease and some factor.</p>
+<p>Howevever, observational studies cannot evaluate <strong>causation</strong> or establish a link between a factor and the development of a disease. This needs longitudinal cohort studies or randomized experiments, which became the gold standards for understanding disease, and in establishing interventions to prevent or cure disease.</p>
+<section id="looking-forward-1" class="level4">
+<h4 class="anchored" data-anchor-id="looking-forward-1">Looking forward</h4>
+<p>We’ll discuss more about study design, levels of evidence and causality in <a href="week-02.html" class="quarto-xref"><span>Chapter 2</span></a>, <a href="week-03.html" class="quarto-xref"><span>Chapter 3</span></a>, and <a href="week-04.html" class="quarto-xref"><span>Chapter 4</span></a>. We’ll explore principles for planning studies in <a href="week-10.html" class="quarto-xref"><span>Chapter 10</span></a></p>
+</section>
+</section>
+<section id="how-long-do-we-live" class="level3">
+<h3 class="anchored" data-anchor-id="how-long-do-we-live">How long do we live?</h3>
+<p><img src="../img/NSCLC.png" class="img-fluid"> <em>Survival curves for overall survival in non-small cell lung cancer by the 8th edition of the TNM staging system (<span class="citation" data-cites="yun:2019">Yun et al. (<a href="#ref-yun:2019" role="doc-biblioref">2019</a>)</span>) </em></p>
+<p>A central question in understanding disease is, how long do we live, and will a treatment let us live longer? This is a question of <strong>survival</strong>, and an entire ecosystem of methods and software developed to address this question. You have been introduced to the Kaplan-Meier curve and Cox regression, which are widely used, but are the tip of the iceberg.</p>
+<p>Cox regression, especially, has been used within the context of RCTs to establish that individuals who get a new treatment live longer (have <em>lower risk of dying</em>) than individuals who were given a placebo or a current standard of care treatment. It established the role of the <em>hazard ratio</em> as the crucial statistic to look at. The prominence of this method (which is about the same age as myself, <span class="citation" data-cites="coxRegressionModelsLifeTables1972">Cox (<a href="#ref-coxRegressionModelsLifeTables1972" role="doc-biblioref">1972</a>)</span>, but whose <em>bona fide</em> as a good method for survival analysis was established a few years later. This is one of the most cited papers in all of statistics)</p>
+<p>The central question in survival analysis is how do we handle incomplete information of a particular form. Everyone will eventually die, but since we cannot have infinite studies, we cannot observed all the deaths or when they happened. We also sometimes cannot observe the beginning of when someone was first exposed (to a carcinogen like asbestos, for example). All we know is that death occurred after some last observation time, or exposure happened before some first observation time. How do we account for this in our analyses?</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The curious want to know
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Why is accounting for this incomplete information important?</li>
+<li>What happens if we just ask, what fraction has survived 2 years, say? Is this more straightforward?</li>
+<li>What assumptions do we need to make to establish that a new treatment is indeed better than an old treatment? Or that a new treatment is no worse than an old treatment?</li>
+</ol>
+</div>
+</div>
+<section id="looking-foward" class="level4">
+<h4 class="anchored" data-anchor-id="looking-foward">Looking foward</h4>
+<p>We will explore survival analysis and how it is used for assessing treatments in <a href="week-07.html" class="quarto-xref"><span>Chapter 7</span></a> and <a href="week-08.html" class="quarto-xref"><span>Chapter 8</span></a>.</p>
+</section>
+</section>
+<section id="imaging-as-a-source-of-biomarkers-and-evidence" class="level3">
+<h3 class="anchored" data-anchor-id="imaging-as-a-source-of-biomarkers-and-evidence">Imaging as a source of biomarkers and evidence</h3>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/MRI_of_Human_Brain.jpg/1119px-MRI_of_Human_Brain.jpg?20220615205518" class="img-fluid"></p>
+<p>Medical images are an essential piece of the diagnostic puzzle, be it x-rays, computerized tomography (CT), magnetic resonance images (MRI) or positron-emission tomography (PET). The rise of computational radiology and computational pathology have made the assessement of diagnostic medical images much easier, leveraging many machine learning techniques as well as domain knowledge. This area is getting stronger with the advance of computational tools, especially using deep learning tools.</p>
+<section id="looking-forward-2" class="level4">
+<h4 class="anchored" data-anchor-id="looking-forward-2">Looking forward</h4>
+<p>We will not explore this area much in this course.</p>
+</section>
+</section>
+<section id="electronic-health-records-as-a-source-of-data" class="level3">
+<h3 class="anchored" data-anchor-id="electronic-health-records-as-a-source-of-data">Electronic health records as a source of data</h3>
+<p>Electronic health records (EHR) have allowed the standardization and inter-operability of personal health records within and between healthcare organizations. They provide a textual and multimodal record of a patient’s journey. As such, they can be analyzed using a variety of NLP techniques, and there is current interest in using large language models to provide predictions and reasoning for patient outcomes using EHRs</p>
+<section id="looking-forward-3" class="level4">
+<h4 class="anchored" data-anchor-id="looking-forward-3">Looking forward</h4>
+<p>We will defer these topics to the more specialized courses that include NLP and LLMs</p>
+</section>
+</section>
+</section>
+<section id="the-rest-of-the-course" class="level2">
+<h2 class="anchored" data-anchor-id="the-rest-of-the-course">The rest of the course</h2>
+<p>Once we understand the kinds of data and their particular characteristics that we can encounter in biological and biomedical areas, we will explore other methodologies that can help understand the inter-relationships between different factors, how modeling can help our understanding , and how we can predict outcomes. In particular, we will explore Bayesian models and reasoning, and how machine learning models can provide a more flexible method for looking at associations and causality. We will explore questions around explainable AI, and how all of this can help with making decisions around biological and clinical understanding and treatment choices.</p>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section"></h3>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-brown:1999" class="csl-entry" role="listitem">
+Brown, P. O., and D. Botstein. 1999. <span>“Exploring the new world of the genome with DNA microarrays.”</span> <em>Nature Genetics</em> 21 (1 Suppl): 33–37. <a href="https://doi.org/10.1038/4462">https://doi.org/10.1038/4462</a>.
+</div>
+<div id="ref-coxRegressionModelsLifeTables1972" class="csl-entry" role="listitem">
+Cox, D. R. 1972. <span>“Regression Models and Life-Tables.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 34 (2): 187–202. <a href="https://doi.org/10.1111/j.2517-6161.1972.tb00899.x">https://doi.org/10.1111/j.2517-6161.1972.tb00899.x</a>.
+</div>
+<div id="ref-eisen:1998" class="csl-entry" role="listitem">
+Eisen, M. B., P. T. Spellman, P. O. Brown, and D. Botstein. 1998. <span>“Cluster analysis and display of genome-wide expression patterns.”</span> <em>Proceedings of the National Academy of Sciences of the United States of America</em> 95 (25): 14863–68. <a href="https://doi.org/10.1073/pnas.95.25.14863">https://doi.org/10.1073/pnas.95.25.14863</a>.
+</div>
+<div id="ref-irizarry:2003" class="csl-entry" role="listitem">
+Irizarry, Rafael A., Bridget Hobbs, Francois Collin, Yasmin D. Beazer-Barclay, Kristen J. Antonellis, Uwe Scherf, and Terence P. Speed. 2003. <span>“Exploration, normalization, and summaries of high density oligonucleotide array probe level data.”</span> <em>Biostatistics (Oxford, England)</em> 4 (2): 249–64. <a href="https://doi.org/10.1093/biostatistics/4.2.249">https://doi.org/10.1093/biostatistics/4.2.249</a>.
+</div>
+<div id="ref-sorlie:2001" class="csl-entry" role="listitem">
+Sørlie, Therese, Charles M. Perou, Robert Tibshirani, Turid Aas, Stephanie Geisler, Hilde Johnsen, Trevor Hastie, et al. 2001. <span>“Gene Expression Patterns of Breast Carcinomas Distinguish Tumor Subclasses with Clinical Implications.”</span> <em>Proceedings of the National Academy of Sciences</em> 98 (19): 10869–74. <a href="https://doi.org/10.1073/pnas.191367098">https://doi.org/10.1073/pnas.191367098</a>.
+</div>
+<div id="ref-tusher:2001" class="csl-entry" role="listitem">
+Tusher, Virginia Goss, Robert Tibshirani, and Gilbert Chu. 2001. <span>“Significance Analysis of Microarrays Applied to the Ionizing Radiation Response.”</span> <em>Proceedings of the National Academy of Sciences</em> 98 (9): 5116–21. <a href="https://doi.org/10.1073/pnas.091062498">https://doi.org/10.1073/pnas.091062498</a>.
+</div>
+<div id="ref-yun:2019" class="csl-entry" role="listitem">
+Yun, Jae Kwang, Geun Dong Lee, Hyeong Ryul Kim, Yong-Hee Kim, Dong Kwan Kim, Seung-Il Park, and Sehoon Choi. 2019. <span>“Validation of the 8th Edition of the TNM Staging System in 3,950 Patients with Surgically Resected Non-Small Cell Lung Cancer.”</span> <em>Journal of Thoracic Disease</em> 11 (7): 2955–64. <a href="https://doi.org/10.21037/jtd.2019.07.43">https://doi.org/10.21037/jtd.2019.07.43</a>.
+</div>
+</div>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -685,7 +952,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-01.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-01.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org">Quarto</a></p>
 </div>

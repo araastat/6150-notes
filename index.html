@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Abhijit Dasgupta, PhD">
-<meta name="dcterms.date" content="2024-08-21">
+<meta name="dcterms.date" content="2024-08-26">
 
 <title>Biological and Biomedical Data Science (DSAN 6150)</title>
 <style>
@@ -43,11 +43,11 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -73,10 +73,23 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Biological and Biomedical Data Science (</span></a><a href="https://gu-dsan.github.io/6150-fall-2024/" target="_blank">DSAN 6150</a>)
+    
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+    <a href="https://github.com/araastat/6150-notes/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -85,29 +98,13 @@ ul.task-list li input[type="checkbox"] {
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Introduction</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
     </div>
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="./">Biological and Biomedical Data Science (</a><a href="https://gu-dsan.github.io/6150-fall-2024/" target="_blank">DSAN 6150</a>) 
-        <div class="sidebar-tools-main">
-    <a href="https://github.com/araastat/6150-notes/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-</div>
-    </div>
-      </div>
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -119,7 +116,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapters/week-01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to to biological and biomedical questions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to biological and biomedical data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -222,6 +219,10 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#roadmap-for-this-course" id="toc-roadmap-for-this-course" class="nav-link" data-scroll-target="#roadmap-for-this-course">Roadmap for this course</a>
+  <ul class="collapse">
+  <li><a href="#data-science-topics" id="toc-data-science-topics" class="nav-link" data-scroll-target="#data-science-topics">Data science topics</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -247,7 +248,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 21, 2024</p>
+      <p class="date">August 26, 2024</p>
     </div>
   </div>
   
@@ -263,7 +264,7 @@ ul.task-list li input[type="checkbox"] {
 <h1 class="unnumbered">Introduction</h1>
 <p>Welcome to <em>Biological and Biomedical Data Science</em>, a second-year course in the <a href="https://www.georgetown.edu">Georgetown University</a> <a href="https://analytics.georgetown.edu">Masters in Data Analytics</a> program.</p>
 <p>Biological and biomedical data are at the heart of many industries, including the life sciences, healthcare, pharmaceuticals and biotechnology, to name a few. Research and development in these industries aim to create new knowledge about biology (human, animal or agricultural) and use that knowledge to create products (medicines, vaccines, seeds, pesticides) that can help their target audiences. Data is central to these purposes, but unfortunately, like most things, it’s not quite so simple.</p>
-<p>In data science, we have become used to situations where you have massive amounts of data that are available to you for mining and exploring, typically from tech giants, cloud providers and fintech. Data in the life sciences is much more limited; a drug can be approved with as few as 1000 patients in a clinical trial. Data is both harder and more expensive to collect, and so we are often much more careful about how we collect and utilize data.</p>
+<p>In data science, we have become used to situations where you have massive amounts of data that are available to you for mining and exploring, typically from tech giants, cloud providers and fintech. Data in the life sciences is much more limited; a drug can be approved with as few as 1000 patients in a clinical trial. Data is both harder and more expensive to collect, and so we are often much more careful about how we collect and utilize data. For context, a laboratory experiment may consist of 10 mice, and initial clinical studies might include 15 subjects. Experiments are costly, and so are often limited.</p>
 <p>The purpose to which we use the data is also quite different. Most data science applications you may encounter revolve around <em>predictive modeling</em>, where the intent is to create robust predictions even if the model is a <em>black box</em>; we don’t really care how the predictions are generated but rather whether the predictions are accurate or robust. In the life sciences, we’re often more interested in what factors influence the prediction, why we see the patterns we see, and can the patterns be attributable to a set of factors either observable or imposed. So the currency we deal with involves <em>correlations</em>, <em>associations</em> and <strong><em>causality</em></strong>. We’re interested to get an understanding of how Nature <strong>works</strong>.</p>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -279,8 +280,56 @@ The two cultures
 <p>Perhaps you saw this distinction in the materials for DSAN 5000 and DSAN 5100.</p>
 </div>
 </div>
+</section>
+<section id="roadmap-for-this-course" class="level1">
+<h1>Roadmap for this course</h1>
+<p>This course is inspired by the widespread reporting of health and medical results and the need for objective assessment of these results to understand their implications and generalizability. There are several questions that are of interest here:</p>
+<ol type="1">
+<li>How can we judge all the reporting around health risks, new cures and treatments, and lifestyle choices
+<ul>
+<li>What are the challenges in making robust and valid claims</li>
+</ul></li>
+<li>How can we advance science through experiments and data in a way that ensures reproducibility and generalizability?</li>
+<li>How industry approaches creating a treatment or drug</li>
+<li>How can we find factors that affect our health (that are not from Facebook) and are reliable</li>
+<li>How personalized is our knowledge, or how applicable is the available knowledge to our personal situations?</li>
+</ol>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The <strong>over-riding</strong> question that we will re-visit throughout the course is, how do we make decisions from data, how do we balance risks, and how do we try to ensure reproducibility and generalizability of our results and decisions</p>
+</div>
+</div>
+</div>
+<section id="data-science-topics" class="level2">
+<h2 class="anchored" data-anchor-id="data-science-topics">Data science topics</h2>
+<p>Biological and biomedical data poses several unique features that need to be addressed in data science, sometimes by specialized methods. Some of the topics that we will cover in this course include</p>
+<ul>
+<li>Collecting data, and levels of evidence from how the data is collected
+<ul>
+<li>Observational studies, epidemioligical studies, randomized studies</li>
+<li>Confounding and causality, direct and indirect effects</li>
+<li>Accommodating imperfect study design to make better inferences and decisions</li>
+<li>The role of randomization and stratification in making better inference</li>
+</ul></li>
+<li>Missing data, particularly censoring and truncation, and how to accommodate them to make valid estimation and inference</li>
+<li>High-dimensional data (collecting lots of information on relatively few units of observation)
+<ul>
+<li>Information content</li>
+<li>ML methods help (penalized models, gradient boosting, trees)</li>
+<li>Reproducibility can suffer due to non-specificity of particular effects</li>
+</ul></li>
+<li>Type I and II error, and how multiple testing affects it</li>
+<li>p-values as a necessary but poor decision tool, and how we can do better</li>
+<li>Bayesian approaches to estimation, inference and decision-making</li>
+<li>And the list can go on …</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -708,8 +757,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./chapters/week-01.html" class="pagination-link" aria-label="Introduction to to biological and biomedical questions">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to to biological and biomedical questions</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./chapters/week-01.html" class="pagination-link" aria-label="Introduction to biological and biomedical data">
+        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to biological and biomedical data</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
