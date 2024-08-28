@@ -169,6 +169,11 @@ Let's look back at @eq-np. If $\sigma$ is bigger, you need to show a bigger diff
 
 What is power measuring, qualitatively? It is measuring **the degree of separation, or lack of overlap, between the sampling distributions of $\bar{x}_1$ and $\bar{x}_2$** when there is in truth a difference in means. If there is a lot of overlap, then the signal can't be seen through the noise and the likelhood that you'll reject $H_0$ goes down. If the sampling distributions are separated, then the signal is clear despite the noise and you're more likely to reject $H_0$. You can increase your chances that the distributions separate if you can make the standard error of the means ($\sigma/\sqrt{n}$), smaller, which can happen if you make $n$ larger.
 
+::: callout-note 
+## Playground
+
+In the following snippet, you can play around with `m2`, `s` and `n` to see how statistical power changes. What do you observe?
+
 ```{webr-r}
 set.seed(1000)
 install.packages("tidyverse")
@@ -196,3 +201,147 @@ ggplot(d, aes(x, color = grp)) +
   labs(title = paste0("Power = ", power))
 
 ```
+:::
+
+::: callout-note
+## Playground
+
+Need to develop a similar example for the benefits of local control/blocking
+
+:::
+
+## Types of study designs
+
+There are several study designs that are commonly used. The choice of study design to use for a particular study can depend on the time needed/available, resources available, degree of definitiveness desired, and, often, convenience. 
+
+### Observational studies
+Observational studies are just that -- data is collected as it is observed. The interest is not in seeing particular differences between groups, but in seeing a snapshot of reality that may be indicative of existing differences. The purpose is to observe, not treat, and so what we're looking for are **associations** or **correlations** between variables that we observe. 
+
+Observational studies are often the first look into a problem, to see if an intervention might be needed. They generally fall under the umbrella of **association studies**, and are widely used in epidemilogic studies. Often such studies are designed to find links between some environmental or genetic factor and the risk of some disease, and are crucial to the study of why things might be happening. 
+
+- Association of smoking with lung cancer incidence among men
+- Association of EGFR mutations with lung cancer and BRCA mutations with breast cancer
+
+#### Case-control studies
+Many of these associations were found by **case-control studies**, which are *retrospective* studies. In these studies, we first identify groups of individuals with and without the disease (often in equal numbers), and then observed what fraction of them had the factor of interest (say, EGFR mutations). These are _retrospective_ studies since we are looking back from a time when a disease was caught to see if some exposure or experience was more likely (associated) among people with the disease compared to people without the disease. 
+
+Case-control studies are a great design if you're invesigating an outcome that is **rare**. For rare outcomes, if you started with a group of people and waited till they got the outcome (got diagnosed with lung cancer), you'd probably wait a long time, and wouldn't have very many people with the outcome (_cases_) at the end of it. Instead, you start by finding people who already have the disease, match them with comparable people (think age, sex, ethnicity) who don't have the disease (_controls_), and then see how often the exposure of interest happened in each group. You get more subjects with this method when you have a rare outcome, helping us with the replication principle. You also want to have some _representativeness_ of the underlying population, so, once cases and  controls are identified, study participants are often selected by random sampling from the population subgroups of cases and controls. If we're including matched controls (a form of local control by having similar age, sex, race, for example), you randomly select, for each case, 1 or more matched controls. 
+
+The main hurdle in creating **good** case-control studies is in getting a good group of controls that are comparable to the cases and don't bias your results. Wacholder, et al wrote a [series](https://pubmed.ncbi.nlm.nih.gov/1595688/) [of](https://pubmed.ncbi.nlm.nih.gov/1595689/) [papers](https://pubmed.ncbi.nlm.nih.gov/1595690/) on this subject which form the basis of how controls are selected today.[Disclosure: Wacholder was my mentor at the NCI during my postdoctoral training.]{.aside}
+
+::: {.callout-important appearance="default"}
+## Food for thought
+1. You cannot measure the **risk** of getting a disease if you have a particular exposure from a case-control study. You need additional information from the study population. What do you need?
+2. You can run machine learning models, in particular classification models, on case-control studies, that will classify subjects into cases and controls given their measured exposures. You can, for most such models, get output on the probability of being of a particular class. Is that probability generalizable to the population, i.e. can you use a ML model to help predict your chance of getting lung cancer?
+3. We'll learn more about the ways to establish causality [next week](week-03.qmd). Know, for now, that you cannot ascribe causal relationships directly from a case-control study.
+:::
+
+Case-control studies are often summarised using the **odds ratio**. A case-control study can be described simply with a 2x2 table, where D +/- denotes if a subject has the disease, and E +/- denotes if they have the exposure of interest. 
+
+  |       | D+ | D- | Total |
+  |-------|----|----|-------|
+  | E+    | a  | b  |       |
+  | E-    | c  | d  |       |
+  | Total |    |    |       |
+
+From this table, the odds ratio is computed as $ad/bc$, or $(a/c)/(b/d)$, where $a/c$ is the _odds_ of exposure among the cases and $b/d$ is the odds of exposure among the controls. For large samples, we can compute the variability of this statistic with the following formula:
+
+$$
+var \log(OR) = \frac{1}{a} + \frac{1}{b} + \frac{1}{c} + \frac{1}{d}
+$$
+
+Provided you have sampled cases and controls in a representative (randomized) manner from the population, you can get estimates of P(E+ | D+) from a case-control study, because the sampling happens **conditional on the disease state**, but not P(D+ | E+), which is often of interest. 
+
+Case-control studies are a more structured form of an observational study compared to just making observations, and so inferences are often stronger.
+
+### Cohort studies
+
+Cohort studies are another form of structured observational study. Cohorts, as the name suggests, are groups of individuals collected at a point in time and followed forward in time. For representativeness, cohorts are selected by random sampling from a particular study population. Baseline measurements are taken and then the individuals are followed to see what develops, typically in terms of disease. These studies enable us to understand the natural history and evolution of disease in people, since we can observe their exposures/genetics and then see if they eventually get a disease. 
+
+Cohort studies are, by design, much longer in duration, since that time is required for the outcomes of interest to be observed. Many large cohort studies can form definitive associations between exposures and diseae (both due to the large sample size reducing the variability of estimates, and also because we can see cause-and-effect to some degree as we go forward in time), that lead to much better understanding of disease etiology. They can also serve to provide evidence **against** particular hypotheses. We will see how some cohort studies meet the Bradford-Hill criteria for causality, and so some causality can be inferred from them.
+
+At a basic level, we can also summarise a cohort study with a 2x2 table.
+
+  |       | D+ | D- | Total |
+  |-------|----|----|-------|
+  | E+    | a  | b  |       |
+  | E-    | c  | d  |       |
+  | Total |    |    |       |
+
+Yes, this is identical to the earlier table, but the understanding is, here the exposure came first. We can compute and genralize P(D+ | E+), the risk of getting a disease if you are exposed,  in a well-designed cohort study. Cohort studies thus often report the **risk ratio** for an exposure, i.e., P(D+|E+) / P(D+|E-), i.e., how much more likely is one to get the disease if one experienced the exposure of interest, compared to if one didn't. 
+
+One can also compute the **odds ratio** using the same formula as for case-control studies, and it will have the same interpretation. Why? 
+
+$$
+OR = ad/bc = (a/c)/(b/d) = (a/b)/(c/d)
+$$
+
+::: {.callout-tip appearance="default"}
+## The magic utility of logistic regression
+Logistic regression is a common regression method where you model the prospective incidence of a disease on different exposures over a cohort. This is what logistic regression is primarily designed for. 
+
+The duality of the odds ratio as a summary measure for retrospective case-control studies and prospective cohort studies seems to indicate that we should be able to use logistic regression, which computes conditional odds ratios, in either study design. It's a little trickier with logistic regression, since you are adjusting for other covariates. 
+
+It turns out, as shown by Prentice & Pyke (1979), that you can use logistic regression in case-control studies in the same way that you would in a prospective study, and you would get the same odds ratios and asymptotic variance estimates from either design. All that changes is the intercept term in the model, which we ignore anyway. [R. L. PRENTICE, R. PYKE, Logistic disease incidence models and case-control studies, Biometrika, Volume 66, Issue 3, December 1979, Pages 403–411, https://doi.org/10.1093/biomet/66.3.403]{.aside}
+
+:::
+
+::: {.callout-warning appearance='default'}
+## The poorly understood and abused odds ratio
+
+As we see, we use the odds ratio as a summary measure of association in both cohort and case-control studies. But what really is an odds ratio?
+
+The **odds** of something is really quite an odd measure, though it is commonly used in gambling. The odds of an getting a disease D if exposed with exposure E  is P(D+ | E+) / P(D- | E+). So the more likely an event, the higher the odds of it occurring. But we're typically used to the probability P(D+|E+), the risk of an event when exposed, not it's odds. We might like to understand the **risk ratio** or **relative risk** of the disease, which is P(D+ | E+) / P(D+ | E-), or the proportional increase in risk when exposed compared to when not exposed. The corresponding odds ratio is P(D+ | E+) P(D- | E-) / p(D+|E-)P(D-|E+). So the odds ratio and risk ratio are not the same! From the 2x2 table, the OR is ad/bc, and the RR is (a/(a+b))/(c/(c+d)). 
+
+If you peruse the medical literature, you'll see lots of odds ratios, mainly because we know how to do logistic regression and the equivalence of the logistic regression results in prospective and retrospective studies. There's no corresponding regression method for risk ratios, simply because valid risk ratios can't be computed in retrospective studies. You'll see, however, that odds ratios are regularly **interpreted** as risk ratios!. Is this valid? Yes, in special situations. If you have a rare disease (so chances of getting the disease is low, like most cancers), then the odds ratio and risk ratio are roughly the same, and so the interpretation holds. If the rare disease assumption does not hold (like, for example, diabetes), then the odds ratio will **overestimate** the relative risk. 
+
+You might also wonder why, in logistic regression, we get the **log of the odds ratio**, other than as a mathematical by-product. That mathematics is to make things symmetric, which has computational and interpretation advantages. The log-odds is symmetric around 0, and so  positive and negative differences in log-odds are computable and interpretable as equivalent to proportional changes in the
+odds ratio
+ 
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| execute:
+#|   message: false
+#|   warning: false
+suppressPackageStartupMessages(library(tidyverse))
+theme_set(
+  theme_bw() + 
+  theme(axis.title = element_text(size = 16),
+        axis.text = element_text(size = 14))
+)
+p <- seq(0.01, 0.99, by = 0.01)
+d <- tibble(p)
+
+ggplot(d, aes(x = p, y = p/(1-p))) + 
+  geom_point() + geom_line() + 
+  labs(x = "p", y = "odds") 
+
+ggplot(d, aes(x = p, y = log(p/(1-p)))) +
+  geom_point() + geom_line() + 
+  labs(x ='p', y = 'log-odds') 
+```
+
+:::
+
+
+### Randomized controlled studies
+
+Randomized controlled studies are the **gold standard** for studies to ascertain causal relationships. They are usually used to evaluate interventions and how they affect an outcome. They use all the principles of good study design to allow definitive conclusions to be made. RCTs randomize individuals to groups, with each such group getting a different intervention. The randomization allows us to balance measured and **unmeasured** confounders and minimize systematic biases, and allows us to attribute differences in outcomes between groups to differences in treatments. 
+
+We will come back to RCTs in more detail in both next week and in @sec-week10. 
+
+## "Correlation is not causation", and confounding
+
+Most studies we've described will be able to extract correlations or associations between an exposure and disease incidence. But, other than RCTs, we need to be careful that the observed correlations aren't due to other factors. 
+
+There are [many examples](http://www.tylervigen.com/spurious-correlations) of **spurious** correlations that can be found if one tortures data long enough. We will ignore those and focus on situations where the correlations are reasonable. One reason that we might see correlations between variables but no direct causal relationship is due to the presence of a confounder. 
+
+Confounder
+: A variable that is associated with both the exposure and the disease, and creates the appearance of a correlation between them. 
+
+![](../img/dag-confounder.png){width="60%"}
+
+Confounders are one of the things we have to worry about when we're assessing associations. And its not just the confounders we measure, it's also confounders that we didn't measure. This requires thought, and some critical thinking. This is not necessary an analytic thing, but often requires domain knowledge. 
+
+We'll come back to this next week in more detail. It is one of the foundational issues in assessing causality. 
