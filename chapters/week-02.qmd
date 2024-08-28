@@ -1,2 +1,198 @@
+---
+filters:
+  - webr
+---
+
 # Experimental design and confounding {#sec-week2}
 
+## Introduction
+
+In data science, we spend most of our time learning about how to learn from
+data, and developing models to do just that. We can always develop a model that
+learns from a dataset, but the way that the data is collected can affect the
+external validity of the model, i.e., how well the model can generalize to other
+data sets. We have a _innate idea_ that a good training dataset is, in some
+ways, representative of the population we want to run future predictions, in
+order to have a useful predictive model. 
+
+The way we collect the data can be important, and can *certainly have downstream implications* in how we analyze data and how we interpret our results. This is the main reason for **design of experiments**. 
+
+Careful planned collection is much more important if the data is **expensive** to collect, and we can only collect smaller amounts of data. We have to make the most of the data we have for making our analytic results as strong as possible. In the life sciences and in biomedical contexts, this is the general situation.
+
+::: callout-note
+## Clinical trials are expensive!!
+Phase III clinical trials are funded by pharmaceutical companies to provide definitive evidence of a drug's effectiveness. A phase III trial can cost multiple billions of dollars, for testing the drug on perhaps several hundred subjects. Each participant can be subject to multiple expensive tests, costs of transport to clinical centers, treatments to help with side effects and unwanted problems, and other kinds of expenses. 
+
+Given the costs per patient, pharmaceutical companies have a strong interest in getting the strongest results possible from the fewest numbers of participants, and a lot of effort goes into designing the trial so that the "treatment effect" can be robustly ascertained, since this is the basis of drug approvals. The trial design goes through multiple iterations within the company, and then needs agreeement from the regulatory agencies like the FDA and EMA, before the trial can go to the field and the first subject enrolled. 
+
+With billions of dollars on the line, finding the right patients and the right study design are imperative
+:::
+
+## Good study design
+
+Most studies are done to to see if an intervention of interest has an effect on some result of interest. 
+
+#### Some Examples
+
+- Seeing if a new  fertilizer can help improve yields of wheat ([link](https://icl-growingsolutions.com/en-us/agriculture/trials/winter-wheat-trial-with-polysulphate-in-the-uk/))
+- Seeing if a non-narcotic drug can help reduce pain post-surgery ([link](https://www.cancer.gov/research/participate/clinical-trials-search/v?id=NCI-2020-00497))
+- Seeing if a particular advertisement can improve sales of a product ([link](https://www.hotjar.com/ab-testing/examples/))
+- Seeing if a GLP-1 inhibitor can help reduce a person's weight ([link](https://www.nejm.org/doi/full/10.1056/NEJMoa2206038))
+
+### How to collect data to get robust results?
+
+There are several questions we might want to think about when we collect data for finding a result (**fairly!!**).
+
+1. Is the data we're looking at representative of the population that we are interested in? [Remind ourselves of the concepts of _sample_ and _population_]{.aside}
+2. Can we make fair comparisons within the data?
+3. Can we see robust results using less data?
+4. Is the data we're using **biased** in any way?
+
+::: {.callout-tip appearance="default" icon=true}
+## Food for thought
+What other questions might we address that might guide our data collection?
+:::
+
+### Biases
+
+The main point here is **fairness**. We want results that are not subject to _intentional_ and _unintentional_ **biases**. There are several kinds of biases that we need to be careful of, that we'll highlight throughout this course. Some of the more common biases are: [Think about why these biases can appear, and how they can be minimized. Also think about other biases that might arise.]{.aside}
+
+- **Observer bias** which can arise when there are systematic differences between true and recorded values, or this difference depends upon who is collecting the data. This can happen if, for example, a doctor knows the treatment a patient received. Another example might be in how a doctor measures pain levels depending on the race or ethnicity of a patient. 
+- **Selection bias** which can arise when how subjects are selected can affect the final inference. For example, if you assign the first 100 patients who come to a hospital on a Friday to one group and a second 100 patients who come to the hospital on Monday to another group, there may be intrinsic differences that may explain any differences you might see that are not related to treatment. 
+- **Confirmation bias**, the tendency to interpret information to support a pre-existing idea or notion
+- **Response bias** which occurs when the answers given by a patient are influenced by extraneous factors
+- **Non-response bias** which is seen when there are differences in characteristics of individuals who respond and don't respond to a survey. This is particularly evident in ratings of products available at an online retailer, for example. 
+- **Recall bias** which occurs in retrospective studies where subjects recall their experience depending on their condition. This issue is rampant in nutritional epidemiology where subjects are asked to recall everything they ate in the last week (a 7-day food frequency questionnaire). A simpler example might be where people diagnosed with lung cancer overestimate their tobacco use  while healthy people underestimate it. 
+
+::: {.callout-warning appearance="default"}
+## A historical blunder: "Dewey defeats Truman"
+![](https://math.oxford.emory.edu/site/math117/historicalBlunders/251-01.jpg){width="50%" fig-align="center"}
+
+As the 1948 US Presidential election between Harry Truman, Thomas Dewey and Strom Thurmond unfolded, the Chicago Tribune published the now-infamous headline "Dewey defeats Truman" late on election night. As it turned out, Truman won in a landslide. 
+
+This was a result of two kinds of biases -- sampling (selection) bias and confirmation bias. 
+
+The surveys done to elicit voter responses were done via telephone, which is an efficient way to survey people. Unfortunately, in 1948, telephones were a bit of a luxury and tended to be in wealthier households, who skewed towards Dewey. So the data collected was not representative. Also, surveys were done 2 weeks before the election and so opinions, and votes, changed. 
+
+There was also confirmation bias, in that conventional wisdom also was that Dewey would win, and so the writer and analyst Arthur Henning, who penned the article and the headline, stuck to his belief that Dewey would win, and early returns from Republican strongholds appeared to confirm that belief. 
+
+Even though the 1948 story was learned from, and polling agencies like Gallup learned to avoid the obvious biases, the 2016 elections brought polling back into the limelight. [Post-hoc analyses](https://www.forbes.com/sites/startswithabang/2016/11/09/the-science-of-error-how-polling-botched-the-2016-election/) did consider whether there were sampling biases, but generally it was [concluded](https://fivethirtyeight.com/features/the-polls-are-all-right/) that the results were within the polls' _margins of error_, in that polling results are not deterministic but may be off by a certain fraction. A really nice analysis of the 2020 polling results and the potential for sampling biases was done in [The Scientific American](https://www.scientificamerican.com/article/why-polls-were-mostly-wrong/). 
+:::
+::: aside
+Other examples os sampling bias are [here](https://math.oxford.emory.edu/site/math117/historicalBlunders/)
+:::
+
+### Principles
+The questions around how to best collect data have generated significant statistical thought, with new contexts giving rise to newer methodologies. As we've talked about, a lot of statistical thought was generated from agricultural experiments. R.A. Fisher wrote two of the most influential texts on how to approach these topics in the context of his work at the Rothamstead research facility: 
+
+- Statistical Methods for Research Workers (1925) [[link](http://psychclassics.yorku.ca/Fisher/Methods/)]
+- Design of Experiments (1935) [[link](https://mimno.infosci.cornell.edu/info3350/readings/fisher.pdf)]
+
+Fisher's work, and work by others through the early twentieth century, helped develop the following basic principles of experiemental design that allow a researcher to conclude that the results that are seen can be attributed to the treatments under study. They help avoid systematic errors and minimize random errors in order to make strong inferences about the treatment. 
+
+::: {.aside}
+We will be looking into how we can "attribute" results to a cause [next week](week-03.qmd). 
+:::
+
+::: {.callout-note appearance="default"}
+## Principles of experimental design
+Randomization
+: Randomly assign subjects to groups to minimize selection bias. The act of randomization creates a natural balance between groups _on average_ and should minimize biases and _confounding_ (add link )
+
+Local Control
+: Control for effects due to factors other than ones of primary interest. This can be done be _blocking_ and _stratification_, which are both ways of allocating treatment randomly within relatively homogeneous sub-populations. For example, if there are differences in soil fertility across a large field, you want to create smaller blocks where the fertility is relatively constant, and allocate treatments within those blocks. 
+
+Replication
+: Repeat the experiment under identical conditions on multiple subjects. The more subjects you include, the lower the variability of your estimates. You can think of this as, the more subjects that exhibit similar behavior, the more confident you are of the results. 
+:::
+::: {.aside}
+The Food and Agriculture Organization (FAO) of the United Nations provides a nice [description](https://www.fao.org/4/X6831E/X6831E07.htm#:~:text=The%20three%20basic%20principle%20viz,to%20control%20the%20random%20error.&text=Assigning%20the%20treatments%20or%20factors,is%20technically%20known%20as%20randomization.) of these principles
+:::
+
+These principles are still used as a first step in designing any study, be it in the medical field, [finance](https://www.isixsigma.com/financial-services/role-design-experiments-financial-operations/),  [customer analytics](https://hbr.org/2017/06/a-refresher-on-ab-testing), and [engineering](https://onlinelibrary.wiley.com/doi/epdf/10.1002/qre.909). 
+
+## What is a statistical effect? {{< iconify mdi:thought-bubble size=Large >}} 
+::: {.aside}
+The {{< iconify mdi:thought-bubble >}} will denote sections that provide ideas and reflections on particular topics.
+:::
+
+When we think about statistical effect, we usually asssociate it with a statistical **test** that is used to evaluate whether the effect exists, or is "statistically significant". Let's put "significance" aside for the moment.
+
+Let's look at some examples of test statistics. The 2-sample t-test statistic can be written as 
+
+$$
+t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
+$$
+
+Similarly, a test to see if a proportion is different from a particular $p_0$ is evaluated using 
+
+$$ 
+Z = \frac{\hat{p} - p_0}{\sqrt{\frac{p_0(1-p_0)}{n}}}
+$$
+
+In these examples, and more generally, we see that the test statistic is measuring a **signal-to-noise ratio**, where the numerator is the signal (difference between groups) and the denominator is the standard error of the estimated signal. 
+
+Statistical inference can be considered as a way of seeing if there is sufficient signal in the data to overcome the noise in the data, so the signal _rises above_ the noise, so to speak. So, to find a statistical difference we need to have (a) the signal to be larger, or (b) **the noise to be smaller**. So, to me, statistics is really about variability; if we can find ways to reduce variability then we have a chance of finding something more than just massive effects. [Keep this in mind, as we go forward!]{.aside}. This is valid not just for testing, but for confidence intervals as well; if there is lower noise, our confidence intervals will be shorter and we can make more precise statements about our estimates
+
+This really informs how we can think about experimental design. Thinking of the estimation problem (confidence intervals and the like), we want our estimate (signal) to be accurate (**unbiased**), and our variability (noise) to be low. Let's relate this to the [principles](#principles). What randomization gives us is minimizing bias,so our estimates are more likely to be unbiased. What local control and replication give us are means to look at estimates within subgroups with **lower variance**, which in turn reduces the standard error of the estimate. So we can be clever with local control and replication, so appropriate stratification and sufficient number of samples, we can reduce the variability of our estimate and so get more accurate estimates; the randomization piece tries to ensure that the estimates are on target.
+
+::: {.callout-tip}
+In machine learning, you learned about the bias-variance trade-off, in that you can have simple learners that have high bias and low variance, or more complex learners that have low bias and high variance. You try to improve upon this by boosting (reduce bias) and bagging (reduce variance).
+
+For problems of statistical association and causality, we still can use models that have good bias-variance properties, but the study design can help further to get better estimates, and we can account for the particulars of the study design in the models.
+:::
+
+### The case for replication in statistical hypothesis testing
+
+Classical statistical hypothesis testing, often referred to as Null Hypothesis Significance Testing (NHST), is typically formulated, in it's simplest form, as
+
+$$
+H_0: \theta = \theta_0 \text{ vs } H_1: \theta = \theta_1
+$$
+
+We then compute a statistic and a criterion to evaluate if that difference exists. For example, if we are comparing 2 normal distributions with mean $\mu_1$ and $\mu_2$ and common known variance $\sigma^2 = 0.25$, then we can test whether the means are different or not. A simple set of hypotheses can be 
+
+$$
+H_0: \mu_1 - \mu_2 = 0 \text{ vs } H_1: \mu_1 - \mu_2 = 0.5
+$$
+
+If we took $n$ samples from the first distribution and $n$ from the second distribution, and computed the sample means from each, the standard t-test would give us a _decision rule_ that we would reject $H_0$ if 
+
+$$
+\sqrt{n}(\bar{x}_1 - \bar{x}_2)> z_{1-\alpha} \sqrt{2}\sigma
+$$ {#eq-np}
+This should look familiar as a 1-sided t-test, where $z_{1-\alpha}$ is the $100\times (1-\alpha)$ percentile of the standard normal distribution (though slightly manipulated to make a point). 
+
+There are two kinds of mistakes that we consider in NHST: the type I error (reject $H_0$ when $H_0$ is true) and the type II error (do not reject $H_0$ when $H_0$ is false). We want to **minimize the risk of these errors** in our decision-making. This is the basis of the [Neyman-Pearson lemma](https://web.stanford.edu/class/archive/stats/stats200/stats200.1172/Lecture06.pdf). 
+
+Let's look back at @eq-np. If $\sigma$ is bigger, you need to show a bigger difference in the means to reject $H_0$. And, for a fixed $\sigma$, you have a better chance of rejecting $H_0$ when $n$ is large.[I'm not concerned so much with $\bar{x}_1 - \bar{x}_2$ since the mean is unbiased, and so this difference will roughly be $\mu_1 - \mu_2$]{.aside} Relating this to the error risks, we will find that the probability of type I error is $\alpha$ by the way the decision rule is constructed. The idea behind the Neyman-Pearson lemma is that, for a particular type I error, we will minimize the risk for the type II error, or, in other words, _maximize the statistical power_ P(reject $H_0$ when $H_0$ is false). 
+
+What is power measuring, qualitatively? It is measuring **the degree of separation, or lack of overlap, between the sampling distributions of $\bar{x}_1$ and $\bar{x}_2$** when there is in truth a difference in means. If there is a lot of overlap, then the signal can't be seen through the noise and the likelhood that you'll reject $H_0$ goes down. If the sampling distributions are separated, then the signal is clear despite the noise and you're more likely to reject $H_0$. You can increase your chances that the distributions separate if you can make the standard error of the means ($\sigma/\sqrt{n}$), smaller, which can happen if you make $n$ larger.
+
+```{webr-r}
+set.seed(1000)
+install.packages("tidyverse")
+library(tidyverse)
+m1 <- 0
+m2 <- 0.2
+s <- 0.5
+n <- 10 # number of samples we observe in 1 expt (replicates)
+nsim <- 1000 # number of simulated expts
+
+# compute sampling distributions
+x1 <- replicate(nsim, mean(rnorm(n, m1, s)))
+x2 <- replicate(nsim, mean(rnorm(n, m2, s)))
+
+dr <- sqrt(n) * (x2 - x1) / (2 * s^2) > qnorm(0.95)
+power <- mean(dr)
+
+d <- tibble(x = c(x1, x2), grp = factor(c(rep(1, nsim), rep(2, nsim))))
+
+ggplot(d, aes(x, color = grp)) +
+  geom_density() +
+  geom_vline(xintercept = sqrt(2) * s / sqrt(n)) +
+  scale_x_continuous(limits = c(-1, 1)) +
+  theme_bw() +
+  labs(title = paste0("Power = ", power))
+
+```
