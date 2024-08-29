@@ -345,3 +345,13 @@ Confounder
 Confounders are one of the things we have to worry about when we're assessing associations. And its not just the confounders we measure, it's also confounders that we didn't measure. This requires thought, and some critical thinking. This is not necessary an analytic thing, but often requires domain knowledge. 
 
 We'll come back to this next week in more detail. It is one of the foundational issues in assessing causality. 
+
+## Readings
+
+::: {.callout-important}
+
+- Burns, Rohrich & Chung (2011) The Levels of Evidence and their role in Evidence-Based Medicine. https://www.doi.org/10.1097/PRS.0b013e318219c171.
+- Howards (2018) An overview of confounding. Part 1: the concept and how to address it. https://www.doi.org/10.1111/aogs.13295
+- Howards (2018) An overview of confounding. Part 2: how to identify it and special situations. https://www.doi.org/10.1111/aogs.13293
+
+:::
