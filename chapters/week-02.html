@@ -352,7 +352,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"options":{"editor-max-height":"","fig-cap":"","comment":"","editor-quick-suggestions":"false","results":"markup","autorun":"false","editor-word-wrap":"true","dpi":72,"editor-font-scale":"1","classes":"","context":"interactive","output":"true","label":"unnamed-chunk-1","message":"true","warning":"true","fig-width":7,"fig-height":5,"out-height":"","out-width":"700px","read-only":"false"},"id":1,"code":"set.seed(1000)\ninstall.packages(\"tidyverse\")\nlibrary(tidyverse)\nm1 <- 0\nm2 <- 0.2\ns <- 0.5\nn <- 10 # number of samples we observe in 1 expt (replicates)\nnsim <- 1000 # number of simulated expts\n\n# compute sampling distributions\nx1 <- replicate(nsim, mean(rnorm(n, m1, s)))\nx2 <- replicate(nsim, mean(rnorm(n, m2, s)))\n\ndr <- sqrt(n) * (x2 - x1) / (2 * s^2) > qnorm(0.95)\npower <- mean(dr)\n\nd <- tibble(x = c(x1, x2), grp = factor(c(rep(1, nsim), rep(2, nsim))))\n\nggplot(d, aes(x, color = grp)) +\n  geom_density() +\n  geom_vline(xintercept = sqrt(2) * s / sqrt(n)) +\n  scale_x_continuous(limits = c(-1, 1)) +\n  theme_bw() +\n  labs(title = paste0(\"Power = \", power))"}];
+globalThis.qwebrCellDetails = [{"options":{"editor-max-height":"","context":"interactive","out-height":"","autorun":"false","classes":"","editor-font-scale":"1","message":"true","out-width":"700px","comment":"","output":"true","fig-width":7,"warning":"true","label":"unnamed-chunk-1","editor-word-wrap":"true","fig-cap":"","results":"markup","editor-quick-suggestions":"false","fig-height":5,"dpi":72,"read-only":"false"},"code":"set.seed(1000)\ninstall.packages(\"tidyverse\")\nlibrary(tidyverse)\nm1 <- 0\nm2 <- 0.2\ns <- 0.5\nn <- 10 # number of samples we observe in 1 expt (replicates)\nnsim <- 1000 # number of simulated expts\n\n# compute sampling distributions\nx1 <- replicate(nsim, mean(rnorm(n, m1, s)))\nx2 <- replicate(nsim, mean(rnorm(n, m2, s)))\n\ndr <- sqrt(n) * (x2 - x1) / (2 * s^2) > qnorm(0.95)\npower <- mean(dr)\n\nd <- tibble(x = c(x1, x2), grp = factor(c(rep(1, nsim), rep(2, nsim))))\n\nggplot(d, aes(x, color = grp)) +\n  geom_density() +\n  geom_vline(xintercept = sqrt(2) * s / sqrt(n)) +\n  scale_x_continuous(limits = c(-1, 1)) +\n  theme_bw() +\n  labs(title = paste0(\"Power = \", power))","id":1}];
 
 </script><script type="module">
 // Declare startupMessageQWebR globally
@@ -1729,6 +1729,7 @@ window.Quarto = {
   </ul>
 </li>
   <li><a href="#correlation-is-not-causation-and-confounding" id="toc-correlation-is-not-causation-and-confounding" class="nav-link" data-scroll-target="#correlation-is-not-causation-and-confounding">“Correlation is not causation”, and confounding</a></li>
+  <li><a href="#readings" id="toc-readings" class="nav-link" data-scroll-target="#readings">Readings</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-02.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -2389,6 +2390,21 @@ A variable that is associated with both the exposure and the disease, and create
 <p><img src="../img/dag-confounder.png" class="img-fluid" style="width:60.0%"></p>
 <p>Confounders are one of the things we have to worry about when we’re assessing associations. And its not just the confounders we measure, it’s also confounders that we didn’t measure. This requires thought, and some critical thinking. This is not necessary an analytic thing, but often requires domain knowledge.</p>
 <p>We’ll come back to this next week in more detail. It is one of the foundational issues in assessing causality.</p>
+</section><section id="readings" class="level2"><h2 class="anchored" data-anchor-id="readings">Readings</h2>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<ul>
+<li>Burns, Rohrich &amp; Chung (2011) The Levels of Evidence and their role in Evidence-Based Medicine. https://www.doi.org/10.1097/PRS.0b013e318219c171.</li>
+<li>Howards (2018) An overview of confounding. Part 1: the concept and how to address it. https://www.doi.org/10.1111/aogs.13295</li>
+<li>Howards (2018) An overview of confounding. Part 2: how to identify it and special situations. https://www.doi.org/10.1111/aogs.13293</li>
+</ul>
+</div>
+</div>
+</div>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
