@@ -352,7 +352,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"options":{"editor-max-height":"","context":"interactive","out-height":"","autorun":"false","classes":"","editor-font-scale":"1","message":"true","out-width":"700px","comment":"","output":"true","fig-width":7,"warning":"true","label":"unnamed-chunk-1","editor-word-wrap":"true","fig-cap":"","results":"markup","editor-quick-suggestions":"false","fig-height":5,"dpi":72,"read-only":"false"},"code":"set.seed(1000)\ninstall.packages(\"tidyverse\")\nlibrary(tidyverse)\nm1 <- 0\nm2 <- 0.2\ns <- 0.5\nn <- 10 # number of samples we observe in 1 expt (replicates)\nnsim <- 1000 # number of simulated expts\n\n# compute sampling distributions\nx1 <- replicate(nsim, mean(rnorm(n, m1, s)))\nx2 <- replicate(nsim, mean(rnorm(n, m2, s)))\n\ndr <- sqrt(n) * (x2 - x1) / (2 * s^2) > qnorm(0.95)\npower <- mean(dr)\n\nd <- tibble(x = c(x1, x2), grp = factor(c(rep(1, nsim), rep(2, nsim))))\n\nggplot(d, aes(x, color = grp)) +\n  geom_density() +\n  geom_vline(xintercept = sqrt(2) * s / sqrt(n)) +\n  scale_x_continuous(limits = c(-1, 1)) +\n  theme_bw() +\n  labs(title = paste0(\"Power = \", power))","id":1}];
+globalThis.qwebrCellDetails = [{"id":1,"code":"set.seed(1000)\ninstall.packages(\"tidyverse\")\nlibrary(tidyverse)\nm1 <- 0\nm2 <- 0.2\ns <- 0.5\nn <- 10 # number of samples we observe in 1 expt (replicates)\nnsim <- 1000 # number of simulated expts\n\n# compute sampling distributions\nx1 <- replicate(nsim, mean(rnorm(n, m1, s)))\nx2 <- replicate(nsim, mean(rnorm(n, m2, s)))\n\ndr <- sqrt(n) * (x2 - x1) / (2 * s^2) > qnorm(0.95)\npower <- mean(dr)\n\nd <- tibble(x = c(x1, x2), grp = factor(c(rep(1, nsim), rep(2, nsim))))\n\nggplot(d, aes(x, color = grp)) +\n  geom_density() +\n  geom_vline(xintercept = sqrt(2) * s / sqrt(n)) +\n  scale_x_continuous(limits = c(-1, 1)) +\n  theme_bw() +\n  labs(title = paste0(\"Power = \", power))","options":{"fig-height":5,"context":"interactive","autorun":"false","fig-cap":"","output":"true","read-only":"false","editor-max-height":"","editor-word-wrap":"true","results":"markup","message":"true","label":"unnamed-chunk-1","out-height":"","editor-quick-suggestions":"false","warning":"true","editor-font-scale":"1","classes":"","out-width":"700px","dpi":72,"fig-width":7,"comment":""}}];
 
 </script><script type="module">
 // Declare startupMessageQWebR globally
@@ -1710,7 +1710,7 @@ window.Quarto = {
 <a href="#good-study-design" id="toc-good-study-design" class="nav-link" data-scroll-target="#good-study-design">Good study design</a>
   <ul class="collapse">
 <li><a href="#how-to-collect-data-to-get-robust-results" id="toc-how-to-collect-data-to-get-robust-results" class="nav-link" data-scroll-target="#how-to-collect-data-to-get-robust-results">How to collect data to get robust results?</a></li>
-  <li><a href="#biases" id="toc-biases" class="nav-link" data-scroll-target="#biases">Biases</a></li>
+  <li><a href="#sec-dewey" id="toc-sec-dewey" class="nav-link" data-scroll-target="#sec-dewey">Biases</a></li>
   <li><a href="#principles" id="toc-principles" class="nav-link" data-scroll-target="#principles">Principles</a></li>
   </ul>
 </li>
@@ -2028,7 +2028,8 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   
 
 
-</header><section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+</header><p><strong>Last updated:</strong> 10 Sep, 2024 03:25 PM EDT</p>
+<section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>In data science, we spend most of our time learning about how to learn from data, and developing models to do just that. We can always develop a model that learns from a dataset, but the way that the data is collected can affect the external validity of the model, i.e., how well the model can generalize to other data sets. We have a <em>innate idea</em> that a good training dataset is, in some ways, representative of the population we want to run future predictions, in order to have a useful predictive model.</p>
 <p>The way we collect the data can be important, and can <em>certainly have downstream implications</em> in how we analyze data and how we interpret our results. This is the main reason for <strong>design of experiments</strong>.</p>
 <p>Careful planned collection is much more important if the data is <strong>expensive</strong> to collect, and we can only collect smaller amounts of data. We have to make the most of the data we have for making our analytic results as strong as possible. In the life sciences and in biomedical contexts, this is the general situation.</p>
@@ -2077,7 +2078,7 @@ Food for thought
 <p>What other questions might we address that might guide our data collection?</p>
 </div>
 </div>
-</section><section id="biases" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="biases">Biases</h3>
+</section><section id="sec-dewey" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="sec-dewey">Biases</h3>
 <div class="page-columns page-full"><p>The main point here is <strong>fairness</strong>. We want results that are not subject to <em>intentional</em> and <em>unintentional</em> <strong>biases</strong>. There are several kinds of biases that we need to be careful of, that we’ll highlight throughout this course. Some of the more common biases are: </p><div class="no-row-height column-margin column-container"><span class="margin-aside">Think about why these biases can appear, and how they can be minimized. Also think about other biases that might arise.</span></div></div>
 <ul>
 <li>
@@ -2363,7 +2364,7 @@ The poorly understood and abused odds ratio
 <div>
 
 </div>
-<div class="cell quarto-layout-panel" data-execute="{&quot;message&quot;:false,&quot;warning&quot;:false}" data-layout-ncol="2">
+<div class="cell quarto-layout-panel" data-layout-ncol="2" data-execute="{&quot;message&quot;:false,&quot;warning&quot;:false}">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img src="week-02_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
