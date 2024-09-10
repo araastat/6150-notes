@@ -1,2 +1,7 @@
+---
+engine: knitr
+---
 # Planning studies and clinical trials {#sec-week10}
+**Last updated:** `{r} format(Sys.time(), "%d %b, %Y %I:%M %p %Z")`
+
 

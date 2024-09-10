@@ -1,1 +1,6 @@
+---
+engine: knitr
+---
 # Biomarker discovery {#sec-week8}
+**Last updated:** `{r} format(Sys.time(), "%d %b, %Y %I:%M %p %Z")`
+

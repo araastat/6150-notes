@@ -1,9 +1,11 @@
 ---
+engine: knitr
 filters:
   - webr
 ---
 
 # Experimental design and confounding {#sec-week2}
+**Last updated:** `{r} format(Sys.time(), "%d %b, %Y %I:%M %p %Z")`
 
 ## Introduction
 
@@ -53,7 +55,7 @@ There are several questions we might want to think about when we collect data fo
 What other questions might we address that might guide our data collection?
 :::
 
-### Biases
+### Biases {#sec-dewey}
 
 The main point here is **fairness**. We want results that are not subject to _intentional_ and _unintentional_ **biases**. There are several kinds of biases that we need to be careful of, that we'll highlight throughout this course. Some of the more common biases are: [Think about why these biases can appear, and how they can be minimized. Also think about other biases that might arise.]{.aside}
 

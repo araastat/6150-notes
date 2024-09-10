@@ -1,2 +1,42 @@
+---
+engine: knitr
+---
+
 # Causal inference {#sec-week3}
+
+**Last updated:** `{r} format(Sys.time(), "%d %b, %Y %I:%M %p %Z")`
+
+
+## What are we trying to do?
+
+Statistical modeling tries to find patterns in data, relating an outcome to some
+exposure or treatment, which we call the _association_ of the exposure with the
+outcome. Supervised machine learning tries to use different features to predict
+an outcome. Both leverage observed patterns of correlation or association
+between the features (covariates) and the outcome to do so. A lot of effort also
+goes into improving predictions or modeled associations by (a) experimental
+design, (b) adding more independent features to improve the precision of the
+prediction or association.
+
+These modeling efforts really are leveraging the **observed** association
+between features and the outcome. This observed association is often subject to
+many other factors, including **biases** in subject selection and data
+collection,  presence of related factors both observed and unobserved that can
+influence the observed association, and measurement error. We saw
+[earlier](week-02.qmd#sec-dewey) how the observed data might lead to wrong
+inferences, or at the very least, reporting spurious associations.
+
+::: callout-note
+## What is an "association"?
+
+We often use the term **association** in this text and other textbooks and papers. What do we mean as statisticians?
+The term is often used to say that two variables have _a relationship_, in that there is some pattern between the values of the two variables. What we often tacitly imply in using the term is **correlation**, in that high values of one variable appear to co-occur on average with high values of the other variable (positive correlation), or low values of the other variable (negative correlation). Note, I specifically use the term "co-occur", because that's really all we can determine in observational data. 
+
+Just because observational values co-occur doesn't mean that one caused the other.  There are plenty of examples of [spurious correlations](https://www.tylervigen.com/spurious-correlations) and  [ecological fallacies](https://en.wikipedia.org/wiki/Ecological_fallacy) where there is no actual causal relationship between the variables, while we observe a high degree of association between them.
+:::
+
+So, if we can only look at observed data and associations between variables, how do we go further? What we would like to know in many occassions is, whether an exposure **caused** disease. Not just an association, but a causation. A higher, stronger standard of evidence. That is the goal of the rhetorical question we started with. 
+
+Today, we generally accept that "smoking causes lung cancer". However, not all smokers get lung cancer, and not all lung cancer patients are smokers. But yet, we think we have sufficient evidence to _infer_ a causal link. What evidence gets us to this inference?
+
 

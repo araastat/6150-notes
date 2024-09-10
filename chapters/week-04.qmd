@@ -1,1 +1,4 @@
+---
+engine: knitr
+---
 # Observational studies {#sec-week4}

@@ -1,1 +1,6 @@
+---
+engine: knitr
+---
 # Applied machine learning {#sec-week11}
+**Last updated:** `{r} format(Sys.time(), "%d %b, %Y %I:%M %p %Z")`
+
