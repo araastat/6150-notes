@@ -1,4 +1,26 @@
 ---
 engine: knitr
 ---
-# Observational studies {#sec-week4}
+
+# Causal effect estimation {#sec-week4}
+
+Last updated: `{r} format(Sys.time(), "%d %b, %Y %I:%M %p %Z")`
+
+## Estimands, estimators and estimates
+
+The causal effect that we want to target, the **estimand**, is the expected
+treatment effect $E[Y(1)-Y(0)]$, the expected difference between the potential
+outcomes due to different exposures over a population of interest. This is
+typically called the **average treatment effect (ATE)** and is a common target
+for causal inference. Note that this doesn't just have to be a difference of the
+counterfactual outcomes, but can also be a ratio (which is a difference on the
+log-scale).
+
+## Randomized experiments
+
+Randomized experiments, where the exposure is *randomly allocated* to
+individuals, is considered the gold standard for evaluating causal relationships
+and estimating causal effects. As we saw in @sec-week3, randomization breaks
+causal paths to the exposure and so removes all backdoor paths between the
+exposure and outcome, resulting in the only evident causal pathway between the
+exposure and outcome.

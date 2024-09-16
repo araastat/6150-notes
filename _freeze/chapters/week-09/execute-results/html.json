@@ -1,0 +1,15 @@
+{
+  "hash": "eb4dfb7e9ff9a9a8ddf7ee66ec2d9ae8",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\nengine: knitr\n---\n\n\n\n\n# Applied Bayesian methods {#sec-week9}\n**Last updated:** 04 Sep\\, 2024 08:47 PM EDT\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

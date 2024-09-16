@@ -1,0 +1,15 @@
+{
+  "hash": "541a2ae457b32437e858ca99764c739f",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\nengine: knitr\n---\n\n\n\n\n# Decision making {#sec-week13}\n\n**Last updated:** 04 Sep\\, 2024 08:48 PM EDT\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

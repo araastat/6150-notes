@@ -1,0 +1,15 @@
+{
+  "hash": "51dba0facea8e2f6ce52c28e11f9d465",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\nengine: knitr\n---\n\n\n\n\n# Survival analysis I {#sec-week5}\n\n**Last updated:** 04 Sep\\, 2024 08:47 PM EDT\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

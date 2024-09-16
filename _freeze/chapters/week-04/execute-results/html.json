@@ -1,0 +1,15 @@
+{
+  "hash": "1c984cc88c45abdffdfecb03618b9b6c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\nengine: knitr\n---\n\n\n\n\n\n# Causal effect estimation {#sec-week4}\n\nLast updated: 16 Sep\\, 2024 09:03 AM EDT\n\n## Estimands, estimators and estimates\n\nThe causal effect that we want to target, the **estimand**, is the expected\ntreatment effect $E[Y(1)-Y(0)]$, the expected difference between the potential\noutcomes due to different exposures over a population of interest. This is\ntypically called the **average treatment effect (ATE)** and is a common target\nfor causal inference. Note that this doesn't just have to be a difference of the\ncounterfactual outcomes, but can also be a ratio (which is a difference on the\nlog-scale).\n\n## Randomized experiments\n\nRandomized experiments, where the exposure is *randomly allocated* to\nindividuals, is considered the gold standard for evaluating causal relationships\nand estimating causal effects. As we saw in @sec-week3, randomization breaks\ncausal paths to the exposure and so removes all backdoor paths between the\nexposure and outcome, resulting in the only evident causal pathway between the\nexposure and outcome.\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

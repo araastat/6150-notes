@@ -1,0 +1,15 @@
+{
+  "hash": "d06b4d9c087495eac9eb71f1b1d7c66f",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\nengine: knitr\n---\n\n\n\n\n# Biomarker discovery {#sec-week8}\n**Last updated:** 04 Sep\\, 2024 08:47 PM EDT\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

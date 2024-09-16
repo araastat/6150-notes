@@ -38,6 +38,8 @@ book:
   appendices:
     - 01-technical-background.qmd
 bibliography: reference.json
+reference-location: margin
+citation-location: margin
 
 format:
   html:

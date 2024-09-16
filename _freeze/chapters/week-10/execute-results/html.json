@@ -1,0 +1,15 @@
+{
+  "hash": "ac0c5a099068cf5ba12ab166f28e2e8e",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\nengine: knitr\n---\n\n\n\n\n# Planning studies and clinical trials {#sec-week10}\n**Last updated:** 04 Sep\\, 2024 08:48 PM EDT\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
