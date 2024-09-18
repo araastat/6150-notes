@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.54">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>3&nbsp; Causal inference – Biological and Biomedical Data Science ([DSAN 6150](https://gu-dsan.github.io/6150-fall-2024/){target=_blank})</title>
+<title>3&nbsp; Causality – Biological and Biomedical Data Science ([DSAN 6150](https://gu-dsan.github.io/6150-fall-2024/){target=_blank})</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,7 +17,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
@@ -36,7 +90,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -62,9 +118,34 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 </head>
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-sidebar floating nav-fixed slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
@@ -82,7 +163,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/week-03.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Causal inference</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/week-03.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Causality</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -111,55 +192,19 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/week-03.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Causal inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Causality</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/week-04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Observational studies</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal effect estimation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/week-05.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Survival analysis I</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/week-06.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Survival analysis II</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/week-07.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">High-dimensional data</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/week-08.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Biomarker discovery</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/week-09.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Applied Bayesian methods</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/week-10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Planning studies and clinical trials</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/week-11.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Applied machine learning</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -199,12 +244,22 @@ ul.task-list li input[type="checkbox"] {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-are-we-trying-to-do" id="toc-what-are-we-trying-to-do" class="nav-link active" data-scroll-target="#what-are-we-trying-to-do">What are we trying to do?</a></li>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#what-are-we-trying-to-do" id="toc-what-are-we-trying-to-do" class="nav-link" data-scroll-target="#what-are-we-trying-to-do">What are we trying to do?</a></li>
+  <li><a href="#three-objectives-of-data-scientific-investigation" id="toc-three-objectives-of-data-scientific-investigation" class="nav-link" data-scroll-target="#three-objectives-of-data-scientific-investigation">Three objectives of data scientific investigation</a></li>
+  <li><a href="#concept-1-counterfactuals-or-potential-outcomes" id="toc-concept-1-counterfactuals-or-potential-outcomes" class="nav-link" data-scroll-target="#concept-1-counterfactuals-or-potential-outcomes">Concept 1: Counterfactuals, or potential outcomes</a></li>
+  <li>
+<a href="#concept-2-confounders-colliders-and-mediators" id="toc-concept-2-confounders-colliders-and-mediators" class="nav-link" data-scroll-target="#concept-2-confounders-colliders-and-mediators">Concept 2: Confounders, colliders and mediators</a>
+  <ul class="collapse">
+<li><a href="#other-forks-in-the-road-mediators-and-colliders" id="toc-other-forks-in-the-road-mediators-and-colliders" class="nav-link" data-scroll-target="#other-forks-in-the-road-mediators-and-colliders">Other forks in the road: mediators and colliders</a></li>
+  </ul>
+</li>
+  <li><a href="#concept-3-principles-to-establish-causality" id="toc-concept-3-principles-to-establish-causality" class="nav-link" data-scroll-target="#concept-3-principles-to-establish-causality">Concept 3: Principles to establish causality</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-03.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-week3" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Causal inference</span></span></h1>
+<main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-week3" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Causality</span></span></h1>
 </div>
 
 
@@ -218,10 +273,33 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header><p><strong>Last updated:</strong> 10 Sep, 2024 04:43 PM EDT</p>
-<section id="what-are-we-trying-to-do" class="level2"><h2 class="anchored" data-anchor-id="what-are-we-trying-to-do">What are we trying to do?</h2>
-<p>Statistical modeling tries to find patterns in data, relating an outcome to some exposure or treatment, which we call the <em>association</em> of the exposure with the outcome. Supervised machine learning tries to use different features to predict an outcome. Both leverage observed patterns of correlation or association between the features (covariates) and the outcome to do so. A lot of effort also goes into improving predictions or modeled associations by (a) experimental design, (b) adding more independent features to improve the precision of the prediction or association.</p>
-<p>These modeling efforts really are leveraging the <strong>observed</strong> association between features and the outcome. This observed association is often subject to many other factors, including <strong>biases</strong> in subject selection and data collection, presence of related factors both observed and unobserved that can influence the observed association, and measurement error. We saw <a href="../chapters/week-02.html#sec-dewey">earlier</a> how the observed data might lead to wrong inferences, or at the very least, reporting spurious associations.</p>
+</header><p><strong>Last updated:</strong> 16 Sep, 2024 01:46 AM EDT</p>
+<section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Causality and causal inference is a broad area that covers applications in biomedical research, epidemiology, economics, sociology, law and others. It also encompasses aspects of statistics and philosophy, driven by the context within which causality is being investigated.</p>
+<p>Causality is not a concept that is necessarily clear-cut in its evaluation. Two individuals have heavy influence in this field: <a href="https://en.wikipedia.org/wiki/Judea_Pearl">Judea Pearl</a>, a computer scientist and philosopher at UCLA and <a href="https://en.wikipedia.org/wiki/Donald_Rubin">Donald Rubin</a>, a statistician at Harvard University. Rubin promoted a “potential outcomes framework” for the statistical evaluation of causality, which has been furthered by the work of <a href="https://www.hsph.harvard.edu/miguel-hernan/">Miguel Hernan</a>, a biostatistician at Harvard University. Pearl, on the other hand, promoted the idea that causality cannot be evaluated purely from data and empirical approaches but requires an understanding of context. He developed <em>causal diagrams</em> and the utility of <em>Bayesian networks</em> as a means to make probabilistic evaluations of causality. We will use both frameworks to explore this topic, and see how to consider causality within the biomedical realm. This objective is stated by both Pearl and Rubin in their works</p>
+<blockquote class="blockquote">
+<p>This chapter, and the following one, is based on several reference works:</p>
+<ul>
+<li><p><a href="https://www.hachettebookgroup.com/titles/judea-pearl/the-book-of-why/9781541698963/?lens=basic-books" target="_blank"><em>The Book of Why</em></a> by Judea Pearl and Dana Mackenzie</p></li>
+<li><p><a href="https://www.cambridge.org/core/books/causal-inference-for-statistics-social-and-biomedical-sciences/71126BE90C58F1A431FE9B2DD07938AB" target="_blank"><em>Causal Inference for Statistics, Social, and Biomedical Sciences: An Introduction</em></a> by Guido W. Imbens and Donald B. Rubin</p></li>
+<li><p><a href="https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/" target="_blank">Causal Inference: What If</a> by Miguel A. Hernan and James M. Robins</p></li>
+<li><p><a href="https://www.r-causal.org" target="_blank">Causal Inference in R</a> by Malcolm Barrett, Lucy D’Agostino McGowan and Travis Gerke</p></li>
+</ul>
+<p>as well as other papers and examples.</p>
+</blockquote>
+</section><section id="what-are-we-trying-to-do" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="what-are-we-trying-to-do">What are we trying to do?</h2>
+<p>We are primarily interested in <strong>causal statements and questions</strong> of the nature</p>
+<ul>
+<li><p>Smoking causes lung cancer</p></li>
+<li><p>How effective is a treatment in prolonging life among lung cancer patients?</p></li>
+<li><p>What is the healthcare cost <em>attributable</em> to the increasing prevalence of obesity?</p></li>
+<li><p>Can scheduling records and hospital interactions prove someone is guilty of medical malpractice?</p></li>
+<li><p>Can a drug that targets the activity of a particular biological functional pathway cause a disease to be cured by the drug?</p></li>
+</ul>
+<p>We can think through many more, across different fields.</p>
+<p>Data, particular Big Data, appear to be attractive means to evaluate such statements. Surely, as we collect more data, we should be able to ascertain whether a drug can cure disease, or whether using Ozempic will reduce weight, or that eating less red meat will prolong our lives.</p>
+<p>Statistical approaches try to find patterns in data beyond what might be caused by randomness or measurement errors. This is leveraged heavily to try and assess whether there is some relationship, or <strong>association</strong> between some treatment or experience (generally denoted an <em>exposure</em>) and the eventual <em>outcome</em> we want to study. Similarly, supervised machine learning tries to use different features in a data corpus to predict an outcome. Both leverage observed patterns of correlation or association between the features (covariates) and the outcome to do so. A lot of effort also goes into improving predictions or modeled associations by (a) experimental design, (b) adding more independent features to improve the precision of the prediction or association.</p>
+<p>These modeling efforts really are leveraging the <strong>observed</strong> association between features and the outcome. This observed association is often subject to many other factors, including <strong>biases</strong> in subject selection and data collection, presence of related factors both observed and unobserved that can influence the observed association, and measurement error. We saw <a href="../chapters/week-02.html#sec-dewey">earlier</a> how the observed data might lead to wrong inferences, or at the very least, reporting spurious associations. This leads to the oft-quoted aphorism in statistics that “correlation does not mean causation”, but often no clear counter as to what would show causation.</p>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -236,8 +314,1878 @@ What is an “association”?
 <p>Just because observational values co-occur doesn’t mean that one caused the other. There are plenty of examples of <a href="https://www.tylervigen.com/spurious-correlations">spurious correlations</a> and <a href="https://en.wikipedia.org/wiki/Ecological_fallacy">ecological fallacies</a> where there is no actual causal relationship between the variables, while we observe a high degree of association between them.</p>
 </div>
 </div>
-<p>So, if we can only look at observed data and associations between variables, how do we go further? What we would like to know in many occassions is, whether an exposure <strong>caused</strong> disease. Not just an association, but a causation. A higher, stronger standard of evidence. That is the goal of the rhetorical question we started with.</p>
+<p>However, the word “association” is often tacitly associated with causal intent when it is used, instead of being explicit</p>
+<blockquote class="blockquote page-columns page-full">
+<div class="page-columns page-full"><p>“Our results suggest that ‘Schrödinger’s causal inference,’ — where studies avoid stating (or even explicitly deny) an interest in estimating causal effects yet are otherwise embedded with causal intent, inference, implications, and recommendations — is common.” </p><div class="no-row-height column-margin column-container"><span class="margin-aside">Haber, N. A., S. E. Wieten, J. M. Rohrer, O. A. Arah, P. W. G. Tennant, E. A. Stuart, E. J. Murray, et al. 2022. “Causal and Associational Language in Observational Health Research: A Systematic Evaluation.” Am J Epidemiol 191 (12): 2084–97.</span></div></div>
+</blockquote>
+<p>So, if we can only look at observed data and associations between variables, how do we go further? What we would like to know in many occasions is, whether an exposure <strong>caused</strong> disease. Not just an association, but a causation. A higher, stronger standard of evidence. That is the goal of the rhetorical question we started with.</p>
 <p>Today, we generally accept that “smoking causes lung cancer”. However, not all smokers get lung cancer, and not all lung cancer patients are smokers. But yet, we think we have sufficient evidence to <em>infer</em> a causal link. What evidence gets us to this inference?</p>
+</section><section id="three-objectives-of-data-scientific-investigation" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="three-objectives-of-data-scientific-investigation">Three objectives of data scientific investigation</h2>
+<p>We typically have one of three objectives in data scientific investigations:</p>
+<dl>
+<dt>Descriptive</dt>
+<dd>
+<p>Description of patterns in the data in order to gain insights into inter-relationships between different measured variables. This provides a sense of associations, patterns, and outliers. Examples include describing patterns of infant mortality over time and geography, fitting a polynomial line to a scatter plot of cholesterol levels at 40 years old with age at death, looking for patterns in gene expression that are different between ER/PR positive and HER2 positive and triple-negative breast cancer tumors. Think back to John Snow’s cholera analysis.</p>
+</dd>
+<dt>Predictive</dt>
+<dd>
+<p>Predicting a categorical or quantitative state from other measured features. Machine learners and computer scientists see this as their main objective for data science, and we know of widespread use of such investigations in finance, advertising, marketing and other domains. In biomedical science, we also do use predictive modeling; for example, predicting a woman’s lifetime risk of getting breast cancer, predicting cell types from transcriptomic data in single-cell experiments, predicting adult height from childhood growth patterns.</p>
+</dd>
+<dt>Explanation</dt>
+<dd>
+<p>Observing an outcome and trying to explain what other measured factors might be implicated in causing or influencing that outcome. In biomedical science, this is the main question of interest. The idea being that, if we can figure out the “why” of disease development, we can get to the “how” of preventing or curing it. If we find that a set of genes is implicated in developing cystic fibrosis, we might pay more attention to individuals with that genetic profile. If we can figure out genetic profiles for different kinds of breast cancer, we can target those profiles with different drugs (tamoxifen for ER/PR+ breast cancer, herceptin/Enhertu for HER2+ breast cancer, for example); or, if we find a genetic profile common to the development of multiple cancers, we have the potential to target multiple cancers with the same drug (Merck’s Keytruda PD-L1 immune checkpoint inhibitor that has proven effective in multiple cancers, given a common implication of increased PD-L1 expression in many cancers)</p>
+</dd>
+</dl>
+<div class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+One model, different objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Most supervised learning methods, including something as basic as linear regression, can be used to achieve all three objectives. but they are approached and fit differently.</p>
+<p>Let’s consider linear regression:</p>
+<ol type="1">
+<li>You can fit a linear or polynomial model to a scatter plot to summarise patterns in the data</li>
+<li>You can use it to predict length of stay in a hospital based on intake department, season, insurance status, age, gender and race. This process typically uses (stochastic) gradient descent for fitting and cross-validation to identify robustness and generalizability of the class of models we are fitting.</li>
+<li>You can use it to ask to what extent intake department influences length of hospital stay, i.e.&nbsp;how does different conditions present on admission affect how long a patient stays, at least on average. Here, we start thinking about causal relationships, proper adjustment in a multivariate model, confounding and other biases. We usually fit these models (as a statistician would) using the usual closed-form methods. Why is this interesting? If we can identify that the relationship between intake department and length of stay is <em>causal</em>, we can then try to optimize conditions in departments with higher lengths of stay to improve the overall hospital situation (Lower lengths of stay are desirable for hospitals)</li>
+</ol>
+<p>So the same model has different purposes and different optimization approaches. That’s partly why it can be confusing.</p>
+</div>
+</div>
+<p>An explainable objective gets us towards causal models, but not all the way there. Issues around bias, confounding, and fairly accounting for potential outcomes (counterfactuals) come into play. You have to make assumptions in a causal model that are sometimes not verifiable. But, nonetheless, the thought experiment and process of getting to a reasonable causal model is important both for statistically thinking about a question or problem, and making valid inference and decisions.</p>
+<p>We can think about a hierarchy of causation, following Pearl (<a href="#fig-cause" class="quarto-xref">Figure&nbsp;<span>3.1</span></a>)</p>
+<div id="fig-cause" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-cause-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/clipboard-1063284710.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cause-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.1: The Ladder of Causation, from <em>The Book of Why</em>, p. 28
+</figcaption></figure>
+</div>
+<p>Within this hierarchy, “machine learning programs (including those with deep neural networks) operate almost entirely in an associational mode” ( <span class="citation" data-cites="pearl:2018">Pearl and Mackenzie (<a href="#ref-pearl:2018" role="doc-biblioref">2018</a>)</span>, pp.&nbsp;30). As we said above, supervised learning models are entirely based on observable patterns and so can’t necessarily identify causal relationships, no matter how large the training data is. In particular, observing that <span class="math inline">\(\Pr(Y | X) &gt; \Pr(Y)\)</span> does not imply that X has a causal relation with Y, since that increase in conditional probability can happen due to other causes like confounders, as we will investigate later.</p>
+<div class="no-row-height column-margin column-container"></div><p>Interventional causation cannot be assessed merely by collecting data. The more straightforward methods include experimental design like randomized controlled studies and A/B testing methods, which can generate balance in other factors and allows statistical estimation of the interventional effect. We can also approach this problem using modeling approaches in observational studies, including propensity scoring that we will introduce in <a href="week-04.html" class="quarto-xref"><span>Chapter 4</span></a>. Such causal models allow us to use observed data to make (a modicum of ) causal inferences.</p>
+<p>The third run of this ladder links Pearl’s ideas to Rubin’s potential outcomes framework. It asks what could have happened if a different (unobservable) action was experienced. We’ll describe this more in the next section, but in the mean time, understand that this idea cannot be directly evaluated using observable data, since we can only observe the outcome that results from the action or exposure that was actually experienced, and other potential outcomes that might have happened if different exposures were experienced cannot be part of the data corpus. This is of course an area where machine learning has contributed some more understanding, especially in the concept of <a href="https://www.mckinsey.com/featured-insights/mckinsey-explainers/what-is-digital-twin-technology#" target="_blank"><strong>digital twins</strong></a> (also see <span class="citation" data-cites="katsoulakis:2024">Katsoulakis et al. (<a href="#ref-katsoulakis:2024" role="doc-biblioref">2024</a>)</span>) where we can model and simulate doppelgangers who might exhibit different outcomes when experiencing different exposures, at least <em>in silico</em>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-katsoulakis:2024" class="csl-entry" role="listitem">
+Katsoulakis, Evangelia, Qi Wang, Huanmei Wu, Leili Shahriyari, Richard Fletcher, Jinwei Liu, Luke Achenie, et al. 2024. <span>“Digital Twins for Health: A Scoping Review.”</span> <em>Npj Digital Medicine</em> 7 (1): 1–11. <a href="https://doi.org/10.1038/s41746-024-01073-0">https://doi.org/10.1038/s41746-024-01073-0</a>.
+</div></div></section><section id="concept-1-counterfactuals-or-potential-outcomes" class="level2"><h2 class="anchored" data-anchor-id="concept-1-counterfactuals-or-potential-outcomes">Concept 1: Counterfactuals, or potential outcomes</h2>
+<p>We consider different related actions that can be performed on an experimental unit. For example, we can consider the actions {Take ibuprofen} and {Don’t take ibuprofen} as two actions that a person might take when experiencing a headache. Each action can then be associated with an outcome for that individual, e.g.</p>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Action</th>
+<th>Outcome</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Take ibuprofen</td>
+<td>Headache resolves in 1 hour</td>
+</tr>
+<tr class="even">
+<td>Don’t take ibuprofen</td>
+<td>Headache resolves in 6 hours</td>
+</tr>
+</tbody>
+</table>
+<p>These are <em>potential outcomes</em> since we can only observe one of them depending on what action was actually taken. This is a simple example with two potential actions, but this can be generalized to multiple potential outcomes.</p>
+<p>The idea of counterfactuals is at the top rung of the Ladder of Causation, and it involves the kinds of questions that we <strong>want</strong> to answer, like, would a patient recover faster if I use a different kind of suture on a wound? This is also the question we ask all the time in clinical trials:</p>
+<blockquote class="blockquote">
+<p>Would a patient live longer if we give him a new drug instead of the current standard of treatment?</p>
+</blockquote>
+<p>The problem is that, we can never answer this question using data from the physical world, since we only have one shot at giving a patient one of the two drugs, and we can’t physically know what would happen if we gave the other drug.</p>
+<p>Notationaly, consider a study with <em>n</em> experimental units denoted by <span class="math inline">\(i = 1, \dots, n\)</span>, Suppose we have a treatment (or exposure, or policy; the semantics are contextual) that takes two levels <em>0</em> (no treatment) and <em>1</em> (treatment). We can then see two potential outcomes</p>
+<p><span class="math display">\[
+Y_i(1) \text{ and } Y_i(0)
+\]</span></p>
+<p>under the treatments <em>0</em> and <em>1</em>. The <strong>individual</strong> causal effect (which is unobservable) is <span class="math inline">\(Y_i(1) - Y_i(0)\)</span>. We could think of the following thought experiment. We look at a population where we could look at all possible outcomes:</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1020</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://gt.rstudio.com">gt</a></span><span class="op">)</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,</span>
+<span>  headache_ibf <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">5</span>,<span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,</span>
+<span>  headache_noibf <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">6</span>,<span class="fl">6</span>,<span class="fl">5</span>,<span class="fl">3</span>,<span class="fl">6</span>,<span class="fl">7</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span>,<span class="fl">6</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">dat</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>causal_effect <span class="op">=</span> <span class="va">headache_ibf</span> <span class="op">-</span> <span class="va">headache_noibf</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html">gt</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://gt.rstudio.com/reference/cols_label.html">cols_label</a></span><span class="op">(</span>headache_ibf <span class="op">=</span> <span class="st">"{{Y_i}}(ibf)"</span>,</span>
+<span>             headache_noibf <span class="op">=</span> <span class="st">"{{Y_i}}(no ibf)"</span>,</span>
+<span>             causal_effect <span class="op">=</span> <span class="fu"><a href="https://gt.rstudio.com/reference/html.html">html</a></span><span class="op">(</span><span class="st">"Y&lt;sub&gt;i&lt;/sub&gt;(ibf) - Y&lt;sub&gt;i&lt;/sub&gt;(no ibf)"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://gt.rstudio.com/reference/tab_spanner.html">tab_spanner</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Potential outcomes"</span>, columns <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://gt.rstudio.com/reference/tab_spanner.html">tab_spanner</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Causal effect"</span>, columns <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://gt.rstudio.com/reference/cols_align.html">cols_align</a></span><span class="op">(</span>align<span class="op">=</span><span class="st">'center'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="prlpuqojaq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#prlpuqojaq table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#prlpuqojaq thead, #prlpuqojaq tbody, #prlpuqojaq tfoot, #prlpuqojaq tr, #prlpuqojaq td, #prlpuqojaq th {
+  border-style: none;
+}
+
+#prlpuqojaq p {
+  margin: 0;
+  padding: 0;
+}
+
+#prlpuqojaq .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#prlpuqojaq .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#prlpuqojaq .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#prlpuqojaq .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#prlpuqojaq .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#prlpuqojaq .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#prlpuqojaq .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#prlpuqojaq .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#prlpuqojaq .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#prlpuqojaq .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#prlpuqojaq .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#prlpuqojaq .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#prlpuqojaq .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#prlpuqojaq .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#prlpuqojaq .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#prlpuqojaq .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#prlpuqojaq .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#prlpuqojaq .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#prlpuqojaq .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#prlpuqojaq .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#prlpuqojaq .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#prlpuqojaq .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#prlpuqojaq .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#prlpuqojaq .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#prlpuqojaq .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#prlpuqojaq .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#prlpuqojaq .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#prlpuqojaq .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#prlpuqojaq .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#prlpuqojaq .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#prlpuqojaq .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#prlpuqojaq .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#prlpuqojaq .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#prlpuqojaq .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#prlpuqojaq .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#prlpuqojaq .gt_left {
+  text-align: left;
+}
+
+#prlpuqojaq .gt_center {
+  text-align: center;
+}
+
+#prlpuqojaq .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#prlpuqojaq .gt_font_normal {
+  font-weight: normal;
+}
+
+#prlpuqojaq .gt_font_bold {
+  font-weight: bold;
+}
+
+#prlpuqojaq .gt_font_italic {
+  font-style: italic;
+}
+
+#prlpuqojaq .gt_super {
+  font-size: 65%;
+}
+
+#prlpuqojaq .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#prlpuqojaq .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#prlpuqojaq .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#prlpuqojaq .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#prlpuqojaq .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#prlpuqojaq .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#prlpuqojaq .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_col_headings gt_spanner_row">
+<th rowspan="2" id="id" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">id</th>
+<th colspan="2" id="Potential outcomes" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><span class="gt_column_spanner">Potential outcomes</span></th>
+<th id="Causal effect" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="col"><span class="gt_column_spanner">Causal effect</span></th>
+</tr>
+<tr class="odd gt_col_headings">
+<th id="Y<span style=&quot;white-space:nowrap;&quot;><sub>i</sub></span>(ibf)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Y<span style="white-space:nowrap;"><sub>i</sub></span>(ibf)</th>
+<th id="Y<span style=&quot;white-space:nowrap;&quot;><sub>i</sub></span>(no ibf)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Y<span style="white-space:nowrap;"><sub>i</sub></span>(no ibf)</th>
+<th id="Y<sub>i</sub>(ibf) - Y<sub>i</sub>(no ibf)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Y<sub>i</sub>(ibf) - Y<sub>i</sub>(no ibf)</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_center" headers="id">1</td>
+<td class="gt_row gt_center" headers="headache_ibf">1</td>
+<td class="gt_row gt_center" headers="headache_noibf">6</td>
+<td class="gt_row gt_center" headers="causal_effect">-5</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="id">2</td>
+<td class="gt_row gt_center" headers="headache_ibf">3</td>
+<td class="gt_row gt_center" headers="headache_noibf">6</td>
+<td class="gt_row gt_center" headers="causal_effect">-3</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="id">3</td>
+<td class="gt_row gt_center" headers="headache_ibf">5</td>
+<td class="gt_row gt_center" headers="headache_noibf">5</td>
+<td class="gt_row gt_center" headers="causal_effect">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="id">4</td>
+<td class="gt_row gt_center" headers="headache_ibf">3</td>
+<td class="gt_row gt_center" headers="headache_noibf">3</td>
+<td class="gt_row gt_center" headers="causal_effect">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="id">5</td>
+<td class="gt_row gt_center" headers="headache_ibf">1</td>
+<td class="gt_row gt_center" headers="headache_noibf">6</td>
+<td class="gt_row gt_center" headers="causal_effect">-5</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="id">6</td>
+<td class="gt_row gt_center" headers="headache_ibf">1</td>
+<td class="gt_row gt_center" headers="headache_noibf">7</td>
+<td class="gt_row gt_center" headers="causal_effect">-6</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="id">7</td>
+<td class="gt_row gt_center" headers="headache_ibf">2</td>
+<td class="gt_row gt_center" headers="headache_noibf">4</td>
+<td class="gt_row gt_center" headers="causal_effect">-2</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="id">8</td>
+<td class="gt_row gt_center" headers="headache_ibf">3</td>
+<td class="gt_row gt_center" headers="headache_noibf">5</td>
+<td class="gt_row gt_center" headers="causal_effect">-2</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="id">9</td>
+<td class="gt_row gt_center" headers="headache_ibf">1</td>
+<td class="gt_row gt_center" headers="headache_noibf">6</td>
+<td class="gt_row gt_center" headers="causal_effect">-5</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="id">10</td>
+<td class="gt_row gt_center" headers="headache_ibf">2</td>
+<td class="gt_row gt_center" headers="headache_noibf">6</td>
+<td class="gt_row gt_center" headers="causal_effect">-4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>If we could actually see this, we see that the average causal effect was -3.2 . If we randomly assign people in this population to take ibuprofen or not, we would get</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1038</span><span class="op">)</span></span>
+<span><span class="va">data_observed</span> <span class="op">&lt;-</span> <span class="va">dat</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    exposure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>,<span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span>, <span class="st">'ibf'</span>,<span class="st">'no_ibf'</span><span class="op">)</span>,</span>
+<span>    observed_outcome <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">exposure</span><span class="op">==</span><span class="st">'ibf'</span>, <span class="va">headache_ibf</span>, <span class="va">headache_noibf</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">exposure</span>, <span class="va">observed_outcome</span><span class="op">)</span></span>
+<span><span class="va">data_observed</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">exposure</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>avg_outcome <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">observed_outcome</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">exposure</span>, values_from <span class="op">=</span> <span class="va">avg_outcome</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>causal_effect <span class="op">=</span> <span class="va">ibf</span> <span class="op">-</span> <span class="va">no_ibf</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+    ibf no_ibf causal_effect
+  &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;
+1  2.57   5.67         -3.10</code></pre>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>See what you would get if you didn’t randomize the treatment allocation.</p>
+</div>
+</div>
+</div>
+<p>Once again, we’ll return to ways of answering this question in <a href="week-04.html" class="quarto-xref"><span>Chapter 4</span></a>.</p>
+</section><section id="concept-2-confounders-colliders-and-mediators" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="concept-2-confounders-colliders-and-mediators">Concept 2: Confounders, colliders and mediators</h2>
+<ul>
+<li>Yule-Simpson Paradox</li>
+</ul>
+<p>Confounding bias is a central concern of causal inference. It occurs when a variable influences both who is selected for treatment (or is exposed) and the outcome of the experiment. Confounders can be known (measured) or unknown (unmeasured). In a causal diagram, we can denote that <em>Z</em> is a confounder of the relationship between <em>X</em> and <em>Y</em> if</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-causal/ggdag">ggdag</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://r-causal.github.io/ggdag/reference/dagify.html">dagify</a></span><span class="op">(</span></span>
+<span>  <span class="va">Y</span> <span class="op">~</span> <span class="va">X</span> <span class="op">+</span> <span class="va">Z</span>,</span>
+<span>  <span class="va">X</span> <span class="op">~</span> <span class="va">Z</span>,</span>
+<span>  exposure <span class="op">=</span> <span class="st">"X"</span>, outcome <span class="op">=</span> <span class="st">"Y"</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/ggdag.html">ggdag</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/theme_dag_blank.html">theme_dag</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-03_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This diagram shows that there are two sources of association between <em>X</em> and <em>Y</em>. One is the path <span class="math inline">\(X \rightarrow Y\)</span> which represents the causal effect of <em>X</em> on <em>Y</em>, and the path <span class="math inline">\(X \leftarrow Z \rightarrow Y\)</span> which includes the common cause <em>Z</em>. This second path is an example of a <em>backdoor path</em>.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A backdoor path
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A backdoor path is a noncausal path between treatment and outcome that remains even if all arrows pointing from the treatment to other variables are removed. That is, the path has an arrow pointing into treatment. (<span class="citation" data-cites="hernan:2023">Hernan and Robins (<a href="#ref-hernan:2023" role="doc-biblioref">2023</a>)</span>)</p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"></div><p>Confounding, or rather, identifying confounders, can be approached using what is called the <em>backdoor criterion</em>.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The backdoor criterion
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A set of covariates <em>Z</em> satisfies the backdoor criterion if all backdoor paths between <em>X</em> and <em>Y</em> are blocked by conditioning on <em>Z</em>, and <em>Z</em> contains no variables that are descendants (i.e., flow from) the treatment <em>X</em>. (<span class="citation" data-cites="hernan:2023">Hernan and Robins (<a href="#ref-hernan:2023" role="doc-biblioref">2023</a>)</span>)</p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-hernan:2023" class="csl-entry" role="listitem">
+Hernan, Miguel A, and James M Robins. 2023. <span>“Causal Inference: What If.”</span>
+</div><div id="ref-pearl:2018" class="csl-entry" role="listitem">
+Pearl, Judea, and Dana Mackenzie. 2018. <em>The Book of Why</em>. New York: Basic Books.
+</div></div><p>The idea behind this backdoor criterion is, if we condition on values of variables satisfing the backdoor criterion, then the spurious association generated by the confounder disappears. We can “deconfound” (<span class="citation" data-cites="pearl:2018">Pearl and Mackenzie (<a href="#ref-pearl:2018" role="doc-biblioref">2018</a>)</span>) the effect of the confounder by computing the effect of <em>X</em> on <em>Y</em> for every unique value of <em>Z</em> separately, and then take the weighted average of effects, with weights determined by the relative prevalence of different values of <em>Z</em>. To fix ideas, if we consider our earlier ibuprofen example and consider <em>Z</em> to be age groups, then we would compute the treatment effect within each age group, and then take the average treatment effect weighted by the number of people in each age group. One way to statistically approach this is through <em>adjustment</em> for the confounder in a regression model. This approach can be used in observational, non-randomized studies, but there is a more principled approach we will introduce in <a href="week-04.html" class="quarto-xref"><span>Chapter 4</span></a>.</p>
+<p>The concept of backdoor paths also tells us why random allocation of an exposure to subjects works to prevent confounding, a.k.a. the randomized controlled trial. If you randomly allocate treatments/exposures to subjects, you break up any causal paths from other variables to the treatment, and hence prevent the presence of any backdoor paths. The only causal path to the outcome comes from the randomly allocated treatment.</p>
+<section id="other-forks-in-the-road-mediators-and-colliders" class="level3"><h3 class="anchored" data-anchor-id="other-forks-in-the-road-mediators-and-colliders">Other forks in the road: mediators and colliders</h3>
+<p>We can also consider the following two causal pathways and their implications on conditioning.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://r-causal.github.io/ggdag/reference/dagify.html">dagify</a></span><span class="op">(</span></span>
+<span>  <span class="va">Z</span> <span class="op">~</span> <span class="va">X</span>,</span>
+<span>  <span class="va">Y</span> <span class="op">~</span> <span class="va">Z</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/ggdag.html">ggdag</a></span><span class="op">(</span>layout<span class="op">=</span><span class="st">'circle'</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/theme_dag_blank.html">theme_dag</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://r-causal.github.io/ggdag/reference/dagify.html">dagify</a></span><span class="op">(</span></span>
+<span>  <span class="va">Z</span> <span class="op">~</span> <span class="va">X</span>,</span>
+<span>  <span class="va">Z</span> <span class="op">~</span> <span class="va">Y</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/ggdag.html">ggdag</a></span><span class="op">(</span>layout<span class="op">=</span><span class="st">'circle'</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://r-causal.github.io/ggdag/reference/theme_dag_blank.html">theme_dag</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="week-03_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Mediator</figcaption></figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="week-03_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Collider</figcaption></figure>
+</div>
+</div>
+</div>
+</div>
+<p>A mediator <em>modifies</em> the effect of <em>X</em> on <em>Y</em>, and if you decide to condition on <em>Z</em> then you will remove the effect of <em>X</em> on <em>Y</em>.</p>
+<p>A collider is associated with both <em>X</em> and <em>Y</em>, but in a non-causal manner. <em>X</em> and <em>Y</em> are not causally related, but conditioning on <em>Z</em> <em>induces</em> a spurious association between <em>X</em> and <em>Y</em>.</p>
+<p>Pearl describes rules that tell us how to stop the flow of information through any individual junction:</p>
+<ol type="a">
+<li><p>In a chain junction <span class="math inline">\(A \rightarrow B \rightarrow C\)</span>, controlling for <em>B</em> prevents information from <em>A</em> from flowing to <em>C</em></p></li>
+<li><p>In a fork or confounding junction <span class="math inline">\(A \leftarrow B \rightarrow C\)</span>, controlling for B prevents information from <em>A</em> from flowing to <em>C</em> and vice versa</p></li>
+<li><p>In a collider <span class="math inline">\(A \rightarrow B \leftarrow C\)</span>, A and C are independent, but controlling for B makes information flow between A and C</p></li>
+<li><p>Controlling for descendants (or proxies) of a variable is like “partially” controlling for the variable itself, and so “partially” has the consequences described above.</p></li>
+</ol>
+<p>These ideas can inform what variables one <strong>should</strong> adjust for in a statistical model. Unfortunately there is a tendency to adjust for <em>all</em> potential confounders, whether the causal diagram is investigated or not, and this can in itself lead to spurious associations. The causal diagrams help us understand what variables are potential confounders and so need to be adjusted for. Note here that creating the causal diagram is <strong>not statistical in nature</strong> but depends primarily on domain knowledge.</p>
+<section id="examples-of-confounding" class="level4"><h4 class="anchored" data-anchor-id="examples-of-confounding">Examples of confounding</h4>
+<ol type="1">
+<li>The effect of aspirin on the risk of stroke may be confounded if the drug is more likely to be prescribed to individuals with heart disease that is both an indication for treatment and a risk factor for the disease. An unmeasured variable, atherosclerosis, is a causal factor for both heart disease and stroke. Such confounding is often called <em>confounding by indication</em>.</li>
+<li>The effect of a DNA sequence A on the risk of developing cancer will be confounded if there exists another DNA sequence B that has a causal effect on cancer and is more frequent among people carrying A. This phenomenon is often called <em>linkage disequilibrium</em>. A similar bias can occur if the particular causal sequence B is more prevalent in some ethnicities than others, and the study includes a mixture of individuals from different ethnic groups; this is often referred to as <em>population stratification</em>.</li>
+<li>Smoking and alcohol consumption are risk factors for several cancers, and they also tend to co-occur, resulting in confounding.</li>
+</ol></section><section id="appearances-are-deceiving" class="level4"><h4 class="anchored" data-anchor-id="appearances-are-deceiving">Appearances are deceiving</h4>
+<p>We can consider the implications of different causal patterns in our analysis. The <i class="fa-brands fa-r-project" aria-label="r-project"></i> package <strong>quartets</strong> provides one set of examples.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The following exposition is from <em>Causal Inference in R</em>, chapter 6</p>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-causal/quartets">quartets</a></span><span class="op">)</span></span>
+<span><span class="va">causal_quartet</span> <span class="op">|&gt;</span></span>
+<span>  <span class="co"># hide the dataset names</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>exposure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">exposure</span><span class="op">)</span>, outcome <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">outcome</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">exposure</span>, <span class="va">outcome</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">dataset</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-03_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Though the observed associations between exposure and outcome are similar here, there is the presence of a third variable, <code>covariate</code>, that affects the causal relationship in different ways. The covariate is acting in different ways in each dataset. Our usual way of thinking about a confounder, in terms of a variable that is associated with both outcome and exposure, doesn’t quite work in distinguishing the causal paths; the respective associations are very similar.</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">causal_quartet</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>exposure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">exposure</span>, <span class="va">covariate</span><span class="op">)</span>, outcome <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">outcome</span>,<span class="va">covariate</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  dataset exposure outcome
+    &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+1       1    0.700   0.788
+2       2    0.696   0.783
+3       3    0.696   0.853
+4       4    0.696   0.571</code></pre>
+</div>
+</div>
+<p>We can even look at the effect of adjusting for the covariate:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="nrvmomxjpz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#nrvmomxjpz table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#nrvmomxjpz thead, #nrvmomxjpz tbody, #nrvmomxjpz tfoot, #nrvmomxjpz tr, #nrvmomxjpz td, #nrvmomxjpz th {
+  border-style: none;
+}
+
+#nrvmomxjpz p {
+  margin: 0;
+  padding: 0;
+}
+
+#nrvmomxjpz .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 80%;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#nrvmomxjpz .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#nrvmomxjpz .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#nrvmomxjpz .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#nrvmomxjpz .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#nrvmomxjpz .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nrvmomxjpz .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#nrvmomxjpz .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#nrvmomxjpz .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#nrvmomxjpz .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#nrvmomxjpz .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#nrvmomxjpz .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#nrvmomxjpz .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#nrvmomxjpz .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#nrvmomxjpz .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#nrvmomxjpz .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#nrvmomxjpz .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#nrvmomxjpz .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#nrvmomxjpz .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nrvmomxjpz .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#nrvmomxjpz .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#nrvmomxjpz .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#nrvmomxjpz .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nrvmomxjpz .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#nrvmomxjpz .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#nrvmomxjpz .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nrvmomxjpz .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nrvmomxjpz .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#nrvmomxjpz .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nrvmomxjpz .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#nrvmomxjpz .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nrvmomxjpz .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#nrvmomxjpz .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nrvmomxjpz .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#nrvmomxjpz .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nrvmomxjpz .gt_left {
+  text-align: left;
+}
+
+#nrvmomxjpz .gt_center {
+  text-align: center;
+}
+
+#nrvmomxjpz .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#nrvmomxjpz .gt_font_normal {
+  font-weight: normal;
+}
+
+#nrvmomxjpz .gt_font_bold {
+  font-weight: bold;
+}
+
+#nrvmomxjpz .gt_font_italic {
+  font-style: italic;
+}
+
+#nrvmomxjpz .gt_super {
+  font-size: 65%;
+}
+
+#nrvmomxjpz .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#nrvmomxjpz .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#nrvmomxjpz .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#nrvmomxjpz .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#nrvmomxjpz .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#nrvmomxjpz .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#nrvmomxjpz .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="header gt_col_headings">
+<th id="Dataset" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Dataset</th>
+<th id="ATE not adjusting for Z" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">ATE not adjusting for Z</th>
+<th id="ATE adjusting for Z" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">ATE adjusting for Z</th>
+<th id="Correlation of X and Z" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Correlation of X and Z</th>
+</tr></thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right" headers="dataset">1</td>
+<td class="gt_row gt_right" headers="ate_x">1.00</td>
+<td class="gt_row gt_right" headers="ate_xz">0.55</td>
+<td class="gt_row gt_right" headers="cor">0.70</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="dataset">2</td>
+<td class="gt_row gt_right" headers="ate_x">1.00</td>
+<td class="gt_row gt_right" headers="ate_xz">0.50</td>
+<td class="gt_row gt_right" headers="cor">0.70</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right" headers="dataset">3</td>
+<td class="gt_row gt_right" headers="ate_x">1.00</td>
+<td class="gt_row gt_right" headers="ate_xz">0.00</td>
+<td class="gt_row gt_right" headers="cor">0.70</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="dataset">4</td>
+<td class="gt_row gt_right" headers="ate_x">1.00</td>
+<td class="gt_row gt_right" headers="ate_xz">0.88</td>
+<td class="gt_row gt_right" headers="cor">0.70</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>It turns out that the four datasets have quite different causal structures:</p>
+<div id="fig-quartet-dag" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-quartet-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-quartet-dag" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-quartet-dag-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-quartet-dag-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="week-03_files/figure-html/fig-quartet-dag-1.png" class="img-fluid figure-img" data-ref-parent="fig-quartet-dag" width="288">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-quartet-dag-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) The DAG for dataset 1, where <code>covariate</code> (c) is a collider. We should <em>not</em> adjust for <code>covariate</code>, which is a descendant of <code>exposure</code> (e) and <code>outcome</code> (o).
+</figcaption></figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-quartet-dag" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-quartet-dag-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-quartet-dag-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="week-03_files/figure-html/fig-quartet-dag-2.png" class="img-fluid figure-img" data-ref-parent="fig-quartet-dag" width="288">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-quartet-dag-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) The DAG for dataset 2, where <code>covariate</code> (c) is a confounder. <code>covariate</code> is a mutual cause of <code>exposure</code> (e) and <code>outcome</code> (o), representing a backdoor path, so we <em>must</em> adjust for it to get the right answer.
+</figcaption></figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-quartet-dag" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-quartet-dag-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-quartet-dag-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="week-03_files/figure-html/fig-quartet-dag-3.png" class="img-fluid figure-img" data-ref-parent="fig-quartet-dag" width="288">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-quartet-dag-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) The DAG for dataset 3, where <code>covariate</code> (c) is a mediator. <code>covariate</code> is a descendant of <code>exposure</code> (e) and a cause of <code>outcome</code> (o). The path through <code>covariate</code> is the indirect path, and the path through <code>exposure</code> is the direct path. We should adjust for <code>covariate</code> if we want the direct effect, but not if we want the total effect.
+</figcaption></figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-quartet-dag" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-quartet-dag-4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-quartet-dag-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="week-03_files/figure-html/fig-quartet-dag-4.png" class="img-fluid figure-img" data-ref-parent="fig-quartet-dag" width="288">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-quartet-dag-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(d) The DAG for dataset 4, where <code>covariate</code> (c) is a collider via M-Bias. Although <code>covariate</code> happens before both <code>outcome</code> (o) and <code>exposure</code> (e), it’s still a collider. We should <em>not</em> adjust for <code>covariate</code>, particularly since we can’t control for the bias via <code>u1</code> and <code>u2</code>, which are unmeasured.
+</figcaption></figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-quartet-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.2: The DAGs for the Causal Quartet
+</figcaption></figure>
+</div>
+<p>The DAGs suggest the proper adjustment models for each dataset</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="rfqwfspjwi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rfqwfspjwi table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#rfqwfspjwi thead, #rfqwfspjwi tbody, #rfqwfspjwi tfoot, #rfqwfspjwi tr, #rfqwfspjwi td, #rfqwfspjwi th {
+  border-style: none;
+}
+
+#rfqwfspjwi p {
+  margin: 0;
+  padding: 0;
+}
+
+#rfqwfspjwi .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 100%;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#rfqwfspjwi .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#rfqwfspjwi .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#rfqwfspjwi .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#rfqwfspjwi .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rfqwfspjwi .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rfqwfspjwi .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rfqwfspjwi .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#rfqwfspjwi .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#rfqwfspjwi .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#rfqwfspjwi .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#rfqwfspjwi .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#rfqwfspjwi .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#rfqwfspjwi .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#rfqwfspjwi .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rfqwfspjwi .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#rfqwfspjwi .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#rfqwfspjwi .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#rfqwfspjwi .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rfqwfspjwi .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#rfqwfspjwi .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#rfqwfspjwi .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#rfqwfspjwi .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rfqwfspjwi .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#rfqwfspjwi .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#rfqwfspjwi .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rfqwfspjwi .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rfqwfspjwi .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#rfqwfspjwi .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rfqwfspjwi .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#rfqwfspjwi .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rfqwfspjwi .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rfqwfspjwi .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rfqwfspjwi .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rfqwfspjwi .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rfqwfspjwi .gt_left {
+  text-align: left;
+}
+
+#rfqwfspjwi .gt_center {
+  text-align: center;
+}
+
+#rfqwfspjwi .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#rfqwfspjwi .gt_font_normal {
+  font-weight: normal;
+}
+
+#rfqwfspjwi .gt_font_bold {
+  font-weight: bold;
+}
+
+#rfqwfspjwi .gt_font_italic {
+  font-style: italic;
+}
+
+#rfqwfspjwi .gt_super {
+  font-size: 65%;
+}
+
+#rfqwfspjwi .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#rfqwfspjwi .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#rfqwfspjwi .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#rfqwfspjwi .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#rfqwfspjwi .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#rfqwfspjwi .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#rfqwfspjwi .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="header gt_col_headings">
+<th id="Data generating mechanism" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Data generating mechanism</th>
+<th id="Correct causal model" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Correct causal model</th>
+<th id="Correct causal effect" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Correct causal effect</th>
+</tr></thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Data generating mechanism">(1) Collider</td>
+<td class="gt_row gt_left" headers="Correct causal model">Y ~ X</td>
+<td class="gt_row gt_left" headers="Correct causal effect">1.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Data generating mechanism">(2) Confounder</td>
+<td class="gt_row gt_left" headers="Correct causal model">Y ~ X ; Z</td>
+<td class="gt_row gt_left" headers="Correct causal effect">0.5</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Data generating mechanism">(3) Mediator</td>
+<td class="gt_row gt_left" headers="Correct causal model">Direct effect: Y ~ X ; Z Total Effect: Y ~ X</td>
+<td class="gt_row gt_left" headers="Correct causal effect">Direct effect: 0.0 Total effect: 1.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Data generating mechanism">(4) M-Bias</td>
+<td class="gt_row gt_left" headers="Correct causal model">Y ~ X</td>
+<td class="gt_row gt_left" headers="Correct causal effect">1.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section><section id="residual-confounding" class="level4"><h4 class="anchored" data-anchor-id="residual-confounding">Residual confounding</h4>
+<p>Residual confounding is often a complication in many observational studies where covariate adjustment to account for measured confounders has been undertaken. This refers to confounding that persists after adjustment, and may be due to <em>unmeasured confounders</em> or due to <em>incorrect analysis</em>.</p>
+<hr>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pearl’s <em>do</em>-operator
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pearl proposes a <em>do</em>-operator to describe causaility. This operator is defined operationally as <span class="math inline">\(P(Y | do(X=1))\)</span> is the probability of seeing <em>Y</em> when one is <strong>made to experience</strong> X=1, rather than passively observing <em>X</em>. This is not a straightforward concept, but generally speaking, we can say that we have observed the causal effect of <em>X</em> on <em>Y</em> if</p>
+<p><span class="math display">\[
+P(Y | X) = P(Y | do(X))
+\]</span></p>
+<p>with inequality here suggesting the presence of confounders, both measured and unmeasured.</p>
+<p>Feel free to delve further into this in The Book of Why, or Pearl’s more comprehensive work, <em>Causality</em>.</p>
+</div>
+</div>
+<hr></section></section></section><section id="concept-3-principles-to-establish-causality" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="concept-3-principles-to-establish-causality">Concept 3: Principles to establish causality</h2>
+<p>This appears quite straightforward, but does have some underlying assumptions:</p>
+<dl>
+<dt><strong>No interference:</strong></dt>
+<dd>
+<p>Unit <em>i</em>’s potential outcomes do not depend on the outcomes of the other units.</p>
+</dd>
+<dt><strong>Consistency:</strong></dt>
+<dd>
+<p>There are no other versions of the treament, or that we need treatment levels to be well defined</p>
+</dd>
+</dl>
+<div class="page-columns page-full"><blockquote class="blockquote">
+<p>These assumptions together are called the <strong>Stable Unit Treatment Value Assumption (SUTVA)</strong> (<span class="citation" data-cites="rubin:1980">Rubin (<a href="#ref-rubin:1980" role="doc-biblioref">1980</a>)</span>)</p>
+</blockquote><div class="no-row-height column-margin column-container"><div id="ref-rubin:1980" class="csl-entry" role="listitem">
+Rubin, Donald B. 1980. <span>“Discussion of <span>‘Randomization Analysis of Experimental Data in the Fisher Randomization Test’</span> by Basu.”</span> <em>Journal of the American Statistical Association</em> 75 (371): 591–93.
+</div></div></div>
+<dl>
+<dt>Exchangeability</dt>
+<dd>
+<p>We assume that within levels of relevant variables (confounders), exposed and unexposed individuals have the same chance of experiencing any outcome prior to being exposed. This can be interpreted to mean that there is <em>no unmeasured confounding</em></p>
+</dd>
+<dt>Positivity</dt>
+<dd>
+<p>Each individual has a positive chance of being exposed to every available exposure level. In our earlier example, this means that there is no one who is prohibited from taking ibuprofen, and no one who is required to just take ibuprofen.</p>
+</dd>
+</dl>
+<p>The point of these principles is to enable apples-to-apples comparison, so that the individuals are comparable and can be good proxies for each others’ counterfactuals.</p>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>There are a nice set of simulations <a href="https://www.r-causal.org/chapters/03-counterfactuals#causal-assumptions-simulation">here</a> that shows what might go wrong in our causal effect estimates if these assumptions are violated</p>
+</div>
+</div>
+</div>
+<p>It is good to remember that these assumptions are, to some extent, idealized and sometimes cannot be validated from the data. We would need information outside of the empirical data to justify making these assumptions.</p>
+
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -665,8 +2613,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/week-04.html" class="pagination-link" aria-label="Observational studies">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Observational studies</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/week-04.html" class="pagination-link" aria-label="Causal effect estimation">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal effect estimation</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

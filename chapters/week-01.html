@@ -111,7 +111,7 @@ window.Quarto = {
 };
 </script>
 </head>
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-sidebar floating nav-fixed slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
@@ -158,55 +158,19 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/week-03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Causal inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Causality</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/week-04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Observational studies</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Causal effect estimation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/week-05.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Survival analysis I</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/week-06.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Survival analysis II</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/week-07.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">High-dimensional data</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/week-08.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Biomarker discovery</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/week-09.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Applied Bayesian methods</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/week-10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Planning studies and clinical trials</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/week-11.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Applied machine learning</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -276,7 +240,7 @@ window.Quarto = {
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-01.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">
 <span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to biological and biomedical data</span>
 </h1>
@@ -313,7 +277,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-</section><section id="genetics" class="level2"><h2 class="anchored" data-anchor-id="genetics">Genetics</h2>
+</section><section id="genetics" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="genetics">Genetics</h2>
 <section id="classical-genetics" class="level3"><h3 class="anchored" data-anchor-id="classical-genetics">Classical genetics</h3>
 <p>Our understanding of genetic inheritance is based in the foundational experiments of Gregor Mendel, who showed in small agricultural experiments how particular traits in pea plants are transmitted from generation to generation. The basic ideas of <a href="https://www.cancer.gov/publications/dictionaries/genetics-dictionary/def/autosomal-dominant-inheritance#">autosomal inheritance</a> and how many of each trait to <em>expect</em> in each generation were established by statistical analyses, even though Mendel’s experiments and theory pertained to a simplistic view of biology. This work was further extended and applied to many other fields by greats like <a href="https://en.wikipedia.org/wiki/Ronald_Fisher">R.A. Fisher</a> and <a href="https://en.wikipedia.org/wiki/J._B._S._Haldane">J.B.S. Haldane</a>.</p>
 <div class="callout callout-style-simple callout-note callout-titled">
@@ -355,9 +319,17 @@ Intertwining statistics, genetics and eugenics in the early 1900s
 <p>Fisher was also interested in eugenics as it related to Mendelian inheritance (see <a href="https://www.nature.com/articles/s41437-020-00394-6#Sec5">here</a>), and did progress from those ideas to develop the statistical basis for genetic inheritance. However, he did both talk and publish pro-eugenics views, and has led many instructors to stop using Fisher’s iris data as a basic dataset for teaching statistics; it led to the rise of the <a href="https://allisonhorst.github.io/palmerpenguins/">penguins</a>.</p>
 </div>
 </div>
-</section><section id="genomics" class="level3"><h3 class="anchored" data-anchor-id="genomics">Genomics</h3>
+</section><section id="genomics" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="genomics">Genomics</h3>
 <p>A fundamental shift in biological technology arose in the 1990s with various high-throughput methods, with accompanying statistical methods. Foremost was the idea of a <em>microarray</em>, where we could interrogate multiple genes together across multiple samples. These were pioneered by <a href="https://profiles.stanford.edu/patrick-brown">Patrick Brown</a> (<span class="citation" data-cites="brown:1999">Brown and Botstein (<a href="#ref-brown:1999" role="doc-biblioref">1999</a>)</span>) at Stanford University, and led to multiple advances in statistical methodology in the early 2000s at Stanford (Rob Tibshirani, Michael Eisen, David Botstein and others) and later at Johns Hopkins (Rafael Irizarry, among others). In particular, two seminal papers (<span class="citation" data-cites="eisen:1998">Eisen et al. (<a href="#ref-eisen:1998" role="doc-biblioref">1998</a>)</span> and <span class="citation" data-cites="tusher:2001">Tusher, Tibshirani, and Chu (<a href="#ref-tusher:2001" role="doc-biblioref">2001</a>)</span>) demonstrated the new statistical methodology needed to address the (then) new technology of cDNA microarrays and introduced unsupervised learning as a major data science methodology in biology. Later, we saw more detailed statistical analyses around quality assurance, normalization and proper statistical analyses of microarrays (<span class="citation" data-cites="irizarry:2003">Irizarry et al. (<a href="#ref-irizarry:2003" role="doc-biblioref">2003</a>)</span>).</p>
-<div class="callout callout-style-simple callout-note callout-titled">
+<div class="no-row-height column-margin column-container"><div id="ref-brown:1999" class="csl-entry" role="listitem">
+Brown, P. O., and D. Botstein. 1999. <span>“Exploring the new world of the genome with DNA microarrays.”</span> <em>Nature Genetics</em> 21 (1 Suppl): 33–37. <a href="https://doi.org/10.1038/4462">https://doi.org/10.1038/4462</a>.
+</div><div id="ref-eisen:1998" class="csl-entry" role="listitem">
+Eisen, M. B., P. T. Spellman, P. O. Brown, and D. Botstein. 1998. <span>“Cluster analysis and display of genome-wide expression patterns.”</span> <em>Proceedings of the National Academy of Sciences of the United States of America</em> 95 (25): 14863–68. <a href="https://doi.org/10.1073/pnas.95.25.14863">https://doi.org/10.1073/pnas.95.25.14863</a>.
+</div><div id="ref-tusher:2001" class="csl-entry" role="listitem">
+Tusher, Virginia Goss, Robert Tibshirani, and Gilbert Chu. 2001. <span>“Significance Analysis of Microarrays Applied to the Ionizing Radiation Response.”</span> <em>Proceedings of the National Academy of Sciences</em> 98 (9): 5116–21. <a href="https://doi.org/10.1073/pnas.091062498">https://doi.org/10.1073/pnas.091062498</a>.
+</div><div id="ref-irizarry:2003" class="csl-entry" role="listitem">
+Irizarry, Rafael A., Bridget Hobbs, Francois Collin, Yasmin D. Beazer-Barclay, Kristen J. Antonellis, Uwe Scherf, and Terence P. Speed. 2003. <span>“Exploration, normalization, and summaries of high density oligonucleotide array probe level data.”</span> <em>Biostatistics (Oxford, England)</em> 4 (2): 249–64. <a href="https://doi.org/10.1093/biostatistics/4.2.249">https://doi.org/10.1093/biostatistics/4.2.249</a>.
+</div></div><div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -371,7 +343,9 @@ Microarrays and breast cancer
 <p>More information: <a href="https://www.mayoclinic.org/diseases-conditions/breast-cancer/in-depth/breast-cancer/art-20045654">Breast cancer types: What your type means</a></p>
 </div>
 </div>
-</section><section id="other--omics" class="level3"><h3 class="anchored" data-anchor-id="other--omics">Other “-omics”</h3>
+<div class="no-row-height column-margin column-container"><div id="ref-sorlie:2001" class="csl-entry" role="listitem">
+Sørlie, Therese, Charles M. Perou, Robert Tibshirani, Turid Aas, Stephanie Geisler, Hilde Johnsen, Trevor Hastie, et al. 2001. <span>“Gene Expression Patterns of Breast Carcinomas Distinguish Tumor Subclasses with Clinical Implications.”</span> <em>Proceedings of the National Academy of Sciences</em> 98 (19): 10869–74. <a href="https://doi.org/10.1073/pnas.191367098">https://doi.org/10.1073/pnas.191367098</a>.
+</div></div></section><section id="other--omics" class="level3"><h3 class="anchored" data-anchor-id="other--omics">Other “-omics”</h3>
 <p>In the last 30 years, we have seen the growth of other high-throughput methods to look at a number of molecular properties, most prominently being <em>proteomics</em>, <em>metabolomics</em>, and <em>transcriptomics</em>. Sequencing of genes, i.e.&nbsp;learning the exact alphabet of the genome, become cheaper and more accurate due in part to efforts of scientists in the <a href="https://www.genome.gov/human-genome-project">Human Genome Project</a>, and today, next-generation sequencing (NGS) is widespread.</p>
 <p>Statistically, this lead to the development of <em>genome-wide association studies (<a href="https://www.genome.gov/genetics-glossary/Genome-Wide-Association-Studies">GWAS</a>)</em>, which incorporated high-throughput genetic seqencing and <a href="https://www.genome.gov/genetics-glossary/Single-Nucleotide-Polymorphisms">SNP</a> analysis to try and understand the genetic basis of disease. <a href="https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-risk-scores">Polygenic risk scores</a> arising from high-throughput technologies have helped us understand how multiple genes can act together to increase the risk of disease. This led to several advances in understanding disease and potential treatment strategies.</p>
 <p>Today, our understanding of disease risk, disease etiology and the development of drug targets leverage high-throughput technologies, machine learning and artificial intelligence to develop new drugs, especially in oncology.</p>
@@ -379,7 +353,7 @@ Microarrays and breast cancer
 <p>This period was the beginning of the areas of <em>bioinformatics</em> and <em>computational biology</em>, and germinated the growth of software, primarily in <i class="fa-brands fa-r-project" aria-label="r-project"></i>, to address such problems in a collective known as the <a href="https://www.bioconductor.org">Bioconductor project</a>. This suite of software has become the industry standard for bioinformatic analysis and has made <i class="fa-brands fa-r-project" aria-label="r-project"></i> the main analytic software used in this field.</p>
 <section id="looking-forward" class="level4"><h4 class="anchored" data-anchor-id="looking-forward">Looking forward</h4>
 <p>We will learn more about bioinformatics and making inferences and identifying biomarkers in <a href="week-07.html" class="quarto-xref"><span>Chapter 7</span></a> and <a href="week-08.html" class="quarto-xref"><span>Chapter 8</span></a></p>
-</section></section></section><section id="understanding-human-disease" class="level2"><h2 class="anchored" data-anchor-id="understanding-human-disease">Understanding human disease</h2>
+</section></section></section><section id="understanding-human-disease" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="understanding-human-disease">Understanding human disease</h2>
 <section id="collecting-data" class="level3"><h3 class="anchored" data-anchor-id="collecting-data">Collecting data</h3>
 <p>The earliest form of data-driven inference for human disease was based on observational data, i.e.&nbsp;data that was collected as it appeared and not as part of any organized structure or design. Observational data can be powerful in first showing <strong>associations</strong> between disease and causes and are often the first indications that something is going wrong. We have seen in DSAN 5300 the work of John Snow in identifying water wells that might have been responsible for a cholera outbreak in London in 1854.</p>
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Snow-cholera-map-1.jpg/600px-Snow-cholera-map-1.jpg" class="img-fluid"></p>
@@ -387,11 +361,15 @@ Microarrays and breast cancer
 <p>Howevever, observational studies cannot evaluate <strong>causation</strong> or establish a link between a factor and the development of a disease. This needs longitudinal cohort studies or randomized experiments, which became the gold standards for understanding disease, and in establishing interventions to prevent or cure disease.</p>
 <section id="looking-forward-1" class="level4"><h4 class="anchored" data-anchor-id="looking-forward-1">Looking forward</h4>
 <p>We’ll discuss more about study design, levels of evidence and causality in <a href="week-02.html" class="quarto-xref"><span>Chapter 2</span></a>, <a href="week-03.html" class="quarto-xref"><span>Chapter 3</span></a>, and <a href="week-04.html" class="quarto-xref"><span>Chapter 4</span></a>. We’ll explore principles for planning studies in <a href="week-10.html" class="quarto-xref"><span>Chapter 10</span></a></p>
-</section></section><section id="how-long-do-we-live" class="level3"><h3 class="anchored" data-anchor-id="how-long-do-we-live">How long do we live?</h3>
-<p><img src="../img/NSCLC.png" class="img-fluid"><em>Survival curves for overall survival in non-small cell lung cancer by the 8th edition of the TNM staging system (<span class="citation" data-cites="yun:2019">Yun et al. (<a href="#ref-yun:2019" role="doc-biblioref">2019</a>)</span>) </em></p>
+</section></section><section id="how-long-do-we-live" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="how-long-do-we-live">How long do we live?</h3>
+<div class="page-columns page-full"><p><img src="../img/NSCLC.png" class="img-fluid"><em>Survival curves for overall survival in non-small cell lung cancer by the 8th edition of the TNM staging system (<span class="citation" data-cites="yun:2019">Yun et al. (<a href="#ref-yun:2019" role="doc-biblioref">2019</a>)</span>) </em></p><div class="no-row-height column-margin column-container"><div id="ref-yun:2019" class="csl-entry" role="listitem">
+Yun, Jae Kwang, Geun Dong Lee, Hyeong Ryul Kim, Yong-Hee Kim, Dong Kwan Kim, Seung-Il Park, and Sehoon Choi. 2019. <span>“Validation of the 8th Edition of the TNM Staging System in 3,950 Patients with Surgically Resected Non-Small Cell Lung Cancer.”</span> <em>Journal of Thoracic Disease</em> 11 (7): 2955–64. <a href="https://doi.org/10.21037/jtd.2019.07.43">https://doi.org/10.21037/jtd.2019.07.43</a>.
+</div></div></div>
 <p>A central question in understanding disease is, how long do we live, and will a treatment let us live longer? This is a question of <strong>survival</strong>, and an entire ecosystem of methods and software developed to address this question. You have been introduced to the Kaplan-Meier curve and Cox regression, which are widely used, but are the tip of the iceberg.</p>
 <p>Cox regression, especially, has been used within the context of RCTs to establish that individuals who get a new treatment live longer (have <em>lower risk of dying</em>) than individuals who were given a placebo or a current standard of care treatment. It established the role of the <em>hazard ratio</em> as the crucial statistic to look at. The prominence of this method (which is about the same age as myself, <span class="citation" data-cites="coxRegressionModelsLifeTables1972">Cox (<a href="#ref-coxRegressionModelsLifeTables1972" role="doc-biblioref">1972</a>)</span>, but whose <em>bona fide</em> as a good method for survival analysis was established a few years later. This is one of the most cited papers in all of statistics)</p>
-<p>The central question in survival analysis is how do we handle incomplete information of a particular form. Everyone will eventually die, but since we cannot have infinite studies, we cannot observed all the deaths or when they happened. We also sometimes cannot observe the beginning of when someone was first exposed (to a carcinogen like asbestos, for example). All we know is that death occurred after some last observation time, or exposure happened before some first observation time. How do we account for this in our analyses?</p>
+<div class="no-row-height column-margin column-container"><div id="ref-coxRegressionModelsLifeTables1972" class="csl-entry" role="listitem">
+Cox, D. R. 1972. <span>“Regression Models and Life-Tables.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 34 (2): 187–202. <a href="https://doi.org/10.1111/j.2517-6161.1972.tb00899.x">https://doi.org/10.1111/j.2517-6161.1972.tb00899.x</a>.
+</div></div><p>The central question in survival analysis is how do we handle incomplete information of a particular form. Everyone will eventually die, but since we cannot have infinite studies, we cannot observed all the deaths or when they happened. We also sometimes cannot observe the beginning of when someone was first exposed (to a carcinogen like asbestos, for example). All we know is that death occurred after some last observation time, or exposure happened before some first observation time. How do we account for this in our analyses?</p>
 <div class="callout callout-style-simple callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -426,29 +404,7 @@ The curious want to know
 </section></section><section id="references" class="level2"><h2 class="anchored" data-anchor-id="references">References</h2>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-brown:1999" class="csl-entry" role="listitem">
-Brown, P. O., and D. Botstein. 1999. <span>“Exploring the new world of the genome with DNA microarrays.”</span> <em>Nature Genetics</em> 21 (1 Suppl): 33–37. <a href="https://doi.org/10.1038/4462">https://doi.org/10.1038/4462</a>.
-</div>
-<div id="ref-coxRegressionModelsLifeTables1972" class="csl-entry" role="listitem">
-Cox, D. R. 1972. <span>“Regression Models and Life-Tables.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 34 (2): 187–202. <a href="https://doi.org/10.1111/j.2517-6161.1972.tb00899.x">https://doi.org/10.1111/j.2517-6161.1972.tb00899.x</a>.
-</div>
-<div id="ref-eisen:1998" class="csl-entry" role="listitem">
-Eisen, M. B., P. T. Spellman, P. O. Brown, and D. Botstein. 1998. <span>“Cluster analysis and display of genome-wide expression patterns.”</span> <em>Proceedings of the National Academy of Sciences of the United States of America</em> 95 (25): 14863–68. <a href="https://doi.org/10.1073/pnas.95.25.14863">https://doi.org/10.1073/pnas.95.25.14863</a>.
-</div>
-<div id="ref-irizarry:2003" class="csl-entry" role="listitem">
-Irizarry, Rafael A., Bridget Hobbs, Francois Collin, Yasmin D. Beazer-Barclay, Kristen J. Antonellis, Uwe Scherf, and Terence P. Speed. 2003. <span>“Exploration, normalization, and summaries of high density oligonucleotide array probe level data.”</span> <em>Biostatistics (Oxford, England)</em> 4 (2): 249–64. <a href="https://doi.org/10.1093/biostatistics/4.2.249">https://doi.org/10.1093/biostatistics/4.2.249</a>.
-</div>
-<div id="ref-sorlie:2001" class="csl-entry" role="listitem">
-Sørlie, Therese, Charles M. Perou, Robert Tibshirani, Turid Aas, Stephanie Geisler, Hilde Johnsen, Trevor Hastie, et al. 2001. <span>“Gene Expression Patterns of Breast Carcinomas Distinguish Tumor Subclasses with Clinical Implications.”</span> <em>Proceedings of the National Academy of Sciences</em> 98 (19): 10869–74. <a href="https://doi.org/10.1073/pnas.191367098">https://doi.org/10.1073/pnas.191367098</a>.
-</div>
-<div id="ref-tusher:2001" class="csl-entry" role="listitem">
-Tusher, Virginia Goss, Robert Tibshirani, and Gilbert Chu. 2001. <span>“Significance Analysis of Microarrays Applied to the Ionizing Radiation Response.”</span> <em>Proceedings of the National Academy of Sciences</em> 98 (9): 5116–21. <a href="https://doi.org/10.1073/pnas.091062498">https://doi.org/10.1073/pnas.091062498</a>.
-</div>
-<div id="ref-yun:2019" class="csl-entry" role="listitem">
-Yun, Jae Kwang, Geun Dong Lee, Hyeong Ryul Kim, Yong-Hee Kim, Dong Kwan Kim, Seung-Il Park, and Sehoon Choi. 2019. <span>“Validation of the 8th Edition of the TNM Staging System in 3,950 Patients with Surgically Resected Non-Small Cell Lung Cancer.”</span> <em>Journal of Thoracic Disease</em> 11 (7): 2955–64. <a href="https://doi.org/10.21037/jtd.2019.07.43">https://doi.org/10.21037/jtd.2019.07.43</a>.
-</div>
-</div>
+
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
