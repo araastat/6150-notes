@@ -352,7 +352,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"options":{"editor-font-scale":"1","message":"true","out-height":"","out-width":"700px","fig-height":5,"autorun":"false","results":"markup","dpi":72,"editor-quick-suggestions":"false","fig-width":7,"warning":"true","comment":"","label":"unnamed-chunk-1","output":"true","context":"interactive","editor-word-wrap":"true","classes":"","read-only":"false","fig-cap":"","editor-max-height":""},"code":"set.seed(1000)\ninstall.packages(\"tidyverse\")\nlibrary(tidyverse)\nm1 <- 0\nm2 <- 0.2\ns <- 0.5\nn <- 10 # number of samples we observe in 1 expt (replicates)\nnsim <- 1000 # number of simulated expts\n\n# compute sampling distributions\nx1 <- replicate(nsim, mean(rnorm(n, m1, s)))\nx2 <- replicate(nsim, mean(rnorm(n, m2, s)))\n\ndr <- sqrt(n) * (x2 - x1) / (2 * s^2) > qnorm(0.95)\npower <- mean(dr)\n\nd <- tibble(x = c(x1, x2), grp = factor(c(rep(1, nsim), rep(2, nsim))))\n\nggplot(d, aes(x, color = grp)) +\n  geom_density() +\n  geom_vline(xintercept = sqrt(2) * s / sqrt(n)) +\n  scale_x_continuous(limits = c(-1, 1)) +\n  theme_bw() +\n  labs(title = paste0(\"Power = \", power))","id":1}];
+globalThis.qwebrCellDetails = [{"code":"set.seed(1000)\ninstall.packages(\"tidyverse\")\nlibrary(tidyverse)\nm1 <- 0\nm2 <- 0.2\ns <- 0.5\nn <- 10 # number of samples we observe in 1 expt (replicates)\nnsim <- 1000 # number of simulated expts\n\n# compute sampling distributions\nx1 <- replicate(nsim, mean(rnorm(n, m1, s)))\nx2 <- replicate(nsim, mean(rnorm(n, m2, s)))\n\ndr <- sqrt(n) * (x2 - x1) / (2 * s^2) > qnorm(0.95)\npower <- mean(dr)\n\nd <- tibble(x = c(x1, x2), grp = factor(c(rep(1, nsim), rep(2, nsim))))\n\nggplot(d, aes(x, color = grp)) +\n  geom_density() +\n  geom_vline(xintercept = sqrt(2) * s / sqrt(n)) +\n  scale_x_continuous(limits = c(-1, 1)) +\n  theme_bw() +\n  labs(title = paste0(\"Power = \", power))","id":1,"options":{"results":"markup","editor-font-scale":"1","context":"interactive","editor-word-wrap":"true","out-width":"700px","label":"unnamed-chunk-1","fig-cap":"","editor-quick-suggestions":"false","message":"true","fig-height":5,"comment":"","classes":"","editor-max-height":"","output":"true","warning":"true","autorun":"false","read-only":"false","fig-width":7,"dpi":72,"out-height":""}}];
 
 </script><script type="module">
 // Declare startupMessageQWebR globally
@@ -1630,18 +1630,6 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../chapters/week-05.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Survival analysis I</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/week-12.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Machine learning explainability</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/week-13.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Decision making</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
