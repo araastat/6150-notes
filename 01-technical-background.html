@@ -69,6 +69,12 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/editor/editor.main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   
@@ -359,7 +365,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"options":{"out-width":"700px","context":"interactive","results":"markup","message":"true","editor-max-height":"","dpi":72,"editor-quick-suggestions":"false","label":"unnamed-chunk-1","fig-width":7,"editor-font-scale":"1","classes":"","fig-cap":"","comment":"","read-only":"false","editor-word-wrap":"true","out-height":"","fig-height":5,"output":"true","autorun":"false","warning":"true"},"id":1,"code":"lambda = 1\nx <- seq(0, 10, by = 0.1)\ny <- dexp(x, rate = lambda)\nplot(x, y, type ='l')"},{"options":{"out-width":"700px","context":"interactive","results":"markup","message":"true","editor-max-height":"","dpi":72,"editor-quick-suggestions":"false","label":"unnamed-chunk-2","fig-width":7,"editor-font-scale":"1","classes":"","fig-cap":"","comment":"","read-only":"false","editor-word-wrap":"true","out-height":"","fig-height":5,"output":"true","autorun":"false","warning":"true"},"id":2,"code":"alpha = 1\nbeta = 1\ny = dweibull(x, shape = alpha, scale = beta)\nplot(x, y, type = 'l')"}];
+globalThis.qwebrCellDetails = [{"id":1,"options":{"output":"true","fig-cap":"","autorun":"false","label":"unnamed-chunk-1","classes":"","editor-word-wrap":"true","message":"true","read-only":"false","comment":"","context":"interactive","warning":"true","editor-quick-suggestions":"false","dpi":72,"out-height":"","fig-height":5,"out-width":"700px","editor-max-height":"","editor-font-scale":"1","fig-width":7,"results":"markup"},"code":"lambda = 1\nx <- seq(0, 10, by = 0.1)\ny <- dexp(x, rate = lambda)\nplot(x, y, type ='l')"},{"id":2,"options":{"output":"true","fig-cap":"","autorun":"false","label":"unnamed-chunk-2","classes":"","editor-word-wrap":"true","message":"true","read-only":"false","comment":"","context":"interactive","warning":"true","editor-quick-suggestions":"false","dpi":72,"out-height":"","fig-height":5,"out-width":"700px","editor-max-height":"","editor-font-scale":"1","fig-width":7,"results":"markup"},"code":"alpha = 1\nbeta = 1\ny = dweibull(x, shape = alpha, scale = beta)\nplot(x, y, type = 'l')"}];
 
 </script>
 <script type="module">
@@ -1589,7 +1595,7 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -1620,7 +1626,10 @@ window.Quarto = {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="sidebar-tools-main">
+    <a href="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+</div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">

@@ -62,9 +62,38 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
+}</script><script async="" src="https://hypothes.is/embed.js"></script><script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 </head>
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
@@ -88,7 +117,10 @@ ul.task-list li input[type="checkbox"] {
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="sidebar-tools-main">
+    <a href="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+</div>
+    <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
@@ -151,7 +183,14 @@ ul.task-list li input[type="checkbox"] {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#weighting-observations-for-statistical-analysis" id="toc-weighting-observations-for-statistical-analysis" class="nav-link active" data-scroll-target="#weighting-observations-for-statistical-analysis">Weighting observations for statistical analysis</a></li>
+<li><a href="#randomized-studies" id="toc-randomized-studies" class="nav-link active" data-scroll-target="#randomized-studies">Randomized studies</a></li>
+  <li>
+<a href="#observational-studies" id="toc-observational-studies" class="nav-link" data-scroll-target="#observational-studies">Observational studies</a>
+  <ul class="collapse">
+<li><a href="#weighting-observations-for-statistical-analysis" id="toc-weighting-observations-for-statistical-analysis" class="nav-link" data-scroll-target="#weighting-observations-for-statistical-analysis">Weighting observations for statistical analysis</a></li>
+  </ul>
+</li>
+  <li><a href="#propensity-scores" id="toc-propensity-scores" class="nav-link" data-scroll-target="#propensity-scores">Propensity scores</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-04.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -170,9 +209,58 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header><p>Last updated: 16 Sep, 2024 09:22 PM EDT</p>
-<section id="weighting-observations-for-statistical-analysis" class="level2"><h2 class="anchored" data-anchor-id="weighting-observations-for-statistical-analysis">Weighting observations for statistical analysis</h2>
-<p>We first introduce the concept of weighting. Weighting is commonly used in analyzing survey data to adjust for the way the survey sample is drawn, but the concept is more general.</p>
+</header><p>Last updated: 19 Sep, 2024 11:16 AM EDT</p>
+<section id="randomized-studies" class="level2"><h2 class="anchored" data-anchor-id="randomized-studies">Randomized studies</h2>
+<p>Suppose we have the following causal graph, where we wish to ask the question of whether the use of aspirin affects one’s risk of a heart attack.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-04_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>It is clear that there are several backdoor paths between aspirin and heart attack. However, if we randomize the assignment of aspirin in a randomized study, we break all paths to aspirin, and we can consider the following graph, which shows that only the causal path between aspirin and heart attack remains. In the absence of confounders, the observed effect of aspirin on heart attacks in a randomized study is an estimate of the causal effect of aspirin on heart attacks.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-04_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The statistical field long held that the only way to assess causal effects was in the randomized study context, which became the gold standard for causal effect assessment. This has, in turn, propagated the use of randomized studies in economics and marketing, where it is often referred to as A/B testing.</p>
+<p>However, there are situations when randomized experiments are not feasible or cost prohibitive, or when we have observational data at hand. The question then is, can we analytically estimate causal effects without randomization.</p>
+</section><section id="observational-studies" class="level2"><h2 class="anchored" data-anchor-id="observational-studies">Observational studies</h2>
+<p>Let’s start by trying to understand what randomized studies achieve. Primarily it is a question of breaking backdoor paths, which is done through balancing potential confounders between those exposed/treated and those not, <em>on average</em>. We can then expect that those confounders no longer act as such since they are no longer empirically associated with the exposure, and the empirical effect of the exposure on the outcome can be interpreted causally.</p>
+<p><strong>What if we can achieve similar balance in the confounders in an observational study?</strong></p>
+<section id="weighting-observations-for-statistical-analysis" class="level3"><h3 class="anchored" data-anchor-id="weighting-observations-for-statistical-analysis">Weighting observations for statistical analysis</h3>
+<p>We first introduce the concept of weighting. Weighting is commonly used in analyzing survey data to adjust for the way the survey sample is drawn, but the concept is more general. The intent is to create a <em>pseudo-population</em> where the confounders are balanced between levels of the exposure.</p>
+<p>Let’s fix ideas with a toy example. In the following figure, we have 3 exposed and 4 non-exposed subjects, and the shading represents the values of a potential confounder.</p>
+<p><img src="images/tmp2.png" class="img-fluid" style="width:8in"></p>
+<p>The central concept we introduce here is that of the <strong>propensity score</strong>. Propensity refers to the chance of being exposed, given what we know about potential confounders, so, symbolically, <span class="math inline">\(P(\text{exposed} | \text{confounders})\)</span> . In the above example, we have 1 confounder defined by the shading, and so we have</p>
+<ul>
+<li><p>P(exposed | black) = 1/3</p></li>
+<li><p>P(exposed | white) = 1/2</p></li>
+</ul>
+<p>The scheme we now introduce is called <em>Inverse Probability of Treatment Weights (IPTW)</em>. We will weight each exposed unit by the inverse of the probability of being exposed given the confounder’s value, and similarly we will weight each non-exposed unit by the inverse of the probability of being not exposed. This results in the following weights:</p>
+<p><img src="images/tmp21.png" class="img-fluid"></p>
+<p>The effect of the weights is effectively to clone the units, even fractionally. This gets us to the following pseudo-population where the confounders are balanced and so their effect in biasing the causal effect of interest is removed.</p>
+<p><img src="images/tmp.png" class="img-fluid" style="width:8in"></p>
+</section></section><section id="propensity-scores" class="level2"><h2 class="anchored" data-anchor-id="propensity-scores">Propensity scores</h2>
+<p>The propensity score is defined as P(exposed | confounders). In the previous section, we see how this works for a single binary confounder. Now we need to extend this concept to the situation where we have multiple confounders, possibly of different data types. The core idea is that we find an estimate of P(exposure | confounders) for all possible value combinations of confounder values, and then use the IPTW scheme to weight the units based on these scores.</p>
+<p>We can address this problem using regression models or supervised learning models. For binary outcomes, we typically use <strong>logistic regression</strong>, but other supervised learning choices like random forests, GBM, nearest neighbors, are also usable. We note here that we are developing a model to estimate the probability of being exposed based on <em>potential confounders</em>; this model does not include the outcome at all.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Regression models are basically meant to model E(Y|X), which is also called the <em>regression function</em> as a function of (potentially multivariate) X. In linear models we impose a particular functional form to estimate E(Y|X), but black box supervised learning models attempt to do the same thing.</p>
+<p>We note here that P(Y|X) = E(Y|X) when Y is binary (i.e.&nbsp;takes values 0 and 1), and so estimating P(Y|X) can be seen as a regression problem as well.</p>
+</div>
+</div>
+</div>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
