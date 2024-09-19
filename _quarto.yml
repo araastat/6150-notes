@@ -11,6 +11,11 @@ book:
       Copyright Abhijit Dasgupta (2024). All rights reserved
     right: |
       This book was built with <a href="https://quarto.org">Quarto</a>
+  sidebar:
+    style: docked
+    tools:
+      - icon: github
+
   license: "CC BY"
   date: last-modified
   date-format: long
@@ -40,6 +45,8 @@ book:
 bibliography: reference.json
 reference-location: margin
 citation-location: margin
+comments:
+  hypothesis: true
 
 format:
   html:
@@ -47,8 +54,11 @@ format:
     code-link: true
     callout-appearance: simple
     number-depth: 1
-
+    grid:
+      body-width: 1200px
 engine: knitr
 execute:
   freeze: true
+  warning: false
+  messages: false
 
