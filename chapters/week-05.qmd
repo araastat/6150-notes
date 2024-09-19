@@ -1,7 +1,528 @@
 ---
 engine: knitr
+code-fold: true
+filters:
+  - webr
 ---
+
 # Survival analysis I {#sec-week5}
 
 **Last updated:** `{r} format(Sys.time(), "%d %b, %Y %I:%M %p %Z")`
+
+```{r}
+#| label: setup-5
+#| include: false
+library(tidyverse)
+theme_set(theme_bw())
+```
+
+::: callout-warning
+Work in progress, target time 9/19 noon
+:::
+
+## Introduction
+
+A common interest across a wide range of fields is to understand when and why
+things fail. In engineering, that can mean how long will a component of a car
+last with normal use. In healthcare, that can mean how long does a person with
+diabetes live. For many businesses, it can mean how long does an employee stay
+with the company, or how long does a subscriber stay with a plan. The general
+question is, how long before something (an *event*) happens. The adjacent
+question is, what affects how long before the event happens. Does metformin help
+a diabetic prolong the time before blindness and neuropathy set it? Does some
+incentive tend to keep subscribers subscribed longer? Does the Mediterranean
+diet increase the time until one might get a heart attack?
+
+Looking at failure times and its influencers spawned a different way of using
+statistics and data, called *survival analysis* in the statistics/biomedical
+worlds and *reliability* in engineering, and *churn analytics* in business.
+
+There are several things that make survival (which we'll use here instead of the
+more general *failure time*) data unique.
+
+-   First is that it is always considered to be positive, since we have a time 0
+    when we start measuring time. This leads to particular choices in terms of
+    the probability distributions that we consider when modeling survival
+    analysis.
+
+-   Second is that we often have to deal with missing data in a very particular
+    sense, or perhaps data with incomplete information is a better way to put
+    it. In practice, we can't follow study units (humans, components, customers)
+    forever, and so we stop tracking at some time point. At that point, several
+    units might not have experienced failure yet, but we would reasonably
+    believe that they would fail if we followed them long enough. So we only
+    know, for these units, that they did not fail until the time at which we
+    stopped following them. That *is* information, but it's not the full
+    information we would like. Survival analysis methods account for this
+    partial information issue, which is formally called **censoring**. We'll
+    talk about this in more detail in a bit
+
+    -   A similar issue in survival data is **truncation**. Suppose we're doing
+        a study where we follow patients from the start of their leukemia
+        diagnosis to death. Some patients my enter the study from another
+        hospital, where their diagnosis has happened, but they entered the study
+        some time after. Their "clock" on the study started later than 0, and we
+        consider their times *truncated*.
+
+-   Third is how we model covariates that affect (or perhaps cause) changes in
+    survival times. Survival analysis uses statistics and metrics that are not
+    used in other branches of statistics, thus requiring a bit of learning and a
+    re-evaulation of our intuition.
+
+-   Fourth is that the descriptive statistics and graphs we use are different
+    from what you may have learned, both in terms of describing the data and in
+    terms of evaluating model goodness-of-fit and residual analyses. Things get
+    a bit specialized.
+
+In this chapter we approach the different ways of describing and modeling
+survival time itself, including reasonable probability distributions, statistics
+and how we look at changes or differences in survival curves. The next chapter
+will explore how we evaluate how features/covariates can affect survival times,
+and how we model that effect and evaluate how well our models do. We will focus
+on approaches that look at survival time as continuous, and acknowledge that
+approaches that use discretized time do exist and can also be useful.
+
+## Survival data
+
+We start by following a cohort of patients from the time of admission into a
+study and see when they die. As the weeks go by, some patients die, and some
+patients leave the study either by choice or are *lost to followup*. At 12 weeks
+we stop the study and know that some of the patients we followed are still alive
+then. We can show this data graphically. [Survival analysis generally is done on
+**prospective** data]{.aside}
+
+```{r}
+#| fig-cap: Follow-up time in a leukemia cohort, sorted by time of follow-up
+library(tidyverse)
+library(survival)
+
+data(leukemia) # Acute Myelogeneous Leukemia data
+
+leukemia |> 
+  arrange(time) |> 
+  mutate(start = 0, ind = 1:n()) |> 
+  mutate(status = ifelse(status == 0, 'Censored', "Died")) |> 
+  ggplot() + 
+    geom_segment(aes(x = start, y = ind, xend = time, yend = ind))+
+    geom_point(aes(x = time, y = ind, color = status, shape = status), size=4) + 
+    labs(x = "Weeks", y = "") + 
+    theme_bw() + 
+    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+```
+
+::: callout-tip
+The time when we start counting time, so-called time 0, may not always be
+obvious, and in an actual study may need to be defined. In many clinical
+studies, time starts either when the disease is diagnosed or when the patient is
+admitted to hospital. However, as you can imagine, that start time is actually
+different for different patients. We typically align the times so that the
+agreed-upon start time for time counting is always denoted as zero, regardless
+of what calendar time it occurs.
+
+![In a hypothetical clinical study, we see how followup actually occurs in the
+left panel, where the dotted line denotes when the study stopped. Analytically,
+however, we transform the same observations on the study time scale to align all
+start times to 0, as in the right panel. Here, censoring is represented as an
+open circle. *From Aalen, Borgan and Gjessing,
+2008*.](images/clipboard-897485810.png)
+:::
+
+### Censoring
+
+There are generally 3 kinds of censoring that we consider:
+
+1.  Right censoring, where we know that a subject has survived up to a certain
+    time, but we don't observe the time of the survival event. This is by far
+    the most common form of censoring and what most analyses account for.
+2.  Interval censoring, where we know that the event occurred between two time
+    points, but we don't know the exact time of the event. This is common for
+    many practical studies, where, for example, we only know that cancer
+    recurrence happened between two visits. Interval censoring can be important
+    to account for in analysis, but it is often ignored if the time intervals
+    between observations are reasonably small.
+3.  Left censoring, where we know that the event occurred before a certain
+    point. For example, we find out a person has died because he didn't show up
+    to his next scheduled doctor's visit.
+
+![From Turkson, Aylah-Mensah & Nimoh (2021).
+https://doi.org/10.1155/2021/9307475](images/clipboard-3255178959.png){fig-align="center"}
+
+A fundamental assumption that we make in incorporating censoring is that
+
+> the censoring is independent of the survival outcome
+
+that is, whether you get censored or not, either during the followup period
+(lost to followup) or at the end of the study (administrative censoring), does
+not affect whether or not you experience the event, i.e. *noninformative
+censoring*. This is often seen as a reasonable assumption, especially if
+censoring happens for reasons extraneous to the disease under study, like, for
+example, the study stops on a certain date.
+
+There are instances where this assumption fails, however. For example, patients
+might be more likely to drop out of a study if they are too sick to take the
+medication or go to hospital visits, so their censoring is related to the
+severity of their illness and likely is associated with their risk of dying.
+This is why the *independent censoring* assumption must be reasoned and checked.
+There are some techniques around accounting for such *informative censoring*,
+that will often include weighting schemes like we saw in the propensity score
+weighting. We'll come back to this in a future section.
+
+### The nature of survival data
+
+Survival data is actually stored as a **bivariate entity** $(T, \delta)$ , where
+$T$ denotes the observed survival time and $\delta$ is a 0-1 variable that
+denotes whether we observed the event(1) or censoring (0) at the end of the
+observed survival time. We need both to evaluate survival time.
+
+::: callout-warning
+## Clinical data in CDISC format that can go to the FDA
+
+When dealing with data from registered clinical trials, the survival (or
+time-to-event data, denoted TTE) has to conform to a standard format based on
+the agreed-upon CDISC standard. In this format, you have a *censoring* variable
+(`CNSR`) rather than an *event* variable which is coded in reverse of the
+$\delta$ above, i.e. it codes being censored as 1 and having the event as 0. So
+one of the first lines of code we write is `cens <- 1-CNSR` to accommodate the
+standard censoring variable that {{<fa brands r-project >}} or {{<fa brands
+python >}} assume.
+:::
+
+## Survival distributions
+
+### Statistics
+
+We look at different statistics that capture different aspects of the survival
+distribution, i.e, the distribution of survival times. In the following we
+denote the survival time by the *random variable* T, which has some distribution
+on the support $T \geq 0$.
+
+Survival function
+
+:   $S(t) = P(T > t) = 1 - P(T \leq t) = 1 - F(t)$ for $t \geq 0$ is the
+    probability that individual survives for at least time t
+
+Hazard function
+
+:   The hazard function $h(t)$ is the instantaneous chance that you will fail at
+    time t given you have survived till then.
+    $h(t) = P(T = t | T \geq t) = \frac{f(t)}{S(t)}$ where $f(t)$ is the p.d.f
+    of the survival distribution ($f(t) = \frac{dF(t)}{dt}$). It can also be
+    defined as $h(x) = -\frac{d}{dt} \ln(S(t))$.
+
+Cumulative hazard function
+
+:   The cumulative hazard function $H(t) = -\ln(S(t)) = \int_0^\infty h(u)du$
+    is, essentially, the sum of all the chances of failing over the period of
+    observation. Mathematically, we can turn this around to show that
+    $S(t) = e^{-H(t)}$
+
+It turns out that the hazard function is the one we actually work with most of
+the time in terms of modeling, but we look at the survival time more
+descriptively.
+
+### Distributions
+
+We use several distributions to model survival time. These include the
+exponential, Weibull and Gamma models. Details of these distributions are
+available in @sec-tech. For the purposes of survival analysis, these properties
+of the Exponential and Weibull distributions are
+
+| Parameter         | Exponential                     | Weibull                                          |
+|--------------------|-----------------------|--------------------------------------|
+| Hazard rate       | $h(t) = \lambda$                | $h(t) = \lambda k t^{k-1}$                       |
+| p.d.f.            | f(t) = $\lambda e^{-\lambda t}$ | f(t) = $\lambda k t^{k-1} e^{-\lambda t^k}$      |
+| Survival function | S(t) = $e^{-\lambda t}$         | S(t) = $e^{-\lambda t^k}$                        |
+| Mean              | $\mu = 1/\lambda$               | $\mu = \frac{\Gamma(1+1/k)}{\lambda^k}$          |
+| Median            | $-\log(0.5)/\lambda$            | $-\left(\frac{\log (0.5)}{\lambda}\right)^{1/k}$ |
+
+We can consider $\lambda$ as the *rate* at which events occur. A larger
+$\lambda$ means that the average survival time goes down, which means you have
+more events per unit time. A really nice interpretation of $k$ is available
+[here](https://en.wikipedia.org/wiki/Weibull_distribution).
+
+One property of this that derives from the survival function of the Weibull
+distribution is that
+
+$$
+\log (- \log S(t)) = \log \lambda + k\log t
+$$
+
+So the complementary log transformation (log(-log(t)) is linear in log t, which
+can serve as a test for the adequacy of the model in fitting the data. [Note
+that the Exponential is the Weibull with k=1]{.aside}.
+
+::: callout-note
+## More general property{{< iconify mdi:thought-bubble size=Large >}}
+
+**Theorem:** If T is a continuous non-negative random variable with cumulative
+hazard function $\Lambda$. Then the random variable $Y = \Lambda(T)$ follows an
+exponential distribution with rate $\lambda = 1$.
+
+This property allows us to plot a quantile-quantile plot of $\Lambda(T)$ against
+an exponential(1) distribution to see how well the model fit is.
+
+```{webr-r}
+#| fig-width: 3
+set.seed(20348)
+library(ggplot2)
+library(dplyr)
+d <- tibble(
+    T = rweibull(1000, 5, scale=3) # Simulated survival times (no censoring). FEEL FREE TO PLAY HERE
+  ) |> 
+  arrange(T) |> 
+  mutate(
+    Ft = (1:n())/n(), # empirical c.d.f.
+    St = 1-Ft,        # empirical survival function
+    Lt = -log(St)    # empirical hazard function
+    )
+ggplot(d, aes(sample = Lt))+
+  geom_qq(distribution = stats::qexp) + 
+  geom_qq_line(distribution = stats::qexp) + 
+  theme_bw() + 
+  labs(x = "Exponential(1) quantiles", y = "Empirical cumulative hazard function")+
+  coord_equal()
+
+```
+:::
+
+### Simulating survival data with censoring
+
+Being able to simulate survival distributions is often quite useful. We saw
+above how to simulate some survival times based on non-negatve distributions.
+However, in reality, we will encounter right-censoring at the very least. For
+this, we need to understand further the nature of survival data.
+
+Each observation is associated with two times: the survival time $T^*_i$ and the
+censoring time $C_i$. What we actually observe is
+
+$$
+T_i = \min(T^*_i, C_i)\\
+\delta_i = \begin{cases}
+1 & T_i^* \leq C_i\\
+0 & T_i^* > C_i
+\end{cases}
+$$ We can simulate data in a similar fashion
+
+```{r}
+set.seed(2393)
+nsim <- 1000
+d <- tibble(
+Tstar = rweibull(nsim, 0.8), # Survival distribution
+censor = runif(nsim)*3) |>                     # Censoring distribution
+  mutate(T = pmin(Tstar, censor),
+         delta = ifelse(Tstar <= censor, 1, 0)) |> 
+  mutate(indx = 1:n()) |> 
+  mutate(delta = ifelse(delta == 1, "Event", "Censored"))
+
+ggplot(d[1:10,]) + 
+  geom_segment(aes(x=0, xend = T, y = indx, yend=indx))+
+  geom_point(aes(x = T, y = indx, fill = factor(delta)), shape = 21, size=2) +
+  scale_x_continuous('Time')+
+  scale_y_continuous("")+
+  scale_fill_manual("Status", values = c('white','black'))+
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+```
+
+## The survival curve
+
+The survival curve for a population is a graph plotting $S(t)$ against $t$,
+where you can read off, for any time point, the proportion of the population
+still alive at that time point; conversely for any particular quantile of
+survival, you can read off the time to reach that quantile (for example median
+survival when 50% of the population remains.
+
+```{r}
+time <- seq(0,48)
+lambda <- 0.1
+y <- exp(-lambda*time)
+tibble(time, y) |> 
+  ggplot(aes(time, y))+
+  geom_line() + 
+  scale_y_continuous("Probability of survival", labels = scales::label_percent()) +
+  theme_bw() + labs(title = 'Exponential(0.1) distribution')
+```
+
+Generally speaking, **if we don't have censoring**, we can generate the
+empirical survival curves, quite easily.
+
+```{r}
+d <- tibble(
+  T = rexp(100, 2)
+) |> 
+  arrange(T) |> 
+  mutate(St = 1-(1:n())/n())
+ggplot(d, aes(T, St))+geom_line() + 
+  scale_x_continuous("Time")+
+  scale_y_continuous("Survival probability", labels = scales::label_percent())
+```
+
+If there is censoring, let's see what happens if we ignore the censoring and
+just plot the reported survival times.
+
+```{r}
+d |> mutate(cens = rexp(100,1), 
+            Tobs = pmin(T, cens),
+            delta = T <= cens) |> 
+  arrange(Tobs) |> 
+  mutate(St1 = 1-(1:n())/n()) |> 
+  ggplot(aes(Tobs, St1))+geom_line() +
+  geom_line(aes(T, St), color = 'red')+
+  geom_line(aes(x = T, y = pexp(T, 2, lower.tail=FALSE)), size=2,color = 'orange', linetype=2) + labs(x = 'Time', y = 'Probability of survival')
+```
+
+We find that ignoring censoring (black line) **biases our estimates** of
+survival compared to a no censoring situation (red line), which aligns with the
+generative model (orange dashed line). This is reasonable since for the censored
+observations, we're counting them as having the event at that time rather than
+having the event *after* that time, and so inflate the failure rates.
+
+### Estimation: parametric models
+
+Generally speaking, parametric models are fit via maximum likelihood, where the
+likelihood function is
+
+$$
+L(\theta|T_i) = \Pi f(t_i | \theta)^{\delta_i} S(t_i)^{1-\delta_i}
+$$
+
+So, for example, if we assume an exponential model, we would find $\lambda$ to
+maximize
+
+$$
+L(\lambda | T) = \Pi_{i=1}^n (\lambda e^{-\lambda t_i})^{\delta_i} (e^{-\lambda t_i})^{(1-\delta_i)}
+$$
+
+We simulate data from an Exponential(0.8) distribution and add censoring. We then do a grid search to find the maximum value of the likelihood function described above.
+
+```{r}
+set.seed(2393)
+nsim <- 1000
+d <- tibble(
+Tstar = rexp(nsim, 0.8), # Survival distribution
+censor = runif(nsim)*3) |>                     # Censoring distribution
+  mutate(T = pmin(Tstar, censor),
+         delta = ifelse(Tstar <= censor, 1, 0)) |> 
+  mutate(indx = 1:n()) |> 
+  mutate(delta = ifelse(delta == 1, "Event", "Censored"))
+
+lik_fn <- function(lambda, d, times="T",cens = "cens"){
+  times = d[[times]]
+  cens = as.integer(as.factor(d[[cens]]))==2 # quirky conversion, basically higher level
+  map_dbl(lambda, \(l) sum(log(dexp(times[cens], rate=l))) + sum(log(pexp(times[!cens], rate=l, lower.tail=F))))
+}
+ 
+# Here we do grid search to find the maximum of the function
+lmda = seq(0.01, 1, by = 0.01)
+lmda_hat = lmda[which.max(lik_fn(lmda, d, times = 'T', cens = 'delta'))]
+
+
+```
+
+The optimization gives the estimate of the exponential parameter as
+`{r} lmda_hat`. 
+
+Another way of approaching the problem that uses the same method
+uses the `survreg` function, which we'll see more of next week as we look at survival regression.Note, in R, we use the function `Surv` to incorporate the bivariate survival
+data into models.
+
+```{r}
+library(survival)
+fit <- survreg(Surv(T, delta=='Event') ~ 1, data = d, dist = 'exponential')
+
+
+```
+The estimate we get from here is `{r} round(exp(-fit$coef[1]),3)`.
+
+::: aside
+A note here on notation. Here we're only trying to estimate one survival curve,
+so the right side of the equation is `1`. We'll see in a bit how that gets
+modified when we start looking at groups.
+:::
+
+### Estimation: non-parametric methods
+
+The most common way to estimate the survival curve is the **Kaplan-Meier
+curve**, which provides an unbiased estimate of the survival curve in the
+presence of independent censoring. It appears as a step function which is
+constant between failure times, and the vertical jump at each failure time is
+inversely proportional to the number of individuals still at risk at that time.
+
+```{r}
+library(survival)
+sfit <- survfit(Surv(T, delta=='Event') ~ 1, data = d)
+plot(sfit)
+```
+
+A more refined (and personally preferred) version is using the **ggsurvfit**
+package which is aligned with **ggplot2**. 
+
+```{r}
+library(ggsurvfit)
+survfit2(Surv(T, delta=='Event')~1, data = d) |> 
+  ggsurvfit() + add_risktable()
+```
+
+### Aligning the different estimates
+
+We see that accounting for censoring reduces the bias in estimating the survival curve. We've generated the data from an exponential model, so the parametric method does very well (it uses the exponential to fit). The Kaplan-Meier method is known to generate unbiased estimates generally as long as the censoring is non-informative. 
+
+```{r}
+library(geomtextpath)
+library(ggsurvfit)
+plt_data <- tibble(times = d$T, cens = d$delta=='Event') |> 
+  arrange(times) |> mutate(St = 1-(1:n())/n())
+ggdata = survfit2(Surv(times, cens)~1, data=plt_data) |> tidy_survfit()
+
+ggplot(plt_data) + 
+  geom_line(data = plt_data, aes(x = times, y = pexp(times, rate = 0.8, lower.tail = FALSE), color = "Truth"), linewidth=2)+
+  geom_line(data = plt_data, aes(x = times, y =pexp(times, rate = lmda_hat, lower.tail=FALSE), color = "Parametric"),  linewidth=1.5) + 
+  geom_step(data = ggdata, aes(x = time, y = estimate, color = 'KM'), linewidth=1.5) +
+  geom_line(aes(times, St, color = 'Ignore censoring' ), linewidth=1.5) + 
+  labs(x = "Time", y = "Survival probability")+
+  scale_color_manual(name = "Method", values = c("Truth" = 'green', 'Parametric'='orange', "KM" = 'blue', "Ignore censoring" = 'red'))
+  
+```
+
+
+## Different statistical properties
+
+There are different metrics that can help summarise a survival distribution for the purposes of comparing different distributions or reporting landmarks. 
+
+### Median survival time
+
+In the literature, the statistic we see most commonly is the _median survival time_. Due to censoring, we also have to be careful in estimating it, and need to use censoring-aware methods like the previous section, since it is derived from the estimated survival curve. 
+
+```{r}
+sfit <- survfit2(Surv(T, delta=="Event") ~ 1, data = d) # can also use survfit
+as_tibble(quantile(sfit, probs = 0.5))
+```
+
+```{r}
+ggsurvfit(sfit)+
+  add_quantile(y_value = 0.5)
+```
+
+### Mean survival time
+
+The mean survival time seems an attractive metric; how long on average to subjects in the population survive? However, when we want to estimate mean survival time in the presence of censoring, we run into problems. In particular, if the survival curve doesn't touch the x-axis, which means that there remain some censored individuals at the end of followup, the mean survival time remains undefined, since theoretically the unknown survival times could be $\infty$. 
+
+What can be computed is the **restricted mean survival time (RMST)**, which asks what is the average survival time during a defined time period. It is "computed" as the area under the survival curve up to some specified time. We will use the {{< fa brands r-project >}} package **RISCA** to compute the RMST.[`install.packages('RISCA')`]{.aside}. This statistic is useful for comparing two survival curves, as we'll see in a bit. 
+
+```{r}
+#| code-fold: false
+library(RISCA)
+surv_data <- broom::tidy(sfit)
+with(surv_data, rmst(time, estimate, max.time = 2, type = 's'))
+```
+
+
+
+## Comparing survival curves
+
+-   log-rank test
+
+-   
+
 
