@@ -1,5 +1,6 @@
 ---
 engine: knitr
+draft: true
 ---
 # High-dimensional data {#sec-week7}
 **Last updated:** `{r} format(Sys.time(), "%d %b, %Y %I:%M %p %Z")`
