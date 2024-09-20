@@ -127,6 +127,13 @@ open circle. *From Aalen, Borgan and Gjessing,
 2008*.](images/clipboard-897485810.png)
 :::
 
+### Risk sets
+
+At any given time $t$, the risk set is defined as the group of individuals who are still at risk _in the study cohort_ to experience an event. This means, we include in the risk set at time $t$ everyone in the study that we are still following at time $t$. 
+Anyone who has experienced an event before time $t$, or individuals who are censored before time $t$, are **not** included in the risk set at time $t$. 
+
+A risk set is defined at every time during the period of the study. 
+
 ### Censoring
 
 There are generally 3 kinds of censoring that we consider:
@@ -207,7 +214,7 @@ Hazard function
     time t given you have survived till then.
     $h(t) = P(T = t | T \geq t) = \frac{f(t)}{S(t)}$ where $f(t)$ is the p.d.f
     of the survival distribution ($f(t) = \frac{dF(t)}{dt}$). It can also be
-    defined as $h(x) = -\frac{d}{dt} \ln(S(t))$.
+    defined as $h(t) = -\frac{d}{dt} \ln(S(t))$.
 
 Cumulative hazard function
 
@@ -248,7 +255,7 @@ $$
 $$
 
 So the complementary log transformation (log(-log(t)) is linear in log t, which
-can serve as a test for the adequacy of the model in fitting the data. [Note
+can serve as a test for the adequacy of the Weibull model in fitting the data. [Note
 that the Exponential is the Weibull with k=1]{.aside}.
 
 ::: callout-note
@@ -486,7 +493,7 @@ ggplot(plt_data) +
 ```
 
 
-## Different statistical properties
+## Different statistics
 
 There are different metrics that can help summarise a survival distribution for the purposes of comparing different distributions or reporting landmarks. 
 
@@ -513,16 +520,145 @@ What can be computed is the **restricted mean survival time (RMST)**, which asks
 ```{r}
 #| code-fold: false
 library(RISCA)
-surv_data <- broom::tidy(sfit)
-with(surv_data, rmst(time, estimate, max.time = 2, type = 's'))
+sdata <- broom::tidy(sfit)
+ggplot(sdata, aes(time, estimate)) + geom_step()+
+  geom_area(data = sdata |> filter(time <= 2), fill = 'blue')
+with(sdata, rmst(time, estimate, max.time = 2, type = 's'))
 ```
 
+### Landmark estimate
+
+We're often interested in the proportion of units who have survived to a particular time. In drug trials this is often 1-, 2- or 5-year survival. This is a binary outcome of yes (survived to the landmark time) or no (had an event before the landmark time).
+
+::: {.callout-important}
+Be careful with the definition above. An error is commonly made with creating the outcome variable. Only individuals in the risk set at the landmark time receive a "no" or 0, and only individuals who have experienced an event at or before the landmark time are given a "yes" or 1. Anyone who has been censored before the landmark time is given a missing value (`NA`), since we don't know what their outcome status at the landmark time is. 
+:::
+
+The landmark estimate is the proportion of 'yes'/1s in the variable described above, ignoring the observatins that are marked as `NA`. To be precise, 
+
+::: callout-note
+Landmark estimate = (# with an event at or before the landmark time)/(# who were not censored before the landmark time)
+
+The denominator inludes everyone in the numerator + everyone in the [risk set](#risk-sets) at the landmark time. 
+:::
+
+## Comparing survival
+
+A central aspect of survival analysis is to compare the survival experience of patients who are exposed to different treatments or have different genetic profiles. The inference that we wish to make is that survival under one condition is longer than under another condition. 
+
+When we want to see if a new drug is better than existing treatments, we first design a randomized clinical trial where subjects are randomly assigned to the new treatment (T) or the standard of care (C). We then follow subjects going forward until the planned end of the study and observe the planned outcome (which can be disease recurrence, death, progression of disease or something else). Some individuals end up being censored due to drop-out or remaining alive at the end of the study. For each group of patients (which are called treatment arms), we can construct a survival curve, perhaps using the Kaplan-Meier technique. So what does it mean to say that indivudals on treatment have better survival than people on standard of care?
+
+There are two broad approaches to answering this question. 
+
+- The first is **landmark analysis**, where we see how patients are doing after a certain amount of time on the study, often 1-, 2- or 5-years. 
+- The second approach is to ask if the overall survival experience for the treatment group is better than that of the standard of care group. 
+
+### Landmark analysis
+
+We saw [earlier](#landmark-estimate) how to compute the landmark estimate. For each arm of a trial (or each subgroup/stratum in the study), you can compute the landmark estimate for that arm. The landmark estimate is a proportion, and so we can use a two-sample test for proportions to evaluate the difference between the landmark estimates from two arms. 
+
+Let's look at an example of doing this using the in-built dataset `colon` from a clinical trial of adjuvant chemotherapy in Stage B/C colon cancer. We will compare the 2 year overall survival between different treatment arms. We first compute the 2-year overall survival fo each of the three arms. 
+
+```{r}
+library(tidyverse)
+library(survival)
+colon_os <- colon |> dplyr::filter(etype == 2)
+colon_os |>
+  filter((status == 1 & time <= 2*365) | (status == 0 & time >= 2*365)) |>
+  group_by(rx) |>
+  summarise(prop = sum(1-status)/n())
+```
+
+We will now test if the Lev+5FU arm does better than the Lev arm. 
+
+```{r}
+#| code-fold: false
+library(infer)
+test_dat <- colon_os |>
+  filter((status == 1 & time <= 2*365) | (status == 0 & time >= 2*365)) |>
+  filter(rx != 'Obs') |>
+  mutate(rx = droplevels(rx),
+  status = factor(1-status)) # convert to survival
+obs_stat = test_dat |>
+  specify(status ~ rx, success = '1') |> 
+  calculate('diff in props', order = c('Lev+5FU', 'Lev'))
+test_dat |> specify(status ~ rx, success = '1') |>
+  hypothesize(null = 'independence') |>
+  generate(reps =5000, 'permute') |>
+  calculate('diff in props', order = c('Lev+5FU', 'Lev')) |>
+  get_p_value(obs_stat, 'right') # one-sided (greater) 
+
+```
+
+::: callout-note
+Try to see whether there is a significant difference at 5 years.
+:::
+
+### The hazard function and the proportional hazards assumption
 
 
-## Comparing survival curves
+What we've set out to do is to see if two survival curves are different in some sense. Intuitively we want to see two survival curves with one entirely above the other, to have a clear case that the survival experience in one group is better than that of the other. 
 
--   log-rank test
+Let's look at the exponential distribution. The exponential distribution is characterised by a single parameter, the hazard. Suppose the two groups have hazards $\lambda_1$ and $\lambda_2$. If $\lambda_1 > \lambda_2$, then we will have 
 
--   
+$$
+S(t | \lambda_1) = e^{-\lambda_1 t} < e^{-\lambda_2 t} = S(t | \lambda_2) \quad \forall t \ge 0
+$$
 
+So, for an exponential distribution, the hazard, which is a constant, characterises the distribution, and if the hazard increases, we see the survival function decreases uniformly at all times, making a clear case that survival in one group is clearly better than the other for all times $t$.
 
+This idea can be extended. It turns out, if the hazards of two survival curves are **proportional**, i.e. the ratio of the hazards is a constant independent of time, then one survival curve will be uniformly above the the other curve and the superiority of one survival experience is clear. This is called the **proportional hazards assumption**
+
+::: {.callout-note}
+## Digging a bit into the the PH assumption {{< iconify mdi:thought-bubble size=Large >}}
+
+We recall that $S(t) = \exp\left(-\int_0^\infty h(u)du\right)$. If the two groups have hazard functions $h_1(t)$ and $h_2(t)$. If we assume that $h_2(t) = \gamma h_1(t)$  for some $\gamma > 1$ (the PH assumption). Then we have
+
+$$
+\begin{array}{ll}
+S_2(t) &=& \exp\left(-\int_0^\infty h_2(u)du\right)\\
+&=& \exp\left( -\int_0^\infty \gamma h_1(u) du\right)\\
+&=& \exp\left( -\gamma \int_0^\infty h_1(u) du\right)\\
+&=& S_1(t)^\gamma
+\end{array}
+$$
+
+The proportional hazards assumption thus implies that one survival curve is uniformly higher than the other. 
+
+I'll state that since $\gamma > 1$, $h_2(t) > h_1(t),\ \forall t$ which, in turn, implies $S_2(t) < S_1(t)$. **Convince yourself of this.** The heuristics are quite clear, in that a higher hazard means you have more events per unit time, which means there are more events earlier which makes the survival curve be lower. 
+
+:::
+
+The PH assumption thus allows us to judge relative survival through the hazard functions, in particular, we look at the **hazard ratio** which is independent of time under the PH assumption. We can formulate a hypothesis test in this situation as 
+
+$$
+H_0: HR = 1\ \text{vs}\ H_1: HR \neq 1
+$$
+
+The formal hypothesis test that tests this hypothesis is called the **log-rank test**, which is a form of $\chi^2$-test. This test works provided (a) the censoring is uninformative and the rates of censoring are the same in both arms, (b) proportional hazards. We can perform the log-rank test directly in R.
+
+```{r}
+#| code-fold: false
+library(survival)
+difftest <- survdiff(Surv(time, status) ~ rx, data = colon |> filter(rx != 'Obs'))
+# difftest$pvalue
+```
+
+We get a p-value of `{r} scales::pvalue_format(accuracy=1e-6, add_p=TRUE)(difftest$pvalue)`.
+
+::: aside
+The `survdiff` function exposes the p-value in a slot named "pvalue", which is different from the much more common "p.value". To maintain uniformity, you can do `broom::tidy(difftest)$p.value`
+:::
+
+This p-value is obtained under the PH assumption, but we can use resampling to estimate the p-value as well. 
+
+```{r}
+#| code-fold: false
+library(rsample)
+set.seed(2893)
+resamples <- permutations(colon |> filter(rx != "Obs"), permute = rx, times = 1000)
+obs_stat <- survdiff(Surv(time, status)~rx, data = colon |> filter(rx != 'Obs'))$chisq
+null_dist <- map_dbl(resamples$splits, \(d) survdiff(Surv(time, status)~ rx, data = analysis(d))$chisq)
+p.value <- mean(null_dist > obs_stat)
+```
+The permutation p-value is `{r} format.pval(p.value)`
