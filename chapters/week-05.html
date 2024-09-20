@@ -392,7 +392,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"options":{"context":"interactive","message":"true","autorun":"false","output":"true","out-height":"","dpi":72,"editor-max-height":"","fig-width":"3","fig-height":5,"comment":"","classes":"","label":"unnamed-chunk-1","read-only":"false","out-width":"700px","fig-cap":"","results":"markup","editor-word-wrap":"true","warning":"true","editor-font-scale":"1","editor-quick-suggestions":"false"},"id":1,"code":"set.seed(20348)\nlibrary(ggplot2)\nlibrary(dplyr)\nd <- tibble(\n    T = rweibull(1000, 5, scale=3) # Simulated survival times (no censoring). FEEL FREE TO PLAY HERE\n  ) |> \n  arrange(T) |> \n  mutate(\n    Ft = (1:n())/n(), # empirical c.d.f.\n    St = 1-Ft,        # empirical survival function\n    Lt = -log(St)    # empirical hazard function\n    )\nggplot(d, aes(sample = Lt))+\n  geom_qq(distribution = stats::qexp) + \n  geom_qq_line(distribution = stats::qexp) + \n  theme_bw() + \n  labs(x = \"Exponential(1) quantiles\", y = \"Empirical cumulative hazard function\")+\n  coord_equal()"}];
+globalThis.qwebrCellDetails = [{"options":{"comment":"","read-only":"false","message":"true","editor-font-scale":"1","results":"markup","fig-cap":"","label":"unnamed-chunk-1","output":"true","editor-word-wrap":"true","dpi":72,"warning":"true","editor-quick-suggestions":"false","autorun":"false","classes":"","out-height":"","context":"interactive","fig-width":"3","fig-height":5,"editor-max-height":"","out-width":"700px"},"id":1,"code":"set.seed(20348)\nlibrary(ggplot2)\nlibrary(dplyr)\nd <- tibble(\n    T = rweibull(1000, 5, scale=3) # Simulated survival times (no censoring). FEEL FREE TO PLAY HERE\n  ) |> \n  arrange(T) |> \n  mutate(\n    Ft = (1:n())/n(), # empirical c.d.f.\n    St = 1-Ft,        # empirical survival function\n    Lt = -log(St)    # empirical hazard function\n    )\nggplot(d, aes(sample = Lt))+\n  geom_qq(distribution = stats::qexp) + \n  geom_qq_line(distribution = stats::qexp) + \n  theme_bw() + \n  labs(x = \"Exponential(1) quantiles\", y = \"Empirical cumulative hazard function\")+\n  coord_equal()"}];
 
 </script><script type="module">
 // Declare startupMessageQWebR globally
@@ -2038,7 +2038,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   
 
 
-</header><p><strong>Last updated:</strong> 20 Sep, 2024 08:45 AM EDT</p>
+</header><p><strong>Last updated:</strong> 20 Sep, 2024 08:59 AM EDT</p>
 <div class="callout callout-style-simple callout-warning">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -2203,10 +2203,10 @@ Clinical data in CDISC format that can go to the FDA
 </tbody>
 </table>
 <p>We can consider <span class="math inline">\(\lambda\)</span> as the <em>rate</em> at which events occur. A larger <span class="math inline">\(\lambda\)</span> means that the average survival time goes down, which means you have more events per unit time. A really nice interpretation of <span class="math inline">\(k\)</span> is available <a href="https://en.wikipedia.org/wiki/Weibull_distribution">here</a>.</p>
-<p>One property of this that derives from the survival function of the Weibull distribution is that</p>
-<p><span class="math display">\[
+<p>One property of this that derives from the survival function of the Weibull distribution uses the complementary log function (<a href="#eq-cll" class="quarto-xref">Equation&nbsp;<span>5.1</span></a>)</p>
+<p><span id="eq-cll"><span class="math display">\[
 \log (- \log S(t)) = \log \lambda + k\log t
-\]</span></p>
+\tag{5.1}\]</span></span></p>
 <div class="page-columns page-full"><p>So the complementary log transformation (log(-log(t)) is linear in log t, which can serve as a test for the adequacy of the Weibull model in fitting the data. .</p><div class="no-row-height column-margin column-container"><span class="margin-aside">Note that the Exponential is the Weibull with k=1</span></div></div>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
