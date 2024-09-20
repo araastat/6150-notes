@@ -252,7 +252,7 @@ distribution is that
 
 $$
 \log (- \log S(t)) = \log \lambda + k\log t
-$$
+$$ {#eq-cll}
 
 So the complementary log transformation (log(-log(t)) is linear in log t, which
 can serve as a test for the adequacy of the Weibull model in fitting the data. [Note
@@ -448,6 +448,20 @@ so the right side of the equation is `1`. We'll see in a bit how that gets
 modified when we start looking at groups.
 :::
 
+We can also plot the predicted survival curve from the `survreg` package.
+
+```{r}
+#| code-fold: false
+probs <- seq(0.01, 1, by = 0.01)                         # Probability of death
+pred_times <- predict(fit,type = 'quantile', p = probs)  # predicted times
+tibble(
+  probs = 1-probs,  # convert to survival probability
+  times = pred_times[1,]
+) |> 
+  ggplot(aes(x = times, y = probs))+geom_line()
+
+```
+
 ### Estimation: non-parametric methods
 
 The most common way to estimate the survival curve is the **Kaplan-Meier
@@ -603,6 +617,7 @@ Let's look at the exponential distribution. The exponential distribution is char
 
 $$
 S(t | \lambda_1) = e^{-\lambda_1 t} < e^{-\lambda_2 t} = S(t | \lambda_2) \quad \forall t \ge 0
+
 $$
 
 So, for an exponential distribution, the hazard, which is a constant, characterises the distribution, and if the hazard increases, we see the survival function decreases uniformly at all times, making a clear case that survival in one group is clearly better than the other for all times $t$.
