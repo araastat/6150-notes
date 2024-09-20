@@ -392,7 +392,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"id":1,"code":"set.seed(20348)\nlibrary(ggplot2)\nlibrary(dplyr)\nd <- tibble(\n    T = rweibull(1000, 5, scale=3) # Simulated survival times (no censoring). FEEL FREE TO PLAY HERE\n  ) |> \n  arrange(T) |> \n  mutate(\n    Ft = (1:n())/n(), # empirical c.d.f.\n    St = 1-Ft,        # empirical survival function\n    Lt = -log(St)    # empirical hazard function\n    )\nggplot(d, aes(sample = Lt))+\n  geom_qq(distribution = stats::qexp) + \n  geom_qq_line(distribution = stats::qexp) + \n  theme_bw() + \n  labs(x = \"Exponential(1) quantiles\", y = \"Empirical cumulative hazard function\")+\n  coord_equal()","options":{"warning":"true","out-height":"","autorun":"false","out-width":"700px","editor-max-height":"","label":"unnamed-chunk-1","read-only":"false","editor-quick-suggestions":"false","dpi":72,"comment":"","results":"markup","message":"true","fig-height":5,"output":"true","classes":"","context":"interactive","fig-width":"3","editor-word-wrap":"true","editor-font-scale":"1","fig-cap":""}}];
+globalThis.qwebrCellDetails = [{"options":{"context":"interactive","message":"true","autorun":"false","output":"true","out-height":"","dpi":72,"editor-max-height":"","fig-width":"3","fig-height":5,"comment":"","classes":"","label":"unnamed-chunk-1","read-only":"false","out-width":"700px","fig-cap":"","results":"markup","editor-word-wrap":"true","warning":"true","editor-font-scale":"1","editor-quick-suggestions":"false"},"id":1,"code":"set.seed(20348)\nlibrary(ggplot2)\nlibrary(dplyr)\nd <- tibble(\n    T = rweibull(1000, 5, scale=3) # Simulated survival times (no censoring). FEEL FREE TO PLAY HERE\n  ) |> \n  arrange(T) |> \n  mutate(\n    Ft = (1:n())/n(), # empirical c.d.f.\n    St = 1-Ft,        # empirical survival function\n    Lt = -log(St)    # empirical hazard function\n    )\nggplot(d, aes(sample = Lt))+\n  geom_qq(distribution = stats::qexp) + \n  geom_qq_line(distribution = stats::qexp) + \n  theme_bw() + \n  labs(x = \"Exponential(1) quantiles\", y = \"Empirical cumulative hazard function\")+\n  coord_equal()"}];
 
 </script><script type="module">
 // Declare startupMessageQWebR globally
@@ -1704,7 +1704,8 @@ window.Quarto = {
   <li>
 <a href="#survival-data" id="toc-survival-data" class="nav-link" data-scroll-target="#survival-data">Survival data</a>
   <ul class="collapse">
-<li><a href="#censoring" id="toc-censoring" class="nav-link" data-scroll-target="#censoring">Censoring</a></li>
+<li><a href="#risk-sets" id="toc-risk-sets" class="nav-link" data-scroll-target="#risk-sets">Risk sets</a></li>
+  <li><a href="#censoring" id="toc-censoring" class="nav-link" data-scroll-target="#censoring">Censoring</a></li>
   <li><a href="#the-nature-of-survival-data" id="toc-the-nature-of-survival-data" class="nav-link" data-scroll-target="#the-nature-of-survival-data">The nature of survival data</a></li>
   </ul>
 </li>
@@ -1725,13 +1726,20 @@ window.Quarto = {
   </ul>
 </li>
   <li>
-<a href="#different-statistical-properties" id="toc-different-statistical-properties" class="nav-link" data-scroll-target="#different-statistical-properties">Different statistical properties</a>
+<a href="#different-statistics" id="toc-different-statistics" class="nav-link" data-scroll-target="#different-statistics">Different statistics</a>
   <ul class="collapse">
 <li><a href="#median-survival-time" id="toc-median-survival-time" class="nav-link" data-scroll-target="#median-survival-time">Median survival time</a></li>
   <li><a href="#mean-survival-time" id="toc-mean-survival-time" class="nav-link" data-scroll-target="#mean-survival-time">Mean survival time</a></li>
+  <li><a href="#landmark-estimate" id="toc-landmark-estimate" class="nav-link" data-scroll-target="#landmark-estimate">Landmark estimate</a></li>
   </ul>
 </li>
-  <li><a href="#comparing-survival-curves" id="toc-comparing-survival-curves" class="nav-link" data-scroll-target="#comparing-survival-curves">Comparing survival curves</a></li>
+  <li>
+<a href="#comparing-survival" id="toc-comparing-survival" class="nav-link" data-scroll-target="#comparing-survival">Comparing survival</a>
+  <ul class="collapse">
+<li><a href="#landmark-analysis" id="toc-landmark-analysis" class="nav-link" data-scroll-target="#landmark-analysis">Landmark analysis</a></li>
+  <li><a href="#the-hazard-function-and-the-proportional-hazards-assumption" id="toc-the-hazard-function-and-the-proportional-hazards-assumption" class="nav-link" data-scroll-target="#the-hazard-function-and-the-proportional-hazards-assumption">The hazard function and the proportional hazards assumption</a></li>
+  </ul>
+</li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-05.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -2030,7 +2038,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   
 
 
-</header><p><strong>Last updated:</strong> 19 Sep, 2024 05:26 PM EDT</p>
+</header><p><strong>Last updated:</strong> 20 Sep, 2024 08:45 AM EDT</p>
 <div class="callout callout-style-simple callout-warning">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -2096,7 +2104,10 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 </div>
 </div>
 </div>
-<section id="censoring" class="level3"><h3 class="anchored" data-anchor-id="censoring">Censoring</h3>
+<section id="risk-sets" class="level3"><h3 class="anchored" data-anchor-id="risk-sets">Risk sets</h3>
+<p>At any given time <span class="math inline">\(t\)</span>, the risk set is defined as the group of individuals who are still at risk <em>in the study cohort</em> to experience an event. This means, we include in the risk set at time <span class="math inline">\(t\)</span> everyone in the study that we are still following at time <span class="math inline">\(t\)</span>. Anyone who has experienced an event before time <span class="math inline">\(t\)</span>, or individuals who are censored before time <span class="math inline">\(t\)</span>, are <strong>not</strong> included in the risk set at time <span class="math inline">\(t\)</span>.</p>
+<p>A risk set is defined at every time during the period of the study.</p>
+</section><section id="censoring" class="level3"><h3 class="anchored" data-anchor-id="censoring">Censoring</h3>
 <p>There are generally 3 kinds of censoring that we consider:</p>
 <ol type="1">
 <li>Right censoring, where we know that a subject has survived up to a certain time, but we don’t observe the time of the survival event. This is by far the most common form of censoring and what most analyses account for.</li>
@@ -2138,7 +2149,7 @@ Clinical data in CDISC format that can go to the FDA
 </dd>
 <dt>Hazard function</dt>
 <dd>
-<p>The hazard function <span class="math inline">\(h(t)\)</span> is the instantaneous chance that you will fail at time t given you have survived till then. <span class="math inline">\(h(t) = P(T = t | T \geq t) = \frac{f(t)}{S(t)}\)</span> where <span class="math inline">\(f(t)\)</span> is the p.d.f of the survival distribution (<span class="math inline">\(f(t) = \frac{dF(t)}{dt}\)</span>). It can also be defined as <span class="math inline">\(h(x) = -\frac{d}{dt} \ln(S(t))\)</span>.</p>
+<p>The hazard function <span class="math inline">\(h(t)\)</span> is the instantaneous chance that you will fail at time t given you have survived till then. <span class="math inline">\(h(t) = P(T = t | T \geq t) = \frac{f(t)}{S(t)}\)</span> where <span class="math inline">\(f(t)\)</span> is the p.d.f of the survival distribution (<span class="math inline">\(f(t) = \frac{dF(t)}{dt}\)</span>). It can also be defined as <span class="math inline">\(h(t) = -\frac{d}{dt} \ln(S(t))\)</span>.</p>
 </dd>
 <dt>Cumulative hazard function</dt>
 <dd>
@@ -2196,7 +2207,7 @@ Clinical data in CDISC format that can go to the FDA
 <p><span class="math display">\[
 \log (- \log S(t)) = \log \lambda + k\log t
 \]</span></p>
-<div class="page-columns page-full"><p>So the complementary log transformation (log(-log(t)) is linear in log t, which can serve as a test for the adequacy of the model in fitting the data. .</p><div class="no-row-height column-margin column-container"><span class="margin-aside">Note that the Exponential is the Weibull with k=1</span></div></div>
+<div class="page-columns page-full"><p>So the complementary log transformation (log(-log(t)) is linear in log t, which can serve as a test for the adequacy of the Weibull model in fitting the data. .</p><div class="no-row-height column-margin column-container"><span class="margin-aside">Note that the Exponential is the Weibull with k=1</span></div></div>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -2346,24 +2357,28 @@ L(\lambda | T) = \Pi_{i=1}^n (\lambda e^{-\lambda t_i})^{\delta_i} (e^{-\lambda 
 
 <div class="no-row-height column-margin column-container"><div class="margin-aside">
 <p>A note here on notation. Here we’re only trying to estimate one survival curve, so the right side of the equation is <code>1</code>. We’ll see in a bit how that gets modified when we start looking at groups.</p>
-</div></div></section><section id="estimation-non-parametric-methods" class="level3"><h3 class="anchored" data-anchor-id="estimation-non-parametric-methods">Estimation: non-parametric methods</h3>
-<p>The most common way to estimate the survival curve is the <strong>Kaplan-Meier curve</strong>, which provides an unbiased estimate of the survival curve in the presence of independent censoring. It appears as a step function which is constant between failure times, and the vertical jump at each failure time is inversely proportional to the number of individuals still at risk at that time.</p>
+</div></div><p>We can also plot the predicted survival curve from the <code>survreg</code> package.</p>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></span>
-<span><span class="va">sfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="cn">T</span>, <span class="va">delta</span><span class="op">==</span><span class="st">'Event'</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sfit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">probs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">1</span>, by <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>                         <span class="co"># Probability of death</span></span>
+<span><span class="va">pred_times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>,type <span class="op">=</span> <span class="st">'quantile'</span>, p <span class="op">=</span> <span class="va">probs</span><span class="op">)</span>  <span class="co"># predicted times</span></span>
+<span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  probs <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="va">probs</span>,  <span class="co"># convert to survival probability</span></span>
+<span>  times <span class="op">=</span> <span class="va">pred_times</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">times</span>, y <span class="op">=</span> <span class="va">probs</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="week-05_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>A more refined (and personally preferred) version is using the <strong>ggsurvfit</strong> package which is aligned with <strong>ggplot2</strong>.</p>
+</section><section id="estimation-non-parametric-methods" class="level3"><h3 class="anchored" data-anchor-id="estimation-non-parametric-methods">Estimation: non-parametric methods</h3>
+<p>The most common way to estimate the survival curve is the <strong>Kaplan-Meier curve</strong>, which provides an unbiased estimate of the survival curve in the presence of independent censoring. It appears as a step function which is constant between failure times, and the vertical jump at each failure time is inversely proportional to the number of individuals still at risk at that time.</p>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pharmaverse/ggsurvfit">ggsurvfit</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="http://www.danieldsjoberg.com/ggsurvfit/reference/survfit2.html">survfit2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="cn">T</span>, <span class="va">delta</span><span class="op">==</span><span class="st">'Event'</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="http://www.danieldsjoberg.com/ggsurvfit/reference/ggsurvfit.html">ggsurvfit</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="http://www.danieldsjoberg.com/ggsurvfit/reference/add_risktable.html">add_risktable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></span>
+<span><span class="va">sfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="cn">T</span>, <span class="va">delta</span><span class="op">==</span><span class="st">'Event'</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sfit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="week-05_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
@@ -2371,10 +2386,22 @@ L(\lambda | T) = \Pi_{i=1}^n (\lambda e^{-\lambda t_i})^{\delta_i} (e^{-\lambda 
 </div>
 </div>
 </div>
+<p>A more refined (and personally preferred) version is using the <strong>ggsurvfit</strong> package which is aligned with <strong>ggplot2</strong>.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pharmaverse/ggsurvfit">ggsurvfit</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="http://www.danieldsjoberg.com/ggsurvfit/reference/survfit2.html">survfit2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="cn">T</span>, <span class="va">delta</span><span class="op">==</span><span class="st">'Event'</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="http://www.danieldsjoberg.com/ggsurvfit/reference/ggsurvfit.html">ggsurvfit</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="http://www.danieldsjoberg.com/ggsurvfit/reference/add_risktable.html">add_risktable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-05_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section><section id="aligning-the-different-estimates" class="level3"><h3 class="anchored" data-anchor-id="aligning-the-different-estimates">Aligning the different estimates</h3>
 <p>We see that accounting for censoring reduces the bias in estimating the survival curve. We’ve generated the data from an exponential model, so the parametric method does very well (it uses the exponential to fit). The Kaplan-Meier method is known to generate unbiased estimates generally as long as the censoring is non-informative.</p>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allancameron.github.io/geomtextpath/">geomtextpath</a></span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allancameron.github.io/geomtextpath/">geomtextpath</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pharmaverse/ggsurvfit">ggsurvfit</a></span><span class="op">)</span></span>
 <span><span class="va">plt_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>times <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="cn">T</span>, cens <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">delta</span><span class="op">==</span><span class="st">'Event'</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>St <span class="op">=</span> <span class="fl">1</span><span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
@@ -2389,17 +2416,17 @@ L(\lambda | T) = \Pi_{i=1}^n (\lambda e^{-\lambda t_i})^{\delta_i} (e^{-\lambda 
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Method"</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Truth"</span> <span class="op">=</span> <span class="st">'green'</span>, <span class="st">'Parametric'</span><span class="op">=</span><span class="st">'orange'</span>, <span class="st">"KM"</span> <span class="op">=</span> <span class="st">'blue'</span>, <span class="st">"Ignore censoring"</span> <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="week-05_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="week-05_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-</section></section><section id="different-statistical-properties" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="different-statistical-properties">Different statistical properties</h2>
+</section></section><section id="different-statistics" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="different-statistics">Different statistics</h2>
 <p>There are different metrics that can help summarise a survival distribution for the purposes of comparing different distributions or reporting landmarks.</p>
 <section id="median-survival-time" class="level3"><h3 class="anchored" data-anchor-id="median-survival-time">Median survival time</h3>
 <p>In the literature, the statistic we see most commonly is the <em>median survival time</em>. Due to censoring, we also have to be careful in estimating it, and need to use censoring-aware methods like the previous section, since it is derived from the estimated survival curve.</p>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://www.danieldsjoberg.com/ggsurvfit/reference/survfit2.html">survfit2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="cn">T</span>, <span class="va">delta</span><span class="op">==</span><span class="st">"Event"</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span> <span class="co"># can also use survfit</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sfit</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://www.danieldsjoberg.com/ggsurvfit/reference/survfit2.html">survfit2</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="cn">T</span>, <span class="va">delta</span><span class="op">==</span><span class="st">"Event"</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">d</span><span class="op">)</span> <span class="co"># can also use survfit</span></span>
 <span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">sfit</span>, probs <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 3
@@ -2409,11 +2436,11 @@ L(\lambda | T) = \Pi_{i=1}^n (\lambda e^{-\lambda t_i})^{\delta_i} (e^{-\lambda 
 </div>
 </div>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="http://www.danieldsjoberg.com/ggsurvfit/reference/ggsurvfit.html">ggsurvfit</a></span><span class="op">(</span><span class="va">sfit</span><span class="op">)</span><span class="op">+</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="http://www.danieldsjoberg.com/ggsurvfit/reference/ggsurvfit.html">ggsurvfit</a></span><span class="op">(</span><span class="va">sfit</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="http://www.danieldsjoberg.com/ggsurvfit/reference/add_quantile.html">add_quantile</a></span><span class="op">(</span>y_value <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="week-05_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="week-05_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2422,21 +2449,163 @@ L(\lambda | T) = \Pi_{i=1}^n (\lambda e^{-\lambda t_i})^{\delta_i} (e^{-\lambda 
 <p>The mean survival time seems an attractive metric; how long on average to subjects in the population survive? However, when we want to estimate mean survival time in the presence of censoring, we run into problems. In particular, if the survival curve doesn’t touch the x-axis, which means that there remain some censored individuals at the end of followup, the mean survival time remains undefined, since theoretically the unknown survival times could be <span class="math inline">\(\infty\)</span>.</p>
 <div class="page-columns page-full"><p>What can be computed is the <strong>restricted mean survival time (RMST)</strong>, which asks what is the average survival time during a defined time period. It is “computed” as the area under the survival curve up to some specified time. We will use the <i class="fa-brands fa-r-project" aria-label="r-project"></i> package <strong>RISCA</strong> to compute the RMST.. This statistic is useful for comparing two survival curves, as we’ll see in a bit.</p><div class="no-row-height column-margin column-container"><span class="margin-aside"><code>install.packages('RISCA')</code></span></div></div>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">RISCA</span><span class="op">)</span></span>
-<span><span class="va">surv_data</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">sfit</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">surv_data</span>, <span class="fu"><a href="https://rdrr.io/pkg/RISCA/man/rmst.html">rmst</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">estimate</span>, max.time <span class="op">=</span> <span class="fl">2</span>, type <span class="op">=</span> <span class="st">'s'</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">RISCA</span><span class="op">)</span></span>
+<span><span class="va">sdata</span> <span class="op">&lt;-</span> <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">sfit</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">sdata</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_step</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_area</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdata</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">time</span> <span class="op">&lt;=</span> <span class="fl">2</span><span class="op">)</span>, fill <span class="op">=</span> <span class="st">'blue'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-05_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">sdata</span>, <span class="fu"><a href="https://rdrr.io/pkg/RISCA/man/rmst.html">rmst</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">estimate</span>, max.time <span class="op">=</span> <span class="fl">2</span>, type <span class="op">=</span> <span class="st">'s'</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9730756</code></pre>
 </div>
 </div>
-</section></section><section id="comparing-survival-curves" class="level2"><h2 class="anchored" data-anchor-id="comparing-survival-curves">Comparing survival curves</h2>
+</section><section id="landmark-estimate" class="level3"><h3 class="anchored" data-anchor-id="landmark-estimate">Landmark estimate</h3>
+<p>We’re often interested in the proportion of units who have survived to a particular time. In drug trials this is often 1-, 2- or 5-year survival. This is a binary outcome of yes (survived to the landmark time) or no (had an event before the landmark time).</p>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Be careful with the definition above. An error is commonly made with creating the outcome variable. Only individuals in the risk set at the landmark time receive a “no” or 0, and only individuals who have experienced an event at or before the landmark time are given a “yes” or 1. Anyone who has been censored before the landmark time is given a missing value (<code>NA</code>), since we don’t know what their outcome status at the landmark time is.</p>
+</div>
+</div>
+</div>
+<p>The landmark estimate is the proportion of ‘yes’/1s in the variable described above, ignoring the observatins that are marked as <code>NA</code>. To be precise,</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Landmark estimate = (# with an event at or before the landmark time)/(# who were not censored before the landmark time)</p>
+<p>The denominator inludes everyone in the numerator + everyone in the <a href="#risk-sets">risk set</a> at the landmark time.</p>
+</div>
+</div>
+</div>
+</section></section><section id="comparing-survival" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="comparing-survival">Comparing survival</h2>
+<p>A central aspect of survival analysis is to compare the survival experience of patients who are exposed to different treatments or have different genetic profiles. The inference that we wish to make is that survival under one condition is longer than under another condition.</p>
+<p>When we want to see if a new drug is better than existing treatments, we first design a randomized clinical trial where subjects are randomly assigned to the new treatment (T) or the standard of care (C). We then follow subjects going forward until the planned end of the study and observe the planned outcome (which can be disease recurrence, death, progression of disease or something else). Some individuals end up being censored due to drop-out or remaining alive at the end of the study. For each group of patients (which are called treatment arms), we can construct a survival curve, perhaps using the Kaplan-Meier technique. So what does it mean to say that indivudals on treatment have better survival than people on standard of care?</p>
+<p>There are two broad approaches to answering this question.</p>
 <ul>
-<li><p>log-rank test</p></li>
-<li>
-</li></ul>
+<li>The first is <strong>landmark analysis</strong>, where we see how patients are doing after a certain amount of time on the study, often 1-, 2- or 5-years.</li>
+<li>The second approach is to ask if the overall survival experience for the treatment group is better than that of the standard of care group.</li>
+</ul>
+<section id="landmark-analysis" class="level3"><h3 class="anchored" data-anchor-id="landmark-analysis">Landmark analysis</h3>
+<p>We saw <a href="#landmark-estimate">earlier</a> how to compute the landmark estimate. For each arm of a trial (or each subgroup/stratum in the study), you can compute the landmark estimate for that arm. The landmark estimate is a proportion, and so we can use a two-sample test for proportions to evaluate the difference between the landmark estimates from two arms.</p>
+<p>Let’s look at an example of doing this using the in-built dataset <code>colon</code> from a clinical trial of adjuvant chemotherapy in Stage B/C colon cancer. We will compare the 2 year overall survival between different treatment arms. We first compute the 2-year overall survival fo each of the three arms.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></span>
+<span><span class="va">colon_os</span> <span class="op">&lt;-</span> <span class="va">colon</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">etype</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">colon_os</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">(</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">&amp;</span> <span class="va">time</span> <span class="op">&lt;=</span> <span class="fl">2</span><span class="op">*</span><span class="fl">365</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="va">status</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">time</span> <span class="op">&gt;=</span> <span class="fl">2</span><span class="op">*</span><span class="fl">365</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">rx</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">status</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  rx       prop
+  &lt;fct&gt;   &lt;dbl&gt;
+1 Obs     0.661
+2 Lev     0.665
+3 Lev+5FU 0.751</code></pre>
+</div>
+</div>
+<p>We will now test if the Lev+5FU arm does better than the Lev arm.</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/infer">infer</a></span><span class="op">)</span></span>
+<span><span class="va">test_dat</span> <span class="op">&lt;-</span> <span class="va">colon_os</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">(</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">&amp;</span> <span class="va">time</span> <span class="op">&lt;=</span> <span class="fl">2</span><span class="op">*</span><span class="fl">365</span><span class="op">)</span> <span class="op">|</span> <span class="op">(</span><span class="va">status</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">time</span> <span class="op">&gt;=</span> <span class="fl">2</span><span class="op">*</span><span class="fl">365</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">rx</span> <span class="op">!=</span> <span class="st">'Obs'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>rx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html">droplevels</a></span><span class="op">(</span><span class="va">rx</span><span class="op">)</span>,</span>
+<span>  status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">status</span><span class="op">)</span><span class="op">)</span> <span class="co"># convert to survival</span></span>
+<span><span class="va">obs_stat</span> <span class="op">=</span> <span class="va">test_dat</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/specify.html">specify</a></span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">rx</span>, success <span class="op">=</span> <span class="st">'1'</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/calculate.html">calculate</a></span><span class="op">(</span><span class="st">'diff in props'</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Lev+5FU'</span>, <span class="st">'Lev'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">test_dat</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://infer.tidymodels.org/reference/specify.html">specify</a></span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">rx</span>, success <span class="op">=</span> <span class="st">'1'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">'independence'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span><span class="fl">5000</span>, <span class="st">'permute'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/calculate.html">calculate</a></span><span class="op">(</span><span class="st">'diff in props'</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Lev+5FU'</span>, <span class="st">'Lev'</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://infer.tidymodels.org/reference/get_p_value.html">get_p_value</a></span><span class="op">(</span><span class="va">obs_stat</span>, <span class="st">'right'</span><span class="op">)</span> <span class="co"># one-sided (greater) </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  p_value
+    &lt;dbl&gt;
+1  0.0242</code></pre>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Try to see whether there is a significant difference at 5 years.</p>
+</div>
+</div>
+</div>
+</section><section id="the-hazard-function-and-the-proportional-hazards-assumption" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="the-hazard-function-and-the-proportional-hazards-assumption">The hazard function and the proportional hazards assumption</h3>
+<p>What we’ve set out to do is to see if two survival curves are different in some sense. Intuitively we want to see two survival curves with one entirely above the other, to have a clear case that the survival experience in one group is better than that of the other.</p>
+<p>Let’s look at the exponential distribution. The exponential distribution is characterised by a single parameter, the hazard. Suppose the two groups have hazards <span class="math inline">\(\lambda_1\)</span> and <span class="math inline">\(\lambda_2\)</span>. If <span class="math inline">\(\lambda_1 &gt; \lambda_2\)</span>, then we will have</p>
+<p>$$ S(t | _1) = e^{-_1 t} &lt; e^{-_2 t} = S(t | _2) t </p>
+<p>$$</p>
+<p>So, for an exponential distribution, the hazard, which is a constant, characterises the distribution, and if the hazard increases, we see the survival function decreases uniformly at all times, making a clear case that survival in one group is clearly better than the other for all times <span class="math inline">\(t\)</span>.</p>
+<p>This idea can be extended. It turns out, if the hazards of two survival curves are <strong>proportional</strong>, i.e.&nbsp;the ratio of the hazards is a constant independent of time, then one survival curve will be uniformly above the the other curve and the superiority of one survival experience is clear. This is called the <strong>proportional hazards assumption</strong></p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Digging a bit into the the PH assumption <iconify-icon role="img" inline="" icon="mdi:thought-bubble" style="font-size: 1.5em;" aria-label="Icon thought-bubble from mdi Iconify.design set." title="Icon thought-bubble from mdi Iconify.design set."></iconify-icon>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We recall that <span class="math inline">\(S(t) = \exp\left(-\int_0^\infty h(u)du\right)\)</span>. If the two groups have hazard functions <span class="math inline">\(h_1(t)\)</span> and <span class="math inline">\(h_2(t)\)</span>. If we assume that <span class="math inline">\(h_2(t) = \gamma h_1(t)\)</span> for some <span class="math inline">\(\gamma &gt; 1\)</span> (the PH assumption). Then we have</p>
+<p><span class="math display">\[
+\begin{array}{ll}
+S_2(t) &amp;=&amp; \exp\left(-\int_0^\infty h_2(u)du\right)\\
+&amp;=&amp; \exp\left( -\int_0^\infty \gamma h_1(u) du\right)\\
+&amp;=&amp; \exp\left( -\gamma \int_0^\infty h_1(u) du\right)\\
+&amp;=&amp; S_1(t)^\gamma
+\end{array}
+\]</span></p>
+<p>The proportional hazards assumption thus implies that one survival curve is uniformly higher than the other.</p>
+<p>I’ll state that since <span class="math inline">\(\gamma &gt; 1\)</span>, <span class="math inline">\(h_2(t) &gt; h_1(t),\ \forall t\)</span> which, in turn, implies <span class="math inline">\(S_2(t) &lt; S_1(t)\)</span>. <strong>Convince yourself of this.</strong> The heuristics are quite clear, in that a higher hazard means you have more events per unit time, which means there are more events earlier which makes the survival curve be lower.</p>
+</div>
+</div>
+<p>The PH assumption thus allows us to judge relative survival through the hazard functions, in particular, we look at the <strong>hazard ratio</strong> which is independent of time under the PH assumption. We can formulate a hypothesis test in this situation as</p>
+<p><span class="math display">\[
+H_0: HR = 1\ \text{vs}\ H_1: HR \neq 1
+\]</span></p>
+<p>The formal hypothesis test that tests this hypothesis is called the <strong>log-rank test</strong>, which is a form of <span class="math inline">\(\chi^2\)</span>-test. This test works provided (a) the censoring is uninformative and the rates of censoring are the same in both arms, (b) proportional hazards. We can perform the log-rank test directly in R.</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></span>
+<span><span class="va">difftest</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survdiff.html">survdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">rx</span>, data <span class="op">=</span> <span class="va">colon</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">rx</span> <span class="op">!=</span> <span class="st">'Obs'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># difftest$pvalue</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We get a p-value of p&lt;0.000001.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>The <code>survdiff</code> function exposes the p-value in a slot named “pvalue”, which is different from the much more common “p.value”. To maintain uniformity, you can do <code>broom::tidy(difftest)$p.value</code></p>
+</div></div><p>This p-value is obtained under the PH assumption, but we can use resampling to estimate the p-value as well.</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rsample.tidymodels.org">rsample</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2893</span><span class="op">)</span></span>
+<span><span class="va">resamples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/permutations.html">permutations</a></span><span class="op">(</span><span class="va">colon</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">rx</span> <span class="op">!=</span> <span class="st">"Obs"</span><span class="op">)</span>, permute <span class="op">=</span> <span class="va">rx</span>, times <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span><span class="va">obs_stat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survdiff.html">survdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="va">rx</span>, data <span class="op">=</span> <span class="va">colon</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">rx</span> <span class="op">!=</span> <span class="st">'Obs'</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">chisq</span></span>
+<span><span class="va">null_dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dbl</a></span><span class="op">(</span><span class="va">resamples</span><span class="op">$</span><span class="va">splits</span>, \<span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survdiff.html">survdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span><span class="op">~</span> <span class="va">rx</span>, data <span class="op">=</span> <span class="fu"><a href="https://rsample.tidymodels.org/reference/as.data.frame.rsplit.html">analysis</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">chisq</span><span class="op">)</span></span>
+<span><span class="va">p.value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">null_dist</span> <span class="op">&gt;</span> <span class="va">obs_stat</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The permutation p-value is &lt; 2.22e-16</p>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
