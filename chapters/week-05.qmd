@@ -248,7 +248,7 @@ more events per unit time. A really nice interpretation of $k$ is available
 [here](https://en.wikipedia.org/wiki/Weibull_distribution).
 
 One property of this that derives from the survival function of the Weibull
-distribution is that
+distribution uses the complementary log function (@eq-cll)
 
 $$
 \log (- \log S(t)) = \log \lambda + k\log t
@@ -677,3 +677,44 @@ null_dist <- map_dbl(resamples$splits, \(d) survdiff(Surv(time, status)~ rx, dat
 p.value <- mean(null_dist > obs_stat)
 ```
 The permutation p-value is `{r} format.pval(p.value)`
+
+### Non-proportional hazards and using RMST for comparison {#sec-nph}
+
+In order to compare survival curves, we need some overall metric that summarizes the survival curve. We will demonstrate how to use the RMST to compare survival distributions by strata. 
+
+:::{.aside}
+`install.packages("survRM2")`
+:::
+
+```{r}
+#| code-fold: false
+library(survRM2)
+library(gt)
+out = with(colon |> filter(rx != "Obs"),
+  rmst2(time = time, status = status, arm = ifelse(rx == "Lev+5FU", 1, 0)))
+gt(as_tibble(out$unadjusted.result)[1,]) |>
+  fmt_scientific(columns = 4)
+```
+
+This gives a confidence interval and p-value based on large-sample (asymptotic) considerations. A better evaluation would be based on permuation testing.
+
+```{r}
+#| code-fold: false
+#| cache: true
+library(rsample)
+set.seed(2845)
+permutes <- permutations(
+  colon |> filter(rx != "Obs"),
+  permute = rx,
+  times = 10000
+)
+obs_stat <- out$unadjusted.result[1,1]
+null_dist <- map_dbl(
+  permutes$splits,
+  \(d) with(analysis(d), rmst2(time = time, status = status, arm = ifelse(rx == "Lev+5FU", 1, 0))$unadjusted.result[1,1]
+))
+pval <- mean(null_dist >= obs_stat)
+if(pval == 0) pval <- "< 0.0001"
+```
+The permutation-based p-value is `{r} pval`.
+

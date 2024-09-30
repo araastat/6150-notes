@@ -5,3 +5,45 @@ draft: true
 # Survival analysis II {#sec-week6}
 **Last updated:** `{r} format(Sys.time(), "%d %b, %Y %I:%M %p %Z")`
 
+## A tale of the hazard
+
+Let's take a deeper dive into the hazard. 
+
+### A mathematical approach
+
+The hazard function at time _t_ is defined to be 
+
+$$
+h(t) = \lim_{\Delta t \rightarrow 0} \frac{P(t \leq T < t + \Delta t | T > t)}{\Delta t}
+$$
+The numerator is the chance of experiencing an event right after time _t_ _given that there is no event experienced until time t_. So $h(t)$ is like a derivative. In fact, let's re-write the formula as 
+
+$$
+\begin{eqnarray*}
+h(t) &=& \lim_{\Delta t \rightarrow 0} \frac{F(t + \Delta t) - F(t)}{\Delta t}\frac{1}{1-F(t)}\\
+&=& \frac{1}{1-F(t)} \frac{dF(t)}{dt}\\
+&=& f(t)/(1-F(t))
+\end{eqnarray*}
+$$
+where $F(t) = P(T \leq t)$ is the c.d.f., and $f(t) = dF(t)/dt$ is the p.d.f of the distribution of the followup time _T_. Turns out (if you remember basic calculus) that 
+
+$$
+h(t) = -\frac{d\log S(t)}{dt}
+$$
+where $S(t) = 1-F(t)$. Because of this relationship, we can define the cumulative hazard 
+
+$$H(t) = \int_0^t h(u)du = -\log S(t)$$
+and the inverse relationship between the survival and hazard functions is 
+$$
+S(t) = \exp\left(-\int_0^t h(u)du\right) = \exp(-H(t))
+$$
+
+The hazard function is another way of defining the probability distribution of _T_, since there is a 1:1 relationship between $h(t)$ and $F(t)$ based on the equations above
+
+### Conditioning on time lived
+Survival models can help predict the future; what is the chance of living at least another _x_ years, given one has lived 50 years, say. This question can be formulated as 
+
+$$
+P(T > 50 + x | T > 50) = P(T > 50 + x)/ P(T > 50) = S(50+x)/S(50)
+$$
+The hazard function is the instantaneous version of this; what is the chance of dying in the next instance once one reaches 50 years 
