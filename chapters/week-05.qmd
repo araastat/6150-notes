@@ -9,7 +9,7 @@ filters:
 
 **Last updated:** `{r} format(Sys.time(), "%d %b, %Y %I:%M %p %Z")`
 
-```{r}
+```{r week-05-1}
 #| label: setup-5
 #| include: false
 library(tidyverse)
@@ -91,7 +91,7 @@ we stop the study and know that some of the patients we followed are still alive
 then. We can show this data graphically. [Survival analysis generally is done on
 **prospective** data]{.aside}
 
-```{r}
+```{r week-05-2}
 #| fig-cap: Follow-up time in a leukemia cohort, sorted by time of follow-up
 library(tidyverse)
 library(survival)
@@ -265,10 +265,10 @@ that the Exponential is the Weibull with k=1]{.aside}.
 hazard function $\Lambda$. Then the random variable $Y = \Lambda(T)$ follows an
 exponential distribution with rate $\lambda = 1$.
 
-This property allows us to plot a quantile-quantile plot of $\Lambda(T)$ against
+This property allows us to plot a quantile-quantile plot of **the modelled** $\Lambda(T)$ against
 an exponential(1) distribution to see how well the model fit is.
 
-```{webr-r}
+```{webr-r week-05-3}
 #| fig-width: 3
 set.seed(20348)
 library(ggplot2)
@@ -310,7 +310,7 @@ T_i = \min(T^*_i, C_i)\\
 \end{cases}
 $$ We can simulate data in a similar fashion
 
-```{r}
+```{r week-05-4}
 set.seed(2393)
 nsim <- 1000
 d <- tibble(
@@ -340,7 +340,7 @@ still alive at that time point; conversely for any particular quantile of
 survival, you can read off the time to reach that quantile (for example median
 survival when 50% of the population remains.
 
-```{r}
+```{r week-05-5}
 time <- seq(0,48)
 lambda <- 0.1
 y <- exp(-lambda*time)
@@ -354,7 +354,7 @@ tibble(time, y) |>
 Generally speaking, **if we don't have censoring**, we can generate the
 empirical survival curves, quite easily.
 
-```{r}
+```{r week-05-6}
 d <- tibble(
   T = rexp(100, 2)
 ) |> 
@@ -368,7 +368,7 @@ ggplot(d, aes(T, St))+geom_line() +
 If there is censoring, let's see what happens if we ignore the censoring and
 just plot the reported survival times.
 
-```{r}
+```{r week-05-7}
 d |> mutate(cens = rexp(100,1), 
             Tobs = pmin(T, cens),
             delta = T <= cens) |> 
@@ -403,7 +403,7 @@ $$
 
 We simulate data from an Exponential(0.8) distribution and add censoring. We then do a grid search to find the maximum value of the likelihood function described above.
 
-```{r}
+```{r week-05-8}
 set.seed(2393)
 nsim <- 1000
 d <- tibble(
@@ -434,7 +434,7 @@ Another way of approaching the problem that uses the same method
 uses the `survreg` function, which we'll see more of next week as we look at survival regression.Note, in R, we use the function `Surv` to incorporate the bivariate survival
 data into models.
 
-```{r}
+```{r week-05-9}
 library(survival)
 fit <- survreg(Surv(T, delta=='Event') ~ 1, data = d, dist = 'exponential')
 
@@ -450,7 +450,7 @@ modified when we start looking at groups.
 
 We can also plot the predicted survival curve from the `survreg` package.
 
-```{r}
+```{r week-05-10}
 #| code-fold: false
 probs <- seq(0.01, 1, by = 0.01)                         # Probability of death
 pred_times <- predict(fit,type = 'quantile', p = probs)  # predicted times
@@ -470,7 +470,7 @@ presence of independent censoring. It appears as a step function which is
 constant between failure times, and the vertical jump at each failure time is
 inversely proportional to the number of individuals still at risk at that time.
 
-```{r}
+```{r week-05-11}
 library(survival)
 sfit <- survfit(Surv(T, delta=='Event') ~ 1, data = d)
 plot(sfit)
@@ -479,7 +479,7 @@ plot(sfit)
 A more refined (and personally preferred) version is using the **ggsurvfit**
 package which is aligned with **ggplot2**. 
 
-```{r}
+```{r week-05-12}
 library(ggsurvfit)
 survfit2(Surv(T, delta=='Event')~1, data = d) |> 
   ggsurvfit() + add_risktable()
@@ -489,7 +489,7 @@ survfit2(Surv(T, delta=='Event')~1, data = d) |>
 
 We see that accounting for censoring reduces the bias in estimating the survival curve. We've generated the data from an exponential model, so the parametric method does very well (it uses the exponential to fit). The Kaplan-Meier method is known to generate unbiased estimates generally as long as the censoring is non-informative. 
 
-```{r}
+```{r week-05-13}
 library(geomtextpath)
 library(ggsurvfit)
 plt_data <- tibble(times = d$T, cens = d$delta=='Event') |> 
@@ -515,12 +515,12 @@ There are different metrics that can help summarise a survival distribution for 
 
 In the literature, the statistic we see most commonly is the _median survival time_. Due to censoring, we also have to be careful in estimating it, and need to use censoring-aware methods like the previous section, since it is derived from the estimated survival curve. 
 
-```{r}
+```{r week-05-14}
 sfit <- survfit2(Surv(T, delta=="Event") ~ 1, data = d) # can also use survfit
 as_tibble(quantile(sfit, probs = 0.5))
 ```
 
-```{r}
+```{r week-05-15}
 ggsurvfit(sfit)+
   add_quantile(y_value = 0.5)
 ```
@@ -531,7 +531,7 @@ The mean survival time seems an attractive metric; how long on average to subjec
 
 What can be computed is the **restricted mean survival time (RMST)**, which asks what is the average survival time during a defined time period. It is "computed" as the area under the survival curve up to some specified time. We will use the {{< fa brands r-project >}} package **RISCA** to compute the RMST.[`install.packages('RISCA')`]{.aside}. This statistic is useful for comparing two survival curves, as we'll see in a bit. 
 
-```{r}
+```{r week-05-16}
 #| code-fold: false
 library(RISCA)
 sdata <- broom::tidy(sfit)
@@ -573,7 +573,7 @@ We saw [earlier](#landmark-estimate) how to compute the landmark estimate. For e
 
 Let's look at an example of doing this using the in-built dataset `colon` from a clinical trial of adjuvant chemotherapy in Stage B/C colon cancer. We will compare the 2 year overall survival between different treatment arms. We first compute the 2-year overall survival fo each of the three arms. 
 
-```{r}
+```{r week-05-17}
 library(tidyverse)
 library(survival)
 colon_os <- colon |> dplyr::filter(etype == 2)
@@ -585,7 +585,7 @@ colon_os |>
 
 We will now test if the Lev+5FU arm does better than the Lev arm. 
 
-```{r}
+```{r week-05-18}
 #| code-fold: false
 library(infer)
 test_dat <- colon_os |>
@@ -652,7 +652,7 @@ $$
 
 The formal hypothesis test that tests this hypothesis is called the **log-rank test**, which is a form of $\chi^2$-test. This test works provided (a) the censoring is uninformative and the rates of censoring are the same in both arms, (b) proportional hazards. We can perform the log-rank test directly in R.
 
-```{r}
+```{r week-05-19}
 #| code-fold: false
 library(survival)
 difftest <- survdiff(Surv(time, status) ~ rx, data = colon |> filter(rx != 'Obs'))
@@ -667,7 +667,7 @@ The `survdiff` function exposes the p-value in a slot named "pvalue", which is d
 
 This p-value is obtained under the PH assumption, but we can use resampling to estimate the p-value as well. 
 
-```{r}
+```{r week-05-20}
 #| code-fold: false
 library(rsample)
 set.seed(2893)
@@ -686,7 +686,7 @@ In order to compare survival curves, we need some overall metric that summarizes
 `install.packages("survRM2")`
 :::
 
-```{r}
+```{r week-05-21}
 #| code-fold: false
 library(survRM2)
 library(gt)
@@ -698,7 +698,7 @@ gt(as_tibble(out$unadjusted.result)[1,]) |>
 
 This gives a confidence interval and p-value based on large-sample (asymptotic) considerations. A better evaluation would be based on permuation testing.
 
-```{r}
+```{r week-05-22}
 #| code-fold: false
 #| cache: true
 library(rsample)

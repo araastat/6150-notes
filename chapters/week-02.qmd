@@ -176,7 +176,7 @@ What is power measuring, qualitatively? It is measuring **the degree of separati
 
 In the following snippet, you can play around with `m2`, `s` and `n` to see how statistical power changes. What do you observe?
 
-```{webr-r}
+```{webr-r week-02-1}
 set.seed(1000)
 install.packages("tidyverse")
 library(tidyverse)
@@ -300,7 +300,7 @@ If you peruse the medical literature, you'll see lots of odds ratios, mainly bec
 You might also wonder why, in logistic regression, we get the **log of the odds ratio**, other than as a mathematical by-product. That mathematics is to make things symmetric, which has computational and interpretation advantages. The log-odds is symmetric around 0, and so  positive and negative differences in log-odds are computable and interpretable as equivalent to proportional changes in the
 odds ratio
  
-```{r}
+```{r week-02-2}
 #| echo: false
 #| layout-ncol: 2
 #| execute:

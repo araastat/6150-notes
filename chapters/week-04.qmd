@@ -12,6 +12,7 @@ Suppose we have the following causal graph, where we wish to ask the question of
 whether the use of aspirin affects one's risk of a heart attack.
 
 ```{r}
+#| label: dag1
 #| echo: false
 library(ggdag)
 my_dag <- dagify(
@@ -40,7 +41,7 @@ In the absence of confounders, the observed effect of aspirin on heart attacks
 in a randomized study is an estimate of the causal effect of aspirin on heart
 attacks.
 
-```{r}
+```{r }
 #| echo: false
 my_dag |> tidy_dagitty() |> 
   dag_prune(c("stroke"="aspirin", "exercise"="aspirin")) |> 
