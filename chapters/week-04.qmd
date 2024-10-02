@@ -41,7 +41,8 @@ In the absence of confounders, the observed effect of aspirin on heart attacks
 in a randomized study is an estimate of the causal effect of aspirin on heart
 attacks.
 
-```{r }
+```{r}
+#| label: week-04-2
 #| echo: false
 my_dag |> tidy_dagitty() |> 
   dag_prune(c("stroke"="aspirin", "exercise"="aspirin")) |> 
