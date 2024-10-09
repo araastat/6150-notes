@@ -17,7 +17,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
@@ -66,12 +120,37 @@ ul.task-list li input[type="checkbox"] {
   window.document.addEventListener("DOMContentLoaded", function (_event) {
     document.body.classList.add('hypothesis-enabled');
   });
-</script><meta name="quarto:status" content="draft">
+</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 </head>
-<body class="nav-sidebar docked nav-fixed">
+<body class="nav-sidebar docked nav-fixed slimcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Biological and Biomedical Data Science (</span></a><a href="https://gu-dsan.github.io/6150-fall-2024/" target="_blank">DSAN 6150</a>)
@@ -133,6 +212,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Survival analysis I</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/week-06.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Survival analysis II</span></span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
@@ -154,11 +239,37 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#a-tale-of-the-hazard" id="toc-a-tale-of-the-hazard" class="nav-link active" data-scroll-target="#a-tale-of-the-hazard">A tale of the hazard</a>
+  <ul class="collapse">
+<li><a href="#a-mathematical-approach" id="toc-a-mathematical-approach" class="nav-link" data-scroll-target="#a-mathematical-approach">A mathematical approach</a></li>
+  <li><a href="#trying-to-gain-intuition" id="toc-trying-to-gain-intuition" class="nav-link" data-scroll-target="#trying-to-gain-intuition">Trying to gain intuition</a></li>
+  <li><a href="#the-hazard-ratio" id="toc-the-hazard-ratio" class="nav-link" data-scroll-target="#the-hazard-ratio">The hazard ratio</a></li>
+  </ul>
+</li>
+  <li><a href="#modeling-the-hazard-function-under-ph" id="toc-modeling-the-hazard-function-under-ph" class="nav-link" data-scroll-target="#modeling-the-hazard-function-under-ph">Modeling the hazard function under PH</a></li>
+  <li>
+<a href="#fitting-the-cox-model-in-r" id="toc-fitting-the-cox-model-in-r" class="nav-link" data-scroll-target="#fitting-the-cox-model-in-r">Fitting the Cox model in R</a>
+  <ul class="collapse">
+<li><a href="#checking-the-proporational-hazards-assumption" id="toc-checking-the-proporational-hazards-assumption" class="nav-link" data-scroll-target="#checking-the-proporational-hazards-assumption">Checking the proporational hazards assumption</a></li>
+  <li><a href="#checking-the-fit-of-the-model-residual-analysis" id="toc-checking-the-fit-of-the-model-residual-analysis" class="nav-link" data-scroll-target="#checking-the-fit-of-the-model-residual-analysis">Checking the fit of the model: Residual analysis</a></li>
+  <li><a href="#the-concordance-index" id="toc-the-concordance-index" class="nav-link" data-scroll-target="#the-concordance-index">The concordance index</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#accelerated-failure-time-models" id="toc-accelerated-failure-time-models" class="nav-link" data-scroll-target="#accelerated-failure-time-models">Accelerated Failure Time models</a>
+  <ul class="collapse">
+<li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-06.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title"><span id="sec-week6" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Survival analysis II</span></span></h1>
 </div>
 
@@ -173,11 +284,514 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header><p><strong>Last updated:</strong> 04 Sep, 2024 08:47 PM EDT</p>
+</header><p><strong>Last updated:</strong> 09 Oct, 2024 12:46 PM EDT</p>
+<section id="a-tale-of-the-hazard" class="level2"><h2 class="anchored" data-anchor-id="a-tale-of-the-hazard">A tale of the hazard</h2>
+<p>Let’s take a deeper dive into the hazard.</p>
+<section id="a-mathematical-approach" class="level3"><h3 class="anchored" data-anchor-id="a-mathematical-approach">A mathematical approach</h3>
+<p>The hazard function at time <em>t</em> is defined to be</p>
+<p><span class="math display">\[
+h(t) = \lim_{\Delta t \rightarrow 0} \frac{P(t \leq T &lt; t + \Delta t | T &gt; t)}{\Delta t}
+\]</span> The numerator is the chance of experiencing an event right after time <em>t</em> <em>given that there is no event experienced until time t</em>. So <span class="math inline">\(h(t)\)</span> is like a derivative. In fact, let’s re-write the formula as</p>
+<p><span class="math display">\[
+\begin{eqnarray*}
+h(t) &amp;=&amp; \lim_{\Delta t \rightarrow 0} \frac{F(t + \Delta t) - F(t)}{\Delta t}\frac{1}{1-F(t)}\\
+&amp;=&amp; \frac{1}{1-F(t)} \frac{dF(t)}{dt}\\
+&amp;=&amp; f(t)/(1-F(t))
+\end{eqnarray*}
+\]</span> where <span class="math inline">\(F(t) = P(T \leq t)\)</span> is the c.d.f., and <span class="math inline">\(f(t) = dF(t)/dt\)</span> is the p.d.f of the distribution of the followup time <em>T</em>. Turns out (if you remember basic calculus) that</p>
+<p><span class="math display">\[
+h(t) = -\frac{d\log S(t)}{dt}
+\]</span> where <span class="math inline">\(S(t) = 1-F(t)\)</span>. Because of this relationship, we can define the cumulative hazard</p>
+<p><span class="math display">\[H(t) = \int_0^t h(u)du = -\log S(t)\]</span> and the inverse relationship between the survival and hazard functions is <span class="math display">\[
+S(t) = \exp\left(-\int_0^t h(u)du\right) = \exp(-H(t))
+\]</span></p>
+<p>The hazard function is another way of defining the probability distribution of <em>T</em>, since there is a 1:1 relationship between <span class="math inline">\(h(t)\)</span> and <span class="math inline">\(F(t)\)</span> based on the equations above.</p>
+</section><section id="trying-to-gain-intuition" class="level3"><h3 class="anchored" data-anchor-id="trying-to-gain-intuition">Trying to gain intuition</h3>
+<p>Suppose N individuals are alive at age 50. We observe d deaths in the next x years. Then the observed x-year death rate among those who have reached 50 years would be d/N. Let’s try and write this formulaicly.</p>
+<p><span class="math display">\[
+d = N P(50 &lt; T \leq 50 + x | T &gt; 50)\\
+d/N = P(50 &lt; T \leq 50 + x | T &gt; 50)\\
+\]</span></p>
+<p>You can now consider the death rate <em>per unit time</em> as the death rate divided by the time over which the deaths were observed.</p>
+<p><span class="math display">\[
+\text{death rate per unit time} = P(50 &lt; T \leq 50 + x | T &gt; 50)/x
+\]</span></p>
+<p>We can make the length x of the time intervals we measure smaller and smaller, and ask the same question: what is the death rate per unit time when deaths are observed over small time intervals after age 50. As x gets smaller, we will hit the hazard at age 50. This can be interpreted as the <em>instantaneous rate of dying</em>.</p>
+<p>With a little abuse of notation, we can write <span class="math inline">\(h(t)dt = P(t &lt; T \leq t + dt | T &gt; t)\)</span> which gives the chance of dying in the tiny time interval <span class="math inline">\((t, t+\Delta t]\)</span>given one has survived until time <em>t</em>.</p>
+<p><strong>Some more intuition</strong></p>
+<p>Let’s think about how the hazard function for different processes might look. Think of typical human populations. There is an increased chance of dying very early in life (the first year), which reduces over time to some steady value through the teen and adult years, then increases again late in life. This might look like this:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="images/popln_hazard.png" class="img-fluid figure-img"></p>
+<figcaption>Patrick Breheny, https://myweb.uiowa.edu/pbreheny/7210/f19/notes/8-29.pdf</figcaption></figure>
+</div>
+<p>The chance that a car will have a serious problem increases with time, so you’d expect an increasing hazard function with age. There are, of course, processes where the hazard is constant over time; the chance that a light bulb fails, the chance that a radioactive object emits a particle. These proecesses are <em>memoryless</em>, since the chance of failure at any time doesn’t depend on what has happened in the past.</p>
+<p>The Weibull distribution gives us a way to model different hazard patterns (though strictly monotonic hazard functions).</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allancameron.github.io/geomtextpath/">geomtextpath</a></span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">mutate</span><span class="op">(</span></span>
+<span>        h1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">dweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">1</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span>,</span>
+<span>        h2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">dweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0.5</span>, <span class="fl">1</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span>,</span>
+<span>        h3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">dweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1.5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1.5</span>, <span class="fl">1</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span>,</span>
+<span>        h4 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">dweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="fl">1</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://allancameron.github.io/geomtextpath/reference/geom_textpath.html">geom_textline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h1</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'blue'</span>,label <span class="op">=</span> <span class="st">'shape = 1'</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://allancameron.github.io/geomtextpath/reference/geom_textpath.html">geom_textline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h2</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">'green'</span>, label <span class="op">=</span> <span class="st">'shape = 0.5'</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu"><a href="https://allancameron.github.io/geomtextpath/reference/geom_textpath.html">geom_textline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h3</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">'orange'</span>, label <span class="op">=</span> <span class="st">'shape = 1.5'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://allancameron.github.io/geomtextpath/reference/geom_textpath.html">geom_textline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h4</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">'red'</span>, label <span class="op">=</span> <span class="st">'shape = 2'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">''</span>, y<span class="op">=</span><span class="st">"Hazard function"</span>, caption <span class="op">=</span> <span class="st">"Weibull with scale = 1"</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-06_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The corresponding survival curves look like this:</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allancameron.github.io/geomtextpath/">geomtextpath</a></span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">mutate</span><span class="op">(</span></span>
+<span>        h1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">1</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span>,</span>
+<span>        h2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0.5</span>, <span class="fl">1</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span>,</span>
+<span>        h3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1.5</span>, <span class="fl">1</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span>,</span>
+<span>        h4 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="fl">1</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://allancameron.github.io/geomtextpath/reference/geom_textpath.html">geom_textline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h1</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'blue'</span>,label <span class="op">=</span> <span class="st">'shape = 1'</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://allancameron.github.io/geomtextpath/reference/geom_textpath.html">geom_textline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h2</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">'green'</span>, label <span class="op">=</span> <span class="st">'shape = 0.5'</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu"><a href="https://allancameron.github.io/geomtextpath/reference/geom_textpath.html">geom_textline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h3</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">'orange'</span>, label <span class="op">=</span> <span class="st">'shape = 1.5'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://allancameron.github.io/geomtextpath/reference/geom_textpath.html">geom_textline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h4</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">'red'</span>, label <span class="op">=</span> <span class="st">'shape = 2'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">''</span>, y<span class="op">=</span><span class="st">"Survival probability"</span>, caption <span class="op">=</span> <span class="st">"Weibull with scale = 1"</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div id="fig-weib1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-weib1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="week-06_files/figure-html/fig-weib1-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-weib1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.1: Survival curves of the Weibull distribution keeping scale constant and changing shape
+</figcaption></figure>
+</div>
+</div>
+</div>
+<p>Notice that for shape = 0.5, we have a decreasing hazard, which means the chance of failing is higher earlier, which is reflected in an early steep drop in the survival function. When shape = 2, we have an increasing hazard function, which means the chance of failing is later in time; we see the corresponding survival curve is flatter early and drops down later.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The case of shape = 1 has a constant hazard, which results in an exponential distribution, <em>and vice versa</em>.</p>
+<p><span class="math display">\[
+\begin{array}{lcl}
+h(t) = \lambda &amp;\Leftrightarrow&amp; -\frac{d\log S(t)}{dt} = \lambda \\
+&amp;\Leftrightarrow &amp; \log S(t) = -\lambda t \\
+&amp;\Leftrightarrow &amp; S(t) = e^{-\lambda t} \\
+&amp;\Leftrightarrow &amp; \text{Exponential distribution}
+\end{array}
+\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The bathtub curve
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is a shape of the hazard curve that is used in engineering, but also reflects many demographic and biological processes.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Bathtub_curve.svg/700px-Bathtub_curve.svg.png" class="img-fluid figure-img"></p>
+<figcaption>https://en.wikipedia.org/wiki/Bathtub_curve</figcaption></figure>
+</div>
+<p>The Weibull hazard functions are always monotonic (so increasing or decreasing). The bathtub hazard function can be modeled as a <a href="https://www.reliawiki.com/index.php/The_Mixed_Weibull_Distribution">mixture of Weibull distributions</a></p>
+</div>
+</div>
+</section><section id="the-hazard-ratio" class="level3"><h3 class="anchored" data-anchor-id="the-hazard-ratio">The hazard ratio</h3>
+<p>Suppose you have two survival processes, e.g., survival under treatment of a drug, and survival under a placebo. They each define a hazard, <span class="math inline">\(h_1(t)\)</span> and <span class="math inline">\(h_2(t)\)</span>. The <strong>hazard ratio</strong> at time <span class="math inline">\(t\)</span> is then <span class="math inline">\(h_1(t)/h_2(t)\)</span>. This is interpreted as the relative chance of failing in each process, given no failures until time <span class="math inline">\(t\)</span>. A hazard ratio of 1/2, for example, means that at time <span class="math inline">\(t\)</span>, a person treated by a drug has half the chance of dying as a person receiving placebo.</p>
+<p>When we say that we have <strong>proportional hazards</strong>, it implies that the hazard ratio at any time <span class="math inline">\(t\)</span> doesn’t depend on <span class="math inline">\(t\)</span>. We can see this since we will have <span class="math inline">\(h_1(t) = k h_2(t)\)</span> for all <span class="math inline">\(t\)</span> (the proportionality criterion).</p>
+<p>What models exhibit proportional hazards?</p>
+<ul>
+<li>Since the exponential model has a constant hazard function, the ratio of hazards for two exponential distributions is by definition a constant for all times.</li>
+<li>The Weibull hazard function is <span class="math inline">\(h(t) = \lambda k t^{k-1}\)</span>. So we will have proportional hazards provided <span class="math inline">\(k\)</span> remains the same and only <span class="math inline">\(\lambda\)</span> differs. From <a href="#fig-weib1" class="quarto-xref">Figure&nbsp;<span>6.1</span></a>, it is clear that keeping <span class="math inline">\(\lambda\)</span> constant and changing <span class="math inline">\(k\)</span> doesn’t result in a proportional hazards model.</li>
+</ul>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allancameron.github.io/geomtextpath/">geomtextpath</a></span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">mutate</span><span class="op">(</span></span>
+<span>        h1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">1</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span>,</span>
+<span>        h2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">0.5</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span>,</span>
+<span>        h3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">1.5</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span>,</span>
+<span>        h4 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">2</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://allancameron.github.io/geomtextpath/reference/geom_textpath.html">geom_textline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h1</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'blue'</span>,label <span class="op">=</span> <span class="st">'scale = 1'</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://allancameron.github.io/geomtextpath/reference/geom_textpath.html">geom_textline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h2</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">'green'</span>, label <span class="op">=</span> <span class="st">'scale = 0.5'</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu"><a href="https://allancameron.github.io/geomtextpath/reference/geom_textpath.html">geom_textline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h3</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">'orange'</span>, label <span class="op">=</span> <span class="st">'scale = 1.5'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://allancameron.github.io/geomtextpath/reference/geom_textpath.html">geom_textline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h4</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">'red'</span>, label <span class="op">=</span> <span class="st">'scale = 2'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">''</span>, y<span class="op">=</span><span class="st">"Survival probability"</span>, caption <span class="op">=</span> <span class="st">"Weibull with shape = 1 (exponential)"</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-06_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><section id="modeling-the-hazard-function-under-ph" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="modeling-the-hazard-function-under-ph">Modeling the hazard function under PH</h2>
+<p>We now introduce the <strong>Cox proportional hazard regression model</strong>. This model, as in all hazard regression models, relates the hazard <span class="math inline">\(h(t)\)</span> to covariates <strong><em>x</em></strong> to model how your chance of failing is affected by the covariates. We start with a general form of the hazard function as it relates to the covariates</p>
+<p><span class="math display">\[
+\lambda(t|x) = \lambda_0(t)e^{x^T\beta}
+\]</span></p>
+<p>In what sense is this model a proportional hazards model? Consider two values of covariates <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>. In that case, the hazard ratio is</p>
+<p><span class="math display">\[
+\lambda(t|x_1)/\lambda(t|x_2) = e^{(x_1-x_2)\beta}
+\]</span> which is independent of <span class="math inline">\(t\)</span> and just depends on the difference of the x-values.</p>
+<p>The brilliance of the Cox model here is that it can be fit to data <em>ignoring what is going on with <span class="math inline">\(\lambda_0(t)\)</span></em>, which is called the <em>baseline hazard</em> (it’s the value of the hazard function when <span class="math inline">\(x=0\)</span>, hence “baseline”). The baseline hazard function is essentially <strong>ignored</strong>, and we can still get <em>consistent and unbiased</em> estimates of the <span class="math inline">\(\beta\)</span>s.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The paper that proposed this proportional hazards model (<span class="citation" data-cites="coxRegressionModelsLifeTables1972">Cox (<a href="#ref-coxRegressionModelsLifeTables1972" role="doc-biblioref">1972</a>)</span>) is the most cited paper in statistics. Cox then proposed the <em>partial likelihood</em> (<span class="citation" data-cites="cox:1975">Cox (<a href="#ref-cox:1975" role="doc-biblioref">1975</a>)</span>) There was a bunch of theoretical work done in the 70’s and 80’s to prove that Cox regression “works” as expected under assumptions of proportional hazards and independent right censoring, which is the most common situation we face.</p>
+<p>Cox regression has become a <em>de facto</em> standard to model the hazard in survival studies, including most clinical trials.</p>
+</div>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-cox:1975" class="csl-entry" role="listitem">
+———. 1975. <span>“Partial Likelihood.”</span> <em>Biometrika</em> 62 (2): 269–76. <a href="https://doi.org/10.1093/biomet/62.2.269">https://doi.org/10.1093/biomet/62.2.269</a>.
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-coxRegressionModelsLifeTables1972" class="csl-entry" role="listitem">
+Cox, D. R. 1972. <span>“Regression Models and Life-Tables.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 34 (2): 187–202. <a href="https://doi.org/10.1111/j.2517-6161.1972.tb00899.x">https://doi.org/10.1111/j.2517-6161.1972.tb00899.x</a>.
+</div></div><p>The Cox model doesn’t need to have just fixed or baseline covariates in it. It can have <em>time-dependent</em> covariates as well, for example sequences of cholesterol measurements per person. Such models are no longer <em>proporational hazards</em>, but can be fit using the same modeling paradigm and are quite useful in real-life scenarios.</p>
+</section><section id="fitting-the-cox-model-in-r" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="fitting-the-cox-model-in-r">Fitting the Cox model in R</h2>
+<p>The Cox model is fit in R using the <code>coxph</code> function. This function is used very much like the <code>lm</code> and <code>glm</code> models, except that the dependent variable is the composite <code>Surv</code> function rather than a single variable.</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></span>
+<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">futime</span>, <span class="va">death</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">alb</span>, </span>
+<span>    data <span class="op">=</span> <span class="va">mgus</span>, </span>
+<span>    na.action <span class="op">=</span> <span class="va">na.omit</span><span class="op">)</span></span>
+<span><span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 5
+  term    estimate std.error statistic  p.value
+  &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 age       0.0608   0.00749      8.12 4.74e-16
+2 sexmale   0.249    0.148        1.68 9.32e- 2
+3 alb      -0.442    0.171       -2.58 9.87e- 3</code></pre>
+</div>
+</div>
+<p>Going back to the form of the hazard in Cox regression, the hazard ratio can be written as</p>
+<p><span class="math display">\[
+\lambda(t|x+1)/\lambda(t|x) = e^{\beta}
+\]</span> Taking logs,</p>
+<p><span class="math display">\[
+\log (HR) = \beta
+\]</span> i.e.&nbsp;the <span class="math inline">\(\beta\)</span> coefficients can be interpreted as the log of the hazard ratio when the corresponding covariate changes by 1 unit. The results of the Cox regression are thus in terms of <strong>log-hazard ratios</strong>. To make it easier to interpret, we can look at</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">m</span>, exponentiate<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 5
+  term    estimate std.error statistic  p.value
+  &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 age        1.06    0.00749      8.12 4.74e-16
+2 sexmale    1.28    0.148        1.68 9.32e- 2
+3 alb        0.643   0.171       -2.58 9.87e- 3</code></pre>
+</div>
+</div>
+<p>Under this fitted model, we interpret that your chance of dying increases 6% per year of age, males are 20% more likely to die than females, and a unit increase in albumin reduces your risk of dying around 35%.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>The HR for age is 1.06, which means if age increases 1 year, the hazard increases 1.06 times, so the change is 0.06 times the hazard at the reference year, so a 6% change</p>
+</div></div><p>So fitting the model is quite straightforward and follows familiar patterns from linear and logistic regressions. The question that we must answer is, is this model a good fit to the data?</p>
+<section id="checking-the-proporational-hazards-assumption" class="level3"><h3 class="anchored" data-anchor-id="checking-the-proporational-hazards-assumption">Checking the proporational hazards assumption</h3>
+<p>Since we don’t have time-dependent covariates, we are in the proporational hazards paradigm. So we can test whether the fitted model follows proportional hazards using the <code>cox.zph</code> function. This provides a statistical test to see if the model meets the proportional hazards assumption for each covariate. It also provides graphs for each variable estimating a time-dependent <span class="math inline">\(\beta(t)\)</span> for each <span class="math inline">\(\beta\)</span>, with PH implying that <span class="math inline">\(\beta(t)\)</span> is a horizontal line, i.e., independent of <span class="math inline">\(t\)</span>.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/cox.zph.html">cox.zph</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>       chisq df    p
+age    0.258  1 0.61
+sex    0.148  1 0.70
+alb    0.154  1 0.69
+GLOBAL 0.817  3 0.85</code></pre>
+</div>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/cox.zph.html">cox.zph</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-06_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-06_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-06_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="checking-the-fit-of-the-model-residual-analysis" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="checking-the-fit-of-the-model-residual-analysis">Checking the fit of the model: Residual analysis</h3>
+<p>We’re used to analyzing residuals in linear regression to see if there might be additional signal in the data, or unequal variances. These residuals are merely the difference between the actual and fitted values of the dependent variable. It’s not quite so straightforward in survival studies when you have a composite dependent variable, and some obsevations are censored. Different types of residuals have been proposed.</p>
+<ul>
+<li>Cox-Snell residuals look at overall goodness-of-fit of a model. For a well-fitting model, they should look like samples from an exponential(1) distribution</li>
+<li>Martingale residuals, related to the Cox-Snell residuals, can be used to evaluate whether the appropriate functional form of a covariate has been used in the model</li>
+<li>Schoenfeld residuals are used (in the <code>cox.zph</code> function above) to see the validity of the proportional hazards assumption</li>
+</ul>
+<div class="page-columns page-full"><p>The martingale residuals can be generated using the <code>residual</code> function on a <code>coxph</code> object. A convenient way of doing this is using the <code><a href="https://generics.r-lib.org/reference/augment.html">broom::augment</a></code> function .</p><div class="no-row-height column-margin column-container"><span class="margin-aside">See the help for <code><a href="https://broom.tidymodels.org/reference/augment.coxph.html">broom::augment.coxph</a></code></span></div></div>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/">broom</a></span><span class="op">)</span></span>
+<span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">m</span>, data<span class="op">=</span><span class="va">mgus</span>, type.residuals <span class="op">=</span> <span class="st">'martingale'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can compute the Cox-Snell residuals as the status variable (<code>death</code>) - the martingale residuals (<code>.resid</code>).</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="va">out</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu">mutate</span><span class="op">(</span>cs_resid <span class="op">=</span> <span class="va">death</span> <span class="op">-</span> <span class="va">.resid</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>One issue with Cox-Snell residuals is that they only tell you if the fit is good. They don’t tell you how to fix things if the fit is bad</p>
+</div>
+</div>
+</div>
+<p>To check for overall goodness-of-fit of the Cox model, you can check the distribution of the Cox-Snell residuals against the exponential distribution using the complementary log-log plot we’ve seen before, based on the estimated survival function below:</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surv_estimate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">cs_resid</span>, <span class="va">death</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, data <span class="op">=</span> <span class="va">out</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-06_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>You can look at the appropriateness of the functional form of the continuous predictors (so, whether we need to transform the predictors or not to get a better fit) by plotting the martingale residuals against the predictor:</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">out</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">.resid</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>se<span class="op">=</span><span class="cn">F</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">'Age'</span>, y <span class="op">=</span> <span class="st">'Martingale residuals'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-06_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>An adequate fit is indicated by the smooth fitted curve looking like a horizontal straight line. Other patterns are indicative of the need to transform the predictor.</p>
+</section><section id="the-concordance-index" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="the-concordance-index">The concordance index</h3>
+<div class="page-columns page-full"><p>Harrell’s C-index (or the <em>concordance index</em>) is a summary measure of the predictive strength of a survival model. It is basically asking, if individual <em>i</em> fails earlier than individual <em>j</em>, is the corresponding predicted risk of failure for individual <em>i</em> greater than the predicted risk for individual <em>j</em>, averaged over all pairs of individuals who failed. It is a number between 0 and 1, with 1 denoting a perfect predictive model and 0.5 a model whose predictions are no better than random .</p><div class="no-row-height column-margin column-container"><span class="margin-aside">This should seem familiar</span></div></div>
+<p>We can potentially use the c-index to see if adding or subtracting features improves the discrimative power of the survival model. We will re-visit the C-index when we think about machine learning in the survival context.</p>
+</section></section><section id="accelerated-failure-time-models" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="accelerated-failure-time-models">Accelerated Failure Time models</h2>
+<p>Accelerated failure time (AFT) models are another class of regression models used in survival analysis. They ask a different question to the proportional hazards model and how covariates affect survival. The basic idea (using a binary covariate) is that the presence of the covariate x accelerates or decelerates your survival time (or time to failure) on average. The general model is</p>
+<p><span class="math display">\[
+\log (T) = X\beta + W
+\]</span> where <span class="math inline">\(W_i ~ f\)</span> are the error terms. For example <span class="math inline">\(f\)</span> could be a <span class="math inline">\(N(0,\sigma^2)\)</span> distribution or an extreme value distribution or other distributions. Note that, if we didn’t have any censoring, we could fit this model using least squares. However, in the survival context, we do have censoring.</p>
+<p>If we start with this form, and we consider a baseline process <span class="math inline">\(T_0\)</span> which is the random variable denoting survival time when all the covariates are 0 (so <span class="math inline">\(T_0 \equiv e^W\)</span>), then we have</p>
+<p><span class="math display">\[
+T = T_0 e^{X\beta}
+\]</span></p>
+<p>So in this model, the covariates act multiplicatively on <strong>time</strong>, so if <span class="math inline">\(e^{X\beta}=2\)</span>, then the subject with covariates <span class="math inline">\(X\)</span> will have twice the survival times, or in other words, will age at half the time (The same value of the survival function will be achieved at double of each time point).</p>
+<p><span class="math display">\[
+S(t) = S_0(e^{X\beta}t)
+\]</span> which means</p>
+<div class="page-columns page-full"><p><span class="math display">\[\lambda(t) = e^{X\beta} \lambda_0(e^{X\beta}t)\]</span> </p><div class="no-row-height column-margin column-container"><span class="margin-aside">Recall that for a PH model, <span class="math inline">\(\lambda(t) = \phi \lambda_0(t)\)</span> for some constant <span class="math inline">\(\phi\)</span></span></div></div>
+<p>Let’s look at this a bit further. We see that the PH model changes the hazard function vertically, while the AFT model changes the hazard function horizontally.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Hazard</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Log-hazard</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="cn">T</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="va">h0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">dlnorm</a></span><span class="op">(</span><span class="cn">T</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">plnorm</a></span><span class="op">(</span><span class="cn">T</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
+<span><span class="va">h_ph</span> <span class="op">&lt;-</span> <span class="va">h0</span> <span class="op">*</span> <span class="fl">2</span></span>
+<span><span class="va">h_aft</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">dlnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">*</span><span class="cn">T</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">plnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">*</span><span class="cn">T</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
+<span><span class="va">plot_dat</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span><span class="cn">T</span>, <span class="va">h0</span>, <span class="va">h_ph</span>, <span class="va">h_aft</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">plot_dat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h0</span>, color <span class="op">=</span> <span class="st">'baseline'</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h_ph</span>, color <span class="op">=</span> <span class="st">"PH"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h_aft</span>, color <span class="op">=</span> <span class="st">"AFT"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span><span class="st">""</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>        <span class="st">'baseline'</span> <span class="op">=</span> <span class="st">'blue'</span>,</span>
+<span>        <span class="st">'PH'</span> <span class="op">=</span> <span class="st">'red'</span>,</span>
+<span>        <span class="st">'AFT'</span> <span class="op">=</span> <span class="st">'green'</span></span>
+<span>    <span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span><span class="st">'Time'</span><span class="op">)</span><span class="op">+</span></span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span><span class="st">'Hazard'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-06_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="cn">T</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="va">h0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">dlnorm</a></span><span class="op">(</span><span class="cn">T</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">plnorm</a></span><span class="op">(</span><span class="cn">T</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
+<span><span class="va">h_ph</span> <span class="op">&lt;-</span> <span class="va">h0</span> <span class="op">*</span> <span class="fl">2</span></span>
+<span><span class="va">h_aft</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">dlnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">*</span><span class="cn">T</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">plnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">*</span><span class="cn">T</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
+<span><span class="va">plot_dat</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span><span class="cn">T</span>, <span class="va">h0</span>, <span class="va">h_ph</span>, <span class="va">h_aft</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">plot_dat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h0</span>, color <span class="op">=</span> <span class="st">'baseline'</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h_ph</span>, color <span class="op">=</span> <span class="st">"PH"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">h_aft</span>, color <span class="op">=</span> <span class="st">"AFT"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span><span class="st">""</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>        <span class="st">'baseline'</span> <span class="op">=</span> <span class="st">'blue'</span>,</span>
+<span>        <span class="st">'PH'</span> <span class="op">=</span> <span class="st">'red'</span>,</span>
+<span>        <span class="st">'AFT'</span> <span class="op">=</span> <span class="st">'green'</span></span>
+<span>    <span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span><span class="st">'Time'</span><span class="op">)</span><span class="op">+</span></span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="st">'Hazard'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-06_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>If we look at the survival curves for the same hazards, we see that the shape of the AFT model changes from the PH model, which is more evident in the complementary log-log plot.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Survival</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Complementary log-log</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">s0</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">plnorm</a></span><span class="op">(</span><span class="cn">T</span>, lower.tail <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
+<span><span class="va">s_ph</span> <span class="op">=</span> <span class="va">s0</span><span class="op">^</span><span class="fl">2</span></span>
+<span><span class="va">s_aft</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">plnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">*</span><span class="cn">T</span>, lower.tail <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
+<span><span class="va">plot_dat</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span><span class="cn">T</span>, <span class="va">s0</span>, <span class="va">s_ph</span>, <span class="va">s_aft</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">plot_dat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">s0</span>, color <span class="op">=</span> <span class="st">'baseline'</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">s_ph</span>, color <span class="op">=</span> <span class="st">"PH"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">s_aft</span>, color <span class="op">=</span> <span class="st">"AFT"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span><span class="st">""</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>        <span class="st">'baseline'</span> <span class="op">=</span> <span class="st">'blue'</span>,</span>
+<span>        <span class="st">'PH'</span> <span class="op">=</span> <span class="st">'red'</span>,</span>
+<span>        <span class="st">'AFT'</span> <span class="op">=</span> <span class="st">'green'</span></span>
+<span>    <span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span><span class="st">'Time'</span><span class="op">)</span><span class="op">+</span></span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span><span class="st">'Survival'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-06_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">s0</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">plnorm</a></span><span class="op">(</span><span class="cn">T</span>, lower.tail <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
+<span><span class="va">s_ph</span> <span class="op">=</span> <span class="va">s0</span><span class="op">^</span><span class="fl">2</span></span>
+<span><span class="va">s_aft</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">plnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">*</span><span class="cn">T</span>, lower.tail <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
+<span><span class="va">plot_dat</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span><span class="cn">T</span>, <span class="va">s0</span>, <span class="va">s_ph</span>, <span class="va">s_aft</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">plot_dat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="cn">T</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">s0</span><span class="op">)</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">'baseline'</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">s_ph</span><span class="op">)</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"PH"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">s_aft</span><span class="op">)</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"AFT"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span><span class="st">""</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>        <span class="st">'baseline'</span> <span class="op">=</span> <span class="st">'blue'</span>,</span>
+<span>        <span class="st">'PH'</span> <span class="op">=</span> <span class="st">'red'</span>,</span>
+<span>        <span class="st">'AFT'</span> <span class="op">=</span> <span class="st">'green'</span></span>
+<span>    <span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span><span class="st">'log(Time)'</span><span class="op">)</span><span class="op">+</span></span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span><span class="st">'log(-log(Survival))'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="week-06_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Note that if we have a hazard function that is linear on the log-time vs log-hazard scale, then a vertical shift and a horizontal shift look the same. This is a characteristic of the Weibull distribution, so it can follow both a PH and a AFT model (albeit with slightly different parametrizations)</p>
+<p>If we fit a Weibull model with the <code>survreg</code> function, which only fits AFT models, we can get the parameter estimates of the corresponding PH model using <code>b.ph = -b.aft / fit.aft$scale</code>.</p>
+</div>
+</div>
+</div>
+<p>These models can be fit using the functions <code><a href="https://rdrr.io/pkg/survival/man/survreg.html">survival::survreg</a></code>.</p>
+<section id="example" class="level3"><h3 class="anchored" data-anchor-id="example">Example</h3>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ehar.se/r/eha/">eha</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">m1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">==</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">trt</span> <span class="op">+</span> <span class="va">stage</span> <span class="op">+</span> <span class="va">hepato</span> <span class="op">+</span> <span class="va">bili</span>, data <span class="op">=</span> <span class="va">pbc</span><span class="op">)</span></span>
+<span><span class="va">m2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">==</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span>  <span class="va">trt</span> <span class="op">+</span> <span class="va">stage</span> <span class="op">+</span> <span class="va">hepato</span> <span class="op">+</span> <span class="va">bili</span>, data <span class="op">=</span> <span class="va">pbc</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Cox</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">AFT</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 5
+  term   estimate std.error statistic  p.value
+  &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 trt      -0.168    0.181     -0.930 3.52e- 1
+2 stage     0.644    0.139      4.64  3.44e- 6
+3 hepato    0.350    0.230      1.52  1.28e- 1
+4 bili      0.140    0.0146     9.63  5.99e-22</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">m2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  term        estimate std.error statistic   p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)  10.0      0.388      25.9   2.00e-147
+2 trt           0.0988   0.126       0.782 4.34e-  1
+3 stage        -0.454    0.100      -4.53  5.93e-  6
+4 hepato       -0.239    0.162      -1.48  1.38e-  1
+5 bili         -0.0970   0.00993    -9.77  1.47e- 22
+6 Log(scale)   -0.356    0.0742     -4.80  1.63e-  6</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 
 
 
-</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -614,7 +1228,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-06.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-06.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org">Quarto</a></p>
 </div>

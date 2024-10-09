@@ -356,7 +356,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"options":{"editor-word-wrap":"true","comment":"","fig-width":7,"message":"true","fig-height":5,"out-height":"","fig-cap":"","autorun":"false","context":"interactive","editor-font-scale":"1","results":"markup","warning":"true","editor-max-height":"","dpi":72,"editor-quick-suggestions":"false","output":"true","read-only":"false","label":"unnamed-chunk-1","classes":"","out-width":"700px"},"code":"set.seed(1000)\ninstall.packages(\"tidyverse\")\nlibrary(tidyverse)\nm1 <- 0\nm2 <- 0.2\ns <- 0.5\nn <- 10 # number of samples we observe in 1 expt (replicates)\nnsim <- 1000 # number of simulated expts\n\n# compute sampling distributions\nx1 <- replicate(nsim, mean(rnorm(n, m1, s)))\nx2 <- replicate(nsim, mean(rnorm(n, m2, s)))\n\ndr <- sqrt(n) * (x2 - x1) / (2 * s^2) > qnorm(0.95)\npower <- mean(dr)\n\nd <- tibble(x = c(x1, x2), grp = factor(c(rep(1, nsim), rep(2, nsim))))\n\nggplot(d, aes(x, color = grp)) +\n  geom_density() +\n  geom_vline(xintercept = sqrt(2) * s / sqrt(n)) +\n  scale_x_continuous(limits = c(-1, 1)) +\n  theme_bw() +\n  labs(title = paste0(\"Power = \", power))","id":1}];
+globalThis.qwebrCellDetails = [{"id":1,"options":{"results":"markup","out-width":"700px","autorun":"false","fig-height":5,"fig-width":7,"read-only":"false","editor-word-wrap":"true","label":"unnamed-chunk-1","classes":"","output":"true","warning":"true","editor-quick-suggestions":"false","fig-cap":"","context":"interactive","comment":"","editor-max-height":"","message":"true","editor-font-scale":"1","dpi":72,"out-height":""},"code":"set.seed(1000)\ninstall.packages(\"tidyverse\")\nlibrary(tidyverse)\nm1 <- 0\nm2 <- 0.2\ns <- 0.5\nn <- 10 # number of samples we observe in 1 expt (replicates)\nnsim <- 1000 # number of simulated expts\n\n# compute sampling distributions\nx1 <- replicate(nsim, mean(rnorm(n, m1, s)))\nx2 <- replicate(nsim, mean(rnorm(n, m2, s)))\n\ndr <- sqrt(n) * (x2 - x1) / (2 * s^2) > qnorm(0.95)\npower <- mean(dr)\n\nd <- tibble(x = c(x1, x2), grp = factor(c(rep(1, nsim), rep(2, nsim))))\n\nggplot(d, aes(x, color = grp)) +\n  geom_density() +\n  geom_vline(xintercept = sqrt(2) * s / sqrt(n)) +\n  scale_x_continuous(limits = c(-1, 1)) +\n  theme_bw() +\n  labs(title = paste0(\"Power = \", power))"}];
 
 </script><script type="module">
 // Declare startupMessageQWebR globally
@@ -1637,6 +1637,12 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../chapters/week-05.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Survival analysis I</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/week-06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Survival analysis II</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
