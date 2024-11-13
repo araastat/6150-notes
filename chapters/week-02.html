@@ -356,7 +356,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"set.seed(1000)\ninstall.packages(\"tidyverse\")\nlibrary(tidyverse)\nm1 <- 0\nm2 <- 0.2\ns <- 0.5\nn <- 10 # number of samples we observe in 1 expt (replicates)\nnsim <- 1000 # number of simulated expts\n\n# compute sampling distributions\nx1 <- replicate(nsim, mean(rnorm(n, m1, s)))\nx2 <- replicate(nsim, mean(rnorm(n, m2, s)))\n\ndr <- sqrt(n) * (x2 - x1) / (2 * s^2) > qnorm(0.95)\npower <- mean(dr)\n\nd <- tibble(x = c(x1, x2), grp = factor(c(rep(1, nsim), rep(2, nsim))))\n\nggplot(d, aes(x, color = grp)) +\n  geom_density() +\n  geom_vline(xintercept = sqrt(2) * s / sqrt(n)) +\n  scale_x_continuous(limits = c(-1, 1)) +\n  theme_bw() +\n  labs(title = paste0(\"Power = \", power))","id":1,"options":{"results":"markup","editor-quick-suggestions":"false","fig-cap":"","classes":"","fig-height":5,"out-height":"","editor-word-wrap":"true","output":"true","out-width":"700px","read-only":"false","comment":"","editor-max-height":"","autorun":"false","dpi":72,"message":"true","warning":"true","editor-font-scale":"1","context":"interactive","fig-width":7,"label":"unnamed-chunk-1"}}];
+globalThis.qwebrCellDetails = [{"code":"set.seed(1000)\ninstall.packages(\"tidyverse\")\nlibrary(tidyverse)\nm1 <- 0\nm2 <- 0.2\ns <- 0.5\nn <- 10 # number of samples we observe in 1 expt (replicates)\nnsim <- 1000 # number of simulated expts\n\n# compute sampling distributions\nx1 <- replicate(nsim, mean(rnorm(n, m1, s)))\nx2 <- replicate(nsim, mean(rnorm(n, m2, s)))\n\ndr <- sqrt(n) * (x2 - x1) / (2 * s^2) > qnorm(0.95)\npower <- mean(dr)\n\nd <- tibble(x = c(x1, x2), grp = factor(c(rep(1, nsim), rep(2, nsim))))\n\nggplot(d, aes(x, color = grp)) +\n  geom_density() +\n  geom_vline(xintercept = sqrt(2) * s / sqrt(n)) +\n  scale_x_continuous(limits = c(-1, 1)) +\n  theme_bw() +\n  labs(title = paste0(\"Power = \", power))","options":{"classes":"","dpi":72,"autorun":"false","out-height":"","editor-word-wrap":"true","output":"true","warning":"true","fig-height":5,"context":"interactive","comment":"","fig-cap":"","editor-font-scale":"1","out-width":"700px","message":"true","label":"unnamed-chunk-1","results":"markup","read-only":"false","fig-width":7,"editor-max-height":"","editor-quick-suggestions":"false"},"id":1}];
 
 </script><script type="module">
 // Declare startupMessageQWebR globally
@@ -2341,7 +2341,7 @@ The poorly understood and abused odds ratio
 <div>
 
 </div>
-<div class="cell quarto-layout-panel" data-layout-ncol="2" data-execute="{&quot;message&quot;:false,&quot;warning&quot;:false}">
+<div class="cell quarto-layout-panel" data-execute="{&quot;message&quot;:false,&quot;warning&quot;:false}" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img src="week-02_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
