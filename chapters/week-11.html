@@ -66,12 +66,37 @@ ul.task-list li input[type="checkbox"] {
   window.document.addEventListener("DOMContentLoaded", function (_event) {
     document.body.classList.add('hypothesis-enabled');
   });
-</script><meta name="quarto:status" content="draft">
+</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 </head>
-<body class="nav-sidebar docked nav-fixed">
+<body class="nav-sidebar docked nav-fixed slimcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Biological and Biomedical Data Science (</span></a><a href="https://gu-dsan.github.io/6150-fall-2024/" target="_blank">DSAN 6150</a>)
@@ -139,6 +164,18 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Survival analysis II</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/week-11.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Applied machine learning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/week-12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Machine learning explainability</span></span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
@@ -160,11 +197,28 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#supervised-learning" id="toc-supervised-learning" class="nav-link" data-scroll-target="#supervised-learning">Supervised learning</a></li>
+  <li><a href="#caution-use-ml-models-carefully" id="toc-caution-use-ml-models-carefully" class="nav-link" data-scroll-target="#caution-use-ml-models-carefully">Caution: use ML models carefully</a></li>
+  <li><a href="#moving-forward-with-flexible-ml-models" id="toc-moving-forward-with-flexible-ml-models" class="nav-link" data-scroll-target="#moving-forward-with-flexible-ml-models">Moving forward with flexible ML models</a></li>
+  <li><a href="#what-are-we-predicting" id="toc-what-are-we-predicting" class="nav-link" data-scroll-target="#what-are-we-predicting">What are we predicting?</a></li>
+  <li><a href="#how-are-we-evaluating-models" id="toc-how-are-we-evaluating-models" class="nav-link" data-scroll-target="#how-are-we-evaluating-models">How are we evaluating models?</a></li>
+  <li><a href="#the-case-for-statistical-learning-in-this-context" id="toc-the-case-for-statistical-learning-in-this-context" class="nav-link" data-scroll-target="#the-case-for-statistical-learning-in-this-context">The case for statistical learning in this context</a></li>
+  <li><a href="#some-modeling-points" id="toc-some-modeling-points" class="nav-link" data-scroll-target="#some-modeling-points">Some modeling points</a></li>
+  <li>
+<a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a>
+  <ul class="collapse">
+<li><a href="#software" id="toc-software" class="nav-link" data-scroll-target="#software">Software</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-11.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title"><span id="sec-week11" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Applied machine learning</span></span></h1>
 </div>
 
@@ -179,11 +233,110 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header><p><strong>Last updated:</strong> 04 Sep, 2024 08:48 PM EDT</p>
+</header><p><strong>Last updated:</strong> 13 Nov, 2024 08:09 AM EST</p>
+<section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Machine learning is a catch-all for algorithmic modeling that may incorporate components that account for randomness in the data and measurement errors. Under the umbrella of <strong>supervised learning</strong>, we find statistical regression modeling, penalized regression models, and other parametric and semi-parametric models in addition to the usual complex “black-box” models usually based on simple learners like decision trees and stubs. The machine learning perspective, though, contrasts with the usual statistical approaches found in biomedical data science in that it emphasizes <strong>prediction</strong> rather than <em>association</em>. In this chapter, we will consider not only standard classification and regression predictive models, but also models that allow the presence of censored data in the prediction of times till some event, which is a characteristic data type in many biomedical applications.</p>
+<p>There is also a well-established spot for unsupervised learning methods in biomedical data science. We saw, when exploring high-dimensional data for biomarker discovery, that <strong>cluster analysis</strong> is often used to help understand the patterns in the data and often to associate those patterns with other characteristics of subjects. We saw the use of <em>heatmaps</em> and <em>hierarchical clustering</em> in trying to make sense of genomic datasets.</p>
+<p>The emphasis in this chapter will be on prediction, following the usual train-test split strategy for model development and validation, and the use of cross-validation for model building. In the next chapter, we will return to the question of associations and causal effects which are often central to the decision-making in biomedical and biological studies.</p>
+</section><section id="supervised-learning" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="supervised-learning">Supervised learning</h2>
+<p>We can generally think of supervised machine learning as ways of modeling the regression function <span class="math inline">\(E(Y|X)\)</span> where <span class="math inline">\(Y\)</span> is the outcome or response, and <span class="math inline">\(X\)</span> are the predictors. Additionally, in statistical machine learning, we also specify the random element of the outcome <span class="math inline">\(Y|X\)</span> via some distribution on the support of <span class="math inline">\(Y\)</span>.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>To fix ideas, in classical linear regression, we have <span class="math inline">\(E(Y|X) = \beta_0 + \beta_1X_1 + \beta_2X_2 + \dots + \beta_pX_p\)</span>, with the random element being specified as <span class="math inline">\(Y|X\sim N(E(Y|X), \sigma^2)\)</span> where <span class="math inline">\(Y \in \mathbb{R}^n\)</span></p>
+</div>
+</div>
+</div>
+<p>We can model the regression function in a specific function of the predictors (that would include models like linear and logistic regression) or as a flexible functional form of the predictors that embodies a class of models to be learned from the data (including tree-based models, support vector machines), or, in fact, combinations thereof (spline models). We can also combine models into even more flexible and robust models via ensemble methods like bagging, boosting and stacking (superlearners). Each of these are trying to predict <span class="math inline">\(Y\)</span> from predictors <span class="math inline">\(X\)</span>.</p>
+<p>There are two fundamental concepts to help judge models: bias and variance. <strong>Bias</strong> refers to how “off” our predictions are on average, and <strong>variance</strong> refers to how much a model would change if we changed some of the data. For example, a linear regression or a decision stub are examples of a high-bias, low-variance model (a straight line can be far off from particular points, but doesn’t change much if we add or subtract some points). On the flip side, a high-degree polynomial model, a deep decision tree are examples of low-bias, high-variance models (they can match the data quite closely, but small changes in the data will change the model significantly). At the extremes, we have a constant function (f(X) = c) and a n-dimensional polynomial for n data points. This exemplifies the so-called <strong>bias-variance tradeoff</strong>. What we’d like to aim for is a <em>low-bias, low-variance model</em>, which has led to ensemble strategies using high-bias, low-variance base learners; the averaging reduces the bias while keeping the variance low.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Bias_and_variance_contributing_to_total_error.svg/922px-Bias_and_variance_contributing_to_total_error.svg.png" class="img-fluid figure-img"></p>
+<figcaption>More complex models are typically low-bias, high-variance. Less complex models are the reverse. We’re looking for the sweet spot. (Wikipedia)</figcaption></figure>
+</div>
+<p>The low-bias aim can lead the models that fit the training data <em>extremely</em> well. In fact, you can think of an interpolating model that fits the data exactly. But that model will fit new data quite poorly; it has <strong>overfit</strong> the training data. What we want is a model that has learned from the training data well enough, but also provides reasonable predictions on new data. How do we protect against this? We evaluate the performance of models on data the model hasn’t seen before, and see if it still does well. Conceptually, we’ll have to allow slightly higher bias in training the model in order for it to work well on new data. <strong>Cross-validation</strong> is one approach that allows us to use this process to evaluate models using a single dataset, but we would generally like to validate the model performance on a completely independent data. We can also look at <strong>learning curves</strong> to see if the training is sufficient or if it would benefit from additional data (if training and test performance are both still increasing).</p>
+<div class="page-columns page-full"><p><img src="https://www.dataquest.io/wp-content/uploads/2019/01/add_data.png" class="img-fluid"></p><div class="no-row-height column-margin column-container"><span class="margin-aside">Dataquest blog, https://www.dataquest.io/blog/learning-curves-machine-learning/</span></div></div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Predictive models are used in the pharmaceutical industry to help model the risk of individuals to have worse outcomes, or to identify patients more likely to responsd to a treatment regimen. They can be used to help select the “best” patients into a clinical trial to showcase the benefits of a treatment, or inform exclusion criteria to exclude patients from a clinical trial.</p>
+<p>So having predictive models which are robust and give good, reliable predictions is important; it can lead to crucial decisions around getting the right patients the right treatments, while not harming patients who would not benefit. So out-of-bag model fit is really considered for these predictive models. These evalutions are also considered by regulatory agencies when the models are used to establish <em>companion diagnostics</em> that are used to determine the safe and effective use of a drug or biologic agent.</p>
+<p>These ideas have led to the rise of <strong>precision medicine</strong>, or the concept of the right treatment for the right patient. It’s certainly not at the level of individualized treatment, but we do today have a better idea of different treatments for different patient segments.</p>
+</div>
+</div>
+</div>
+<p>In this chapter we focus mainly on ML for surival analysis, which is unique to BDS. You’ve learned about other machine learning contexts elsewhere in the program.</p>
+</section><section id="caution-use-ml-models-carefully" class="level2"><h2 class="anchored" data-anchor-id="caution-use-ml-models-carefully">Caution: use ML models carefully</h2>
+<p>In this section, I’m primarily referring to ML models of the “black box” ilk, so flexible nonparametric models or ensemble models that are highly complex. These models are known to be <em>data-hungry</em> and require substantial amounts of training data, and correspond amounts of training/validation data, to allow us to develop a properly tuned robust predictive model.</p>
+<p>However, in BDS, we often have data sets that are relatively small compared to the massive data sets usually used for ML training. This limited data in a particular experiment or study can lead to overfitting issues and also high predictive variability, neither of which are good things. Moreover, we will often have high-dimensional predictors from genomics or radiomics that make the model fitting even more difficult. So, in the context of BDS, ML models can be quite challenging to develop.</p>
+<p>There is a prevailing view that for BDS, we’re better off using smaller statistical parametric models like logistic regression or proportional odds regressions, especially when combined with flexible modeling of the features using spline-based transformations. These models are more defensible and explainable, can be fit adequately with smaller sample sizes due to the restrictions on the functional forms of the models, and can be better predictions with less predictive variability. Yes, this does require competent and skilled model development, but when done well, it can be advantageous.</p>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Frank Harrell, one of my statistical heroes, had written a series of influential blogs and seminars in 2018 on this topic area. Many of the arguments are still valid today in spite of some advances we’ve made in ML.</p>
+<ul>
+<li><a href="https://www.fharrell.com/post/stat-ml/">Road Map for Choosing Between Statistical Modeling and Machine Learning</a></li>
+<li><a href="https://www.fharrell.com/post/ml-sample-size/">How Can Machine Learning be Reliable When the Sample is Adequate for Only One Feature?</a></li>
+<li><a href="https://www.fharrell.com/post/medml/">Is Medicine Mesmerized by Machine Learning?</a></li>
+<li><a href="https://www.fharrell.com/talk/mlhealth/">Musings on Statistical Models vs.&nbsp;Machine Learning in Health Research</a></li>
+<li><a href="https://www.fharrell.com/talk/stratos19/">Controversies in Predictive Modeling, Machine Learning, and Validation</a></li>
+</ul>
+</div>
+</div>
+</div>
+</section><section id="moving-forward-with-flexible-ml-models" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="moving-forward-with-flexible-ml-models">Moving forward with flexible ML models</h2>
+<p>We’re familiar with the usual models for machine learning that are used for classification and regression tasks. Here we’ll describe models for data typical in BDS, especially in the censored data situation. We’ve already seen parametric and semi-parametric models for censored data, including Cox proportional hazards models and accelerated failure time models. There has been the want to extend these models using more flexible models for the regression model (the “mean” model). The strategy has been to replace the parametric mean model, which is typically linear, with a machine learning model. These have included tree models, random forests, gradient boosting, and more recently, neural networks.</p>
+<div class="page-columns page-full"><p>The crucial piece of this enterprise is to define loss functions that will be optimized to fit the ML models to the censored data. Two loss functions are commonly used:</p><div class="no-row-height column-margin column-container"><span class="margin-aside"><code>scikit-survival</code> <a href="https://scikit-survival.readthedocs.io/en/stable/user_guide/boosting.html#Losses">documentation</a></span></div></div>
+<ol class="example" type="1">
+<li>The Cox partial likelihood loss</li>
+</ol>
+<p>This uses the usual loss function in the Cox proportional hazards model, but replaces the linear function <span class="math inline">\(X\beta\)</span> with a general function <span class="math inline">\(f(x)\)</span>. Let <span class="math inline">\(T_i\)</span> denote the (potentially censored) event time for subject <span class="math inline">\(i\)</span>, <span class="math inline">\(\delta_i\)</span> the indicator denoting death or censoring, and <span class="math inline">\(\mathcal{R}_i\)</span> the risk set at time <span class="math inline">\(T_i\)</span> (i.e., the individuals still at risk in the population at time <span class="math inline">\(T_i\)</span>). Then the partial likelihood loss function is defined by</p>
+<p><span class="math display">\[
+loss = \sum_i \delta_i \left[ f(x_i) - \log\left(\sum_{j\in\mathcal{R}_i}\exp(f(x_j)) \right) \right]
+\]</span></p>
+<p>and the ML goal is to find a mean function <span class="math inline">\(\hat{f}\)</span> that minimizes this loss.</p>
+<ol start="2" class="example" type="1">
+<li>The AFT loss</li>
+</ol>
+<p><span class="math display">\[
+loss = \sum_{i=1}^n \omega_i (\log y_i - f(x_i))
+\]</span> where <span class="math inline">\(\omega_i = \delta_i/\hat{G}(y_i)\)</span> and <span class="math inline">\(\hat{G}\)</span> is an estimate of the censoring survival function.</p>
+<p>You can also consider two prediction error metrics in addition to the loss functions described above. These metrics are (a) the Harrell concordance (C-) index, and (b) the Brier score. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;<a href="https://www.randomforestsrc.org/articles/survival.html#prediction-error" class="uri">https://www.randomforestsrc.org/articles/survival.html#prediction-error</a></p></div><div id="fn2"><p><sup>2</sup>&nbsp;Faraggi &amp; Simon (1995), Statistics in Medicine</p></div><div id="fn3"><p><sup>3</sup>&nbsp;Ishwaran, Kogalur, Blackstone &amp; Lauer (2008), Ann Appl Stat</p></div><div id="fn4"><p><sup>4</sup>&nbsp;<a href="https://xgboost.readthedocs.io/en/latest/tutorials/aft_survival_analysis.html">Survival analysis with Accelerated Failure time</a></p></div><div id="fn5"><p><sup>5</sup>&nbsp;<a href="https://jmlr.org/papers/volume20/18-424/18-424.pdf">pycox</a></p></div><div id="fn6"><p><sup>6</sup>&nbsp;<a href="https://humboldt-wi.github.io/blog/research/information_systems_1920/group2_survivalanalysis/">Deep Learning for survival analysis</a></p></div></div><p>Several machine learning models have been proposed, mostly using ensemble methods and complex models. Neural networks were proposed as one of the earliest models, but in an era when they were hard to computationally fit<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The censored data extension to random forests was proposed in Breiman’s original paper, but was implemented by Ishwaran, <em>et al</em><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Gradient boosting has been implemented using the AFT loss function<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. There are several implementations of neural networks for survival data<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>,<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+</section><section id="what-are-we-predicting" class="level2"><h2 class="anchored" data-anchor-id="what-are-we-predicting">What are we predicting?</h2>
+<p>First a quick note. You can’t do survival predictions using the usual Cox model. Why?</p>
+<p>Now think of any parametric survival model. The regression model predicts parameters in the probability model, which in turn defines the survival function. So, for each individual we can predict values of particular parameters based on the distributional assumptions we’ve made, and those values lead to a particular predicted survival curve.</p>
+<p>Continuing on to ML models, we take the same idea. What we’re predicting (or want to predict) are the <strong>individual predicted survival curves</strong> of individuals. We can then consider the model-averaged survival curve and look at performance features like accuracy and calibration against empirical data.</p>
+</section><section id="how-are-we-evaluating-models" class="level2"><h2 class="anchored" data-anchor-id="how-are-we-evaluating-models">How are we evaluating models?</h2>
+<p>The primary metric for evaluating survival models is Harrell’s concordance index or <strong>C-index</strong>. This measures the proportion of paired observations where the order of the respective survival times is predicted correctly. This measure is agnostic to the scale of the observations since it’s basically a metric based on the ranks of survival times.</p>
+</section><section id="the-case-for-statistical-learning-in-this-context" class="level2"><h2 class="anchored" data-anchor-id="the-case-for-statistical-learning-in-this-context">The case for statistical learning in this context</h2>
+<p>Classical ML methods are trained on vast corpuses of data, and result in quite precise predictions. When you don’t have such corpuses, the predictions have a stochastic or random element to them, which we can model. This can be true even for classical ML algorithms. The randomness in the data remains influential in the BDS context and is something ignored by machine learners, who are focused on the prediction problem. Conversely, biostatiticians are quite aware of the variability issues but tend to ignore generalizability of models. BDS requires us to use both our statistical and computer science brains together, bridging Breiman’s “two worlds”.</p>
+<p>Harrell’s writings can be the starting point for such an exploration. Thinking through the statistical aspects of ML predictions and the uncertainty of such predictions is quite important as we think about decision-making. Bootstrapping can be one tool to help us understand predictive variability and the potential validity of our predictions.</p>
+<p>Bayesian models can also help here. These need to be thought out in the same sense as any parametric model, to be able to reflect our observations. We can do prior and posterior predictive checks to see if our data is well-calibrated. An important aspect of Bayesian models is that they are, by nature, <strong>generative</strong>. You can simulate new data based on the fitted model quite easily and use that for prediction, and for calibration.</p>
+</section><section id="some-modeling-points" class="level2"><h2 class="anchored" data-anchor-id="some-modeling-points">Some modeling points</h2>
+<p><strong>Adjusting for baseline covariates is a good thing.</strong></p>
+<p><strong>Looking at non-linear effects is a good thing.</strong> If it doesn’t improve things, you can always go back to the simpler linear model</p>
+<p><strong>Encourage estimation rather than testing.</strong> Note that ML is basically about estimation and prediction, not about hypothesis testing. Along with uncertainty estimates, this is probably the way to go. Knowledge is on a continuum, and NHST forces it into a dichotomy, which is limiting and incomplete. What is important is that <em>any signal we see sufficiently overcomes the noise</em> so that we can have confidence in our findings.</p>
+</section><section id="resources" class="level2"><h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<section id="software" class="level3"><h3 class="anchored" data-anchor-id="software">Software</h3>
+<ul>
+<li><a href="https://humboldt-wi.github.io/blog/research/information_systems_1920/group2_survivalanalysis/">Deep Learning for Survival Analysis</a></li>
+<li><a href="https://xgboost.readthedocs.io/en/latest/tutorials/aft_survival_analysis.html">Survival analysis with xgboost</a></li>
+<li><a href="https://towardsdatascience.com/xgbse-improving-xgboost-for-survival-analysis-393d47f1384a">xgbse: Improving XGBoost for Survival Analysis</a></li>
+<li><a href="https://github.com/havakv/pycox">pycox: Survival analysis using PyTorch</a></li>
+<li><a href="https://scikit-survival.readthedocs.io/en/stable/user_guide/index.html">scikit-survival</a></li>
+</ul>
 
 
-
-</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -620,7 +773,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-11.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-11.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org">Quarto</a></p>
 </div>

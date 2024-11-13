@@ -67,6 +67,32 @@ ul.task-list li input[type="checkbox"] {
     document.body.classList.add('hypothesis-enabled');
   });
 </script><meta name="quarto:status" content="draft">
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 </head>
 <body class="nav-sidebar docked nav-fixed">
 
@@ -139,6 +165,18 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Survival analysis II</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/week-11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Applied machine learning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/week-12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Machine learning explainability</span></span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
@@ -160,8 +198,14 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#issues" id="toc-issues" class="nav-link" data-scroll-target="#issues">Issues</a></li>
+  <li><a href="#dimension-reduction-techniques" id="toc-dimension-reduction-techniques" class="nav-link" data-scroll-target="#dimension-reduction-techniques">Dimension reduction techniques</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-07.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
@@ -179,11 +223,18 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-</header><p><strong>Last updated:</strong> 04 Sep, 2024 08:47 PM EDT</p>
+</header><p><strong>Last updated:</strong> 16 Oct, 2024 12:49 PM EDT</p>
+<section id="introduction" class="level2"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>High-dimensional data refersto data where the number of variables is greater than the number of observations. This kind of data started appearing in the statistical literature when high through genetic experiments started being conducted in collaborative labs. This initially included DNA microarraand subsequently included various kinds of omics data.</p>
+<p>The challenge that high emotional data poses to statistical evaluation is that almost all statistical methods are predicated on the assumption that the number of observations is greater than the number of predictors. This requirement, often expressed as <span class="math inline">\(n&gt;p\)</span>, ensures that various statistical models can be uniquely and identifiably For example, in the linear model, this assumption allows us to invert the design matrix in order to solve the usual normal equations And get identifiable estimates of the weight parameters.</p>
+<p>There are two general areas in which research in high–dimensional data concentrated; feature selection and multiple testing. There has also been interest in dimension reduction techniques, so that a tractable number of variables can be interrogated rather than the full and large set of variables on whom data is collected. In this section, we will survey each of these areas.</p>
+</section><section id="issues" class="level2"><h2 class="anchored" data-anchor-id="issues">Issues</h2>
+<p>Before we delve into methods for high dimensional data, let us first discuss some of the issues that high dimensional data poses. One issue already identified is in computational tractability. The underlying issue here is information content. Think about the observation matrix <span class="math inline">\(X_{n\times p}\)</span>. Recall from linear algebra that The rank of a matrix is the number of independent rows or independent columns in that matrix. Since statistics usually organizes data so that the variables are columns, what we typically desire is that the variables we observe are independent, or the very least unrelated, So that we cannot derive the values of one column from a set of other columns. If we could derive the values, we actually don’t need that column because the information is contained in other columns. For a data matrix, therefore, we would like this matrix to have full column rank, that is, the rank of the matrix <span class="math inline">\(X\)</span> should be <span class="math inline">\(p\)</span>. We also know, as a fact, that the rank of a matrix cannot be larger than either the number of rose or the number of columns in the matrix. If <span class="math inline">\(n &lt; p\)</span>, the maximum rank of the data matrix can be <span class="math inline">\(n\)</span>, And so mathematically, you cannot have a complete set of independent columns. <strong>The information content is based on the number of observations and not the number of variables in this situation.</strong></p>
+</section><section id="dimension-reduction-techniques" class="level2"><h2 class="anchored" data-anchor-id="dimension-reduction-techniques">Dimension reduction techniques</h2>
+<p>Dimension reduction techniques refer to methods by which we can reduce the corpus of data to a small set of variables that capture the information contained in the larger set. The challenge here is to not lose too much information in this process. Some examples of these techniques include principal components analysis, independent, components analysis, t-SNE, UMAP and, in more recent times, variational autoencoders.</p>
 
 
-
-</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -620,7 +671,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-07.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/araastat/6150-notes/edit/main/chapters/week-07.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/araastat/6150-notes/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org">Quarto</a></p>
 </div>
