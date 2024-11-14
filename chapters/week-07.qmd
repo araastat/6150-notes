@@ -5,4 +5,67 @@ draft: true
 # High-dimensional data {#sec-week7}
 **Last updated:** `{r} format(Sys.time(), "%d %b, %Y %I:%M %p %Z")`
 
+## Introduction     
+
+High-dimensional data refersto data where the number of variables is greater than the number of observations. This kind of data started appearing in the statistical literature when high through genetic experiments started being conducted in collaborative labs. This initially included DNA microarraand subsequently included various kinds of omics data.
+
+ The challenge that high emotional data poses to statistical evaluation is that almost all statistical methods are predicated on the assumption that the number of observations is greater than the number of predictors. This requirement, often expressed as $n>p$, ensures that various statistical models can be uniquely and identifiably For example, in the linear model, this assumption allows us to invert the design matrix in order to solve the usual normal equations And get identifiable estimates of the weight parameters.
+
+ There are two general areas in which research in high–dimensional data concentrated; feature selection and multiple testing. There has also been interest in dimension reduction techniques, so that a tractable number of variables can be interrogated rather than the full and large set of variables on whom data is collected. In this section, we will survey each of these areas.
+
+## Issues 
+ 
+ Before we delve into methods for high dimensional data, let us first discuss some of the issues that high dimensional data poses. One issue already identified is in computational tractability. The underlying issue here is information content. Think about the observation matrix $X_{n\times p}$. Recall from linear algebra that The rank of a matrix is the number of independent rows or independent columns in that matrix. Since statistics usually organizes data so that the variables are columns, what we typically desire is that the variables we observe are independent, or the very least unrelated, So that we cannot derive the values of one column from a set of other columns. If we could derive the values, we actually don't need that column because the information is contained in other columns. For a data matrix, therefore, we would like this matrix to have full column rank, that is, the rank of the matrix $X$ should be $p$. We also know, as a fact, that the rank of a matrix cannot be larger than either the number of rose or the number of columns in the matrix. If $n < p$, the maximum rank of the data matrix can be $n$, And so mathematically, you cannot have a complete set of independent columns. **The information content is based on the number of observations and not the number of variables in this situation.**
+
+## Reducing to lower dimensions
+
+Dimension reduction often involves identifying groups of variables, that act similarly and creating representative variables for each of those groups. Taking this view, a central aspect of dimension reduction involves unsupervised learning, in particular cluster analysis.
+
+The high throughput genomic data lead to the rise of the heat map as a central data, visualization tool, often accompanied by hierarchical clustering to help visually separate different groups. The main purpose of the initial analytic landscape was to identify genes or other molecular entities that differred between two groups, for example, tumor and normal cells. As such, heatmaps were colored To indicate whether a particular cell had higher or lower expression of a particular gene, often in the (unfortunate) red-green color scheme.
+
+```{r}
+library(tidyverse)
+library(ALL)
+library(limma)
+eset <- ALL[, ALL$mol.biol %in% c("BCR/ABL", "ALL1/AF4")]
+exprs_matrix <- t(exprs(eset))
+
+f <- factor(as.character(eset$mol.biol))
+design <- model.matrix( ~f)
+fit <- eBayes(lmFit(eset, design))
+
+selected  <- p.adjust(fit$p.value[, 2]) <0.05
+eset1 <- eset [selected, ]
+color.map <- function(mol.biol) { if (mol.biol=="ALL1/AF4") "#FF0000" else "#0000FF" }
+patientcolors <- unlist(lapply(eset1$mol.bio, color.map))
+heatmap(exprs(eset1), col=topo.colors(100), ColSideColors=patientcolors)
+```
+
+```{r}
+#| include: false
+#| results: hide
+pheatmap(exprs(eset1), scale='row', 
+         clustering_distance_rows = as.dist(1-cor(t(exprs(eset1)))),
+         clustering_distance_cols = as.dist(1-cor((exprs(eset1))))
+         )
+```
+
+
+### Principal components analysis
+
+
+### t-SNE and UMAP: stochastic algorithms
+
+t-distributed stochastic neighbor embedding (t-SNE) is a statistical method for visualizing high-dimensional data in a two or three-dimensional map. It is based on Stochastic Neighbor Embedding ideas of Hinton, Roweis and van der Maaten. It is a nonlinear dimensionality reduction technique for embedding high-dimensional data for visualization in a low-dimensional space of two or three dimensions. Specifically, it models each high-dimensional object by a two- or three-dimensional point in such a way that similar objects are modeled by nearby points and dissimilar objects are modeled by distant points with high probability.
+
+```{r}
+library(Rtsne)
+tsne_repr <- Rtsne(t(exprs(eset1)), perplexity = 10)
+```
+
+
+UMAPs are a similar
+###
+
+ 
 

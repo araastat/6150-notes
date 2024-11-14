@@ -629,12 +629,10 @@ Try to see whether there is a significant difference at 5 years.
 
 What we've set out to do is to see if two survival curves are different in some sense. Intuitively we want to see two survival curves with one entirely above the other, to have a clear case that the survival experience in one group is better than that of the other. 
 
-Let's look at the exponential distribution. The exponential distribution is characterised by a single parameter, the hazard. Suppose the two groups have hazards $\lambda_1$ and $\lambda_2$. If $\lambda_1 > \lambda_2$, then we will have 
+Let's look at the exponential distribution. The exponential distribution is characterised by a single parameter, the hazard. Suppose the two groups have hazards $\lambda_1$ and $\lambda_2$. If $\lambda_1 > \lambda_2$, then we will have $\exp(-\lambda_1 t) < \exp(-\lambda_2 t)$ or $S(t|\lambda_1) < S(t|\lambda_2)$
 
-$$
-S(t | \lambda_1) = e^{-\lambda_1 t} < e^{-\lambda_2 t} = S(t | \lambda_2) \quad \forall t \ge 0
 
-$$
+
 
 So, for an exponential distribution, the hazard, which is a constant, characterises the distribution, and if the hazard increases, we see the survival function decreases uniformly at all times, making a clear case that survival in one group is clearly better than the other for all times $t$.
 
