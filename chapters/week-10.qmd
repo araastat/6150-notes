@@ -1,8 +1,374 @@
 ---
 engine: knitr
-draft: true
+draft: false
+filters:
+  - webr
 ---
 # Planning studies and clinical trials {#sec-week10}
 **Last updated:** `{r} format(Sys.time(), "%d %b, %Y %I:%M %p %Z")`
 
+## Introduction
 
+A lot of data we collect in BDS is observational and hence makes causal inference approximate at best. However, when we need to undderstand causal relationships, we need to plan out our studies properly. The principles of **randomization** and **blocking** become central to the design of such studies. 
+
+The FDA, EMA and other regulatory agencies have set the standard for what good study design for assessing drug and device efficacy should look like, viz., a Phase III randomized controlled trial. In this section, we'll see what the different phases of clinical trials are, and how they build towards a decision on the safety and efficacy of a drug or device.
+
+The other aspect we look at is in terms of planning these studies, the central question being how many subjects do we need to make reasonable causal inference. We'll discuss theoretical and simulation-based strategies to figure this out. 
+
+## Planning studies: What are our objectives?
+
+When we are planning a study, we need to first and foremost have a clear idea about the study objective(s). What is the question, causal or otherwise, that we want the study to answer. We'll come back to this. Practically, several considerations have to be resolved based on the study objective:
+
+- study design
+- study size
+- budget
+- logistics of transporting, storing and analyzing human biological samples
+- statistical plans for analysing study data and means to reliably and securely transporting and storing study data
+- considerations around how samples and data might cross national borders given a diversity of governing laws
+
+::: {.callout-important}
+Several countries, including India, China and several European nations, have deemed the genetic and biological materials of their citizens as items of national security importance, and prevent the actual materials and derivative identifiable data from leaving the countries. This is an increasing challenge for multi-national trials since infrastructure of comparable quality has to be developed in each country. While good for the national interests of the countries concerned, it adds cost and a potential source of variability to every such trial. 
+:::
+
+### Objectives quantified to enable analysis
+
+For drug trials, we often want to say that the candidate drug is "better" than the standard of care. For other kinds of studies we often ask whether people with a gene are "more likely" to get a heart attack by age 50 than people who don't. These statements, "better", or "more likely", have to be defined precisely in terms of a parameter in a statistical/data model. 
+
+The statistics that are used to define how we'd measure "better" or "more likely" are usually pretty standard. 
+
+- Survival studies: Hazard ratio
+- Case-control or cohort studies with a binary (yes/no) endpoint: Odds ratio
+- Studies with a continuous outcome: differences in means
+
+Of course other choices are possible. For each statistic we choose, we need to understand its statistical characteristics in order to plan studies. 
+
+## Sample sizing 
+
+### Difference in means
+
+Computing the sample size for a study when measuring the difference in means involves several key steps and considerations. Here's a step-by-step guide to help you through the process:
+
+### Key Parameters
+1. **Effect Size (Δ)**: The expected difference in means between the two groups.
+2. **Standard Deviation (σ)**: The standard deviation of the outcome measure.
+3. **Significance Level (α)**: The probability of rejecting the null hypothesis when it is true (commonly set at 0.05).
+4. **Power (1-β)**: The probability of correctly rejecting the null hypothesis when it is false (commonly set at 0.80 or 0.90).
+5. **Allocation Ratio (k)**: The ratio of participants in the two groups (commonly 1:1, but can vary).
+
+### Formula for Equal Group Sizes
+For two groups with equal sizes (n1 = n2 = n), the sample size can be calculated using the following formula:
+
+$$ n = \left( \frac{Z_{\alpha/2} + Z_{\beta}}{\Delta / \sigma} \right)^2 $$
+
+Where:
+- $ Z_{\alpha/2} $ is the critical value for the significance level (α) (e.g., 1.96 for a two-tailed test with α = 0.05).
+- $ Z_{\beta} $ is the critical value for the power (e.g., 0.84 for 80% power).
+
+### Steps to Calculate Sample Size
+1. **Define the Effect Size (Δ)**: Determine the expected difference in means between the two groups.
+2. **Estimate the Standard Deviation (σ)**: Obtain an estimate of the standard deviation from previous studies or pilot data.
+3. **Set the Significance Level (α)**: Commonly set at 0.05 for a 5% chance of Type I error.
+4. **Set the Desired Power (1-β)**: Commonly set at 0.80 or 0.90 for 80% or 90% power.
+5. **Determine the Critical Values (Z-scores)**: Use statistical tables or software to find the Z-scores corresponding to α and β.
+   - For $\alpha$ = 0.05 (two-tailed), $Z_{\alpha/2}$ ≈ 1.96.
+   - For 80% power ($\beta$ = 0.20), $Z_{\beta}$ ≈ 0.84.
+6. **Calculate the Required Sample Size (n)**:
+   - Plug the values into the formula:
+     $$ n = 2\left( \frac{1.96 + 0.84}{\Delta / \sigma} \right)^2 $$
+
+### Example Calculation
+Suppose:
+
+- Expected difference in means ($\Delta$) = 5 units.
+- Standard deviation ($\sigma$) = 10 units.
+- Significance level ($\alpha$) = 0.05 ($Z_{\alpha/2}$ ≈ 1.96).
+- Desired power (1-$\beta$) = 0.80 ($Z_{\beta}$ ≈ 0.84).
+
+Plugging these values into the formula:
+
+$$ n = 2\left( \frac{1.96 + 0.84}{5 / 10} \right)^2 $$
+$$ n = 2\left( \frac{2.80}{0.5} \right)^2 $$
+$$ n = 2(5.6)^2 $$
+$$ n = 62.72$$
+
+Therefore, you would need approximately 63 participants in each group.
+
+### Adjusting for Unequal Group Sizes
+If the groups are not of equal size, the formula needs to be adjusted. For groups with sizes n1 and n2, and an allocation ratio k = n2/n1:
+
+$$ n_1 = \left( \frac{(Z_{\alpha/2} + Z_{\beta})^2 (1 + k)}{\Delta / \sigma} \right)^2 $$
+$$ n_2 = k \cdot n_1 $$
+
+### Using Software Tools
+While manual calculations are useful for understanding the process, sample size calculations are often performed using statistical software or online calculators, which can handle more complex scenarios and provide more accurate results.
+
+#### Summary
+- **Define parameters**: Effect size, standard deviation, significance level, power, and allocation ratio.
+- **Use the formula**: Plug the values into the appropriate formula for equal or unequal group sizes.
+- **Software tools**: Consider using statistical software for precise calculations.
+
+### Software tools
+
+You can do power computations in R quite easily. There are default functions in R to do things, as well as the **pwr** package.
+
+```{webr-r}
+pwr.t.test(delta = 5, sd = 10, power = 0.8)
+```
+
+More useful, IMO, is **simulations** to figure out sample size. 
+
+## Phases of clinical trials
+
+::: {.callout-note}
+## Summary
+
+**Exploratory Trials/Pilot studies**
+
+**Objective**: To gather preliminary data on the pharmacodynamics and pharmacokinetics of a drug.  
+**Participants**: A very small number of healthy volunteers (10-15).  
+**Duration**: Short term.  
+**Process**: Sub-therapeutic doses of the drug are administered to understand how it behaves in the body.  
+**Importance**: Helps in decision-making for further development without significant investment.  
+
+**Phase I: Safety Trials**
+
+**Objective**: To assess the safety, tolerability, pharmacokinetics, and pharmacodynamics of a drug.  
+**Participants**: 20-100 healthy volunteers or patients.  
+**Duration**: Several months.  
+**Process**: Escalating doses are administered to determine the maximum tolerated dose and side effects.  
+**Importance**: Identifies safe dosage ranges and side effects.  
+
+**Phase II: Efficacy and Safety Trials**
+
+**Objective**: To evaluate the efficacy of the drug and further assess its safety.  
+**Participants**: 100-300 patients with the condition the drug is intended to treat.  
+**Duration**: Several months to 2 years.  
+**Process**: **Participants** are given the drug in a randomized, controlled trial to determine its efficacy and monitor side effects.  
+**Importance**: Provides preliminary data on whether the drug works in people with the disease or condition.
+
+**Phase III: Confirmatory Trials**
+
+**Objective**: To confirm the drug's effectiveness, monitor side effects, compare it to commonly used treatments, and collect information that will allow the drug to be used safely.  
+**Participants**: 300-3,000 patients.  
+**Duration**: 1-4 years.  
+**Process**: Large-scale studies conducted across multiple centers to ensure the drug's efficacy and safety in diverse populations.  
+**Importance**: Forms the basis for the drug's approval by regulatory bodies such as the FDA or EMA.
+
+**Phase IV: Post-Marketing Surveillance**
+
+**Objective**: To monitor the long-term effectiveness and safety of the drug once it is on the market.  
+**Participants**: Thousands of patients.  
+**Duration**: Ongoing.  
+**Process**: Collects information on the drug's performance in the general population and identifies any rare or long-term side effects.  
+**Importance**: Ensures continued safety and efficacy, and can lead to the drug being withdrawn if serious issues are discovered.
+:::
+
+### Phase I trial
+
+A Phase I clinical trial is the first stage of testing a new drug or treatment in humans. The primary goal of this phase is to evaluate the safety, tolerability, pharmacokinetics, and pharmacodynamics of the drug. Here are the key features and objectives of a Phase I trial:
+
+### Objectives
+- **Safety**: Assess the safety and identify any adverse effects.
+- **Tolerability**: Determine the highest dose that can be given safely without severe side effects.
+- **Pharmacokinetics**: Understand how the drug is absorbed, distributed, metabolized, and excreted in the body.
+- **Pharmacodynamics**: Study the drug's effects on the body, including both therapeutic and side effects.
+
+### Participants
+- Typically involve 20 to 100 healthy volunteers or, in some cases, patients with the condition the drug is intended to treat.
+- Participants are closely monitored in a controlled setting.
+
+### Duration
+- The trial usually lasts several months.
+
+### Process
+1. **Dose Escalation**: 
+   - Participants receive the drug in small, increasing doses to establish the maximum tolerated dose (MTD).
+   - This is often done using a "dose-escalation" approach where small groups of participants receive progressively higher doses. You'll often see these described as a "3x3 design", where three patients are given a dose, and if well tolerated, 3 more patients are given the next dose, and this continues until 2/3 don't tolerate the dose. 
+
+2. **Single Ascending Dose (SAD) Studies**:
+   - Participants receive a single dose of the drug, and its effects are monitored.
+   - Different groups receive different doses to identify the highest dose that can be tolerated without severe side effects.
+
+3. **Multiple Ascending Dose (MAD) Studies**:
+   - Participants receive multiple doses of the drug over a period of time.
+   - This helps to understand the drug's behavior with repeated administration and to identify any cumulative effects.
+
+4. **Food Effect Studies**:
+   - Investigate the impact of food on the drug's absorption and metabolism.
+   - Participants take the drug with and without food to observe any differences in its effects.
+
+### Monitoring
+- Participants are closely monitored for any adverse effects.
+- Regular blood tests and other assessments are conducted to gather data on the drug’s pharmacokinetics and pharmacodynamics.
+- Safety data is continuously reviewed to ensure participant well-being.
+
+### Outcome
+- **Safety Profile**: Establish a preliminary safety profile of the drug.
+- **Dosage Information**: Determine the appropriate dosage range for further trials.
+- **Pharmacokinetic Data**: Collect data on how the drug is processed in the body.
+- **Pharmacodynamic Data**: Gather information on the drug's effects on the body.
+
+### Importance
+Phase I trials are crucial because they provide the first insights into the drug's safety and biological effects in humans. The data obtained from this phase helps to design Phase II trials, where the focus shifts to evaluating the drug's efficacy in a larger group of participants.
+
+## Phase II trial
+
+A Phase II clinical trial is the second stage of testing a new drug or treatment in humans. The primary goal of this phase is to evaluate the efficacy of the drug and to further assess its safety. Here are the key features and objectives of a Phase II trial:
+
+### Objectives
+- **Efficacy**: Determine whether the drug has a beneficial effect on the condition it is intended to treat.
+- **Safety**: Continue to monitor for adverse effects and gather more detailed safety data.
+- **Optimal Dose**: Identify the optimal dose that balances efficacy and safety.
+
+### Participants
+- Typically involve 100 to 300 patients who have the condition or disease that the drug is intended to treat.
+- This phase does **not** include healthy volunteers, as the focus is on the drug's effectiveness in the target population.
+
+### Duration
+- The trial usually lasts several months to two years.
+
+### Process
+1. **Study Design**:
+   - Often designed as randomized, controlled trials.
+   - Participants are randomly assigned to different groups: one or more treatment groups receiving different doses of the drug, and a control group receiving a placebo or standard treatment.
+   - You can often have a lot of arms to the study since this is where different regimens are often tested out
+
+2. **Blinding**:
+   - Single-blind: Either the participants or the researchers do not know which group the participants are in.
+   - Double-blind: Both the participants and the researchers do not know which group the participants are in, to prevent bias.
+
+3. **Efficacy Assessment**:
+   - The primary focus is on assessing the drug’s efficacy, typically through predefined clinical endpoints.
+   - Clinical endpoints could include measurable improvements in symptoms, disease progression, or other relevant health outcomes.
+
+4. **Safety Monitoring**:
+   - Continued monitoring for adverse effects.
+   - Regular health assessments, blood tests, and other relevant evaluations to gather comprehensive safety data.
+
+### Monitoring
+- Participants are closely monitored throughout the study.
+- Data on efficacy and safety are collected and analyzed regularly.
+- Interim analyses may be conducted to make decisions about the continuation, modification, or termination of the trial.
+
+### Outcome
+- **Efficacy Data**: Determine whether the drug shows a statistically significant and clinically meaningful benefit.
+- **Safety Profile**: Further detail the safety profile of the drug, identifying any new adverse effects.
+- **Dose Selection**: Identify the optimal dose for Phase III trials, balancing efficacy and safety.
+
+### Importance
+Phase II trials are critical because they provide the first evidence of the drug’s efficacy in patients with the target condition. The data obtained from this phase is used to:
+
+- Decide whether to move forward with larger Phase III trials.
+- Refine the study design and endpoints for Phase III trials.
+- Provide additional safety information.
+
+### Summary
+Phase II trials bridge the gap between initial safety assessments (Phase I) and large-scale efficacy and safety confirmation (Phase III). They are essential for demonstrating that a drug is potentially effective and safe for further investigation in larger patient populations.
+
+## Phase III studies
+
+Phase III clinical trials are critical stages in drug development, focusing on confirming the drug's efficacy, monitoring side effects, and comparing it to standard treatments. These trials are pivotal for obtaining regulatory approval. Here are the key features and objectives of Phase III studies:
+
+### Objectives
+- **Efficacy Confirmation**: Confirm the drug's effectiveness in a larger, more diverse population.
+- **Safety Monitoring**: Assess the drug's safety profile in a broad patient population, identifying any new or rare side effects.
+- **Comparison**: Compare the new drug to existing standard treatments to demonstrate its benefits.
+- **Data for Approval**: Collect comprehensive data to support regulatory submissions for drug approval.
+
+### Participants
+- Typically involve 300 to 3,000 patients who have the condition or disease the drug is intended to treat.
+- Participants are often from multiple centers and diverse geographic locations to ensure varied population representation.
+
+### Duration
+- The trial usually lasts 1 to 4 years, depending on the disease and the outcome measures.
+
+### Process
+1. **Study Design**:
+   - Randomized Controlled Trials (RCTs) are commonly used.
+   - Participants are randomly assigned to different groups: treatment group(s) receiving the new drug, and control group(s) receiving a placebo or standard treatment.
+
+2. **Blinding**:
+   - Double-blind design is often used to prevent bias, where neither the participants nor the researchers know which treatment the participants are receiving.
+
+3. **Endpoints**:
+   - Primary endpoints are defined to measure the main outcomes (e.g., survival rates, symptom improvement).
+   - Secondary endpoints might include quality of life measures, biomarkers, and other relevant health outcomes.
+
+4. **Monitoring**:
+   - Regular assessments and monitoring for adverse effects.
+   - Data Safety Monitoring Boards (DSMBs) review interim data to ensure participant safety and study integrity.
+
+### Monitoring
+- Continuous and rigorous monitoring for safety and efficacy.
+- Regular health assessments, laboratory tests, and other evaluations to gather comprehensive data.
+- Interim analyses may be conducted to make decisions about the continuation or modification of the trial.
+
+### Outcome
+- **Efficacy Data**: Robust data demonstrating the drug's efficacy compared to existing treatments or placebo.
+- **Safety Profile**: Comprehensive safety data, including information on common and rare side effects.
+- **Regulatory Submission**: Data collected from Phase III trials form the basis for regulatory submissions to authorities like the FDA, EMA, or other regulatory bodies.
+
+### Importance
+Phase III trials are crucial for:
+- Providing definitive evidence of the drug's efficacy and safety.
+- Supporting regulatory approval and subsequent marketing authorization.
+- Informing labeling instructions, including recommended dosages, potential side effects, and usage guidelines.
+
+### Summary
+Phase III trials are the final and most comprehensive stage of clinical testing before a drug can be approved for public use. They involve large patient populations and rigorous testing to ensure that the drug is both effective and safe. The data obtained from these trials are essential for regulatory approval and play a crucial role in determining whether a drug can be brought to market.
+
+## Phase IV studies
+
+Phase IV clinical trials, also known as **post-marketing surveillance or post-approval studies**, are conducted after a drug has received regulatory approval and is available on the market. The primary goal of these trials is to monitor the drug's long-term safety, efficacy, and overall impact in the general population. Here are the key features and objectives of Phase IV studies:
+
+> Phase I-III studies are usually lead by R&D teams, but Phase IV studies are run and monitored by business units. 
+
+
+### Objectives
+- **Long-Term Safety**: Monitor the drug for any adverse effects that may occur over a longer period or in a larger population.
+- **Efficacy in Real-World Settings**: Evaluate the drug's effectiveness in diverse, real-world conditions outside the controlled environment of earlier trials.
+- **Rare Side Effects**: Detect rare or delayed side effects that may not have been evident in Phase III trials.
+- **Optimal Use**: Gather information on the best practices for using the drug, including dosage adjustments, interactions with other medications, and patient subgroups that benefit the most.
+- **Cost-Effectiveness**: Assess the economic impact of the drug, including cost-benefit analyses compared to other treatments.
+
+### Participants
+- Involve thousands of patients who are taking the drug as part of their routine medical care.
+- Participants come from a wide range of demographics, health conditions, and geographic locations to ensure comprehensive data collection.
+
+### Duration
+- These studies are ongoing and can last for many years, continuing as long as the drug is on the market.
+
+### Process
+1. **Study Design**:
+   - Observational studies and registries are commonly used to collect data.
+   - Randomized controlled trials (RCTs) may also be conducted to compare the drug with other treatments or placebos in specific subpopulations.
+
+2. **Data Collection**:
+   - Data is collected from various sources, including electronic health records, patient registries, insurance claims, and direct patient surveys.
+   - Regular follow-ups with patients and healthcare providers to gather comprehensive safety and efficacy data.
+
+3. **Monitoring**:
+   - Continuous monitoring for adverse effects through pharmacovigilance systems.
+   - Reporting of any new or unexpected side effects to regulatory authorities.
+
+### Monitoring
+- Extensive and ongoing monitoring for safety and efficacy in the general population.
+- Collaboration with healthcare providers to report adverse events and gather real-world data.
+- Regulatory agencies may require periodic safety updates and risk management plans.
+
+### Outcome
+- **Safety Data**: Comprehensive safety profile, including long-term and rare side effects.
+- **Efficacy Data**: Real-world effectiveness of the drug in a broad patient population.
+- **Usage Information**: Detailed information on optimal usage, including dosing, administration, and patient selection.
+- **Economic Impact**: Data on the cost-effectiveness of the drug compared to other treatments.
+
+### Importance
+Phase IV trials are essential for:
+
+- Ensuring ongoing safety and efficacy of the drug in the general population.
+- Detecting rare or long-term side effects that may not have been evident in earlier trials.
+- Informing healthcare providers and patients about the best practices for using the drug.
+- Supporting regulatory agencies in making informed decisions about the continued approval and labeling of the drug.
+
+### Summary
+Phase IV trials play a crucial role in the lifecycle of a drug, providing valuable information on its long-term safety, efficacy, and optimal use in real-world settings. These studies help ensure that the benefits of the drug continue to outweigh the risks and contribute to the overall improvement of public health.
